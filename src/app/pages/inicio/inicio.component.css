@@ -2,3 +2,10 @@
 .carousel-fade .carousel-item {
     transition: opacity 6s ease; /* Cambia "2s" por el valor que prefieras */
   }
+
+  .carousel,
+.carousel-item {
+  height: 100vh; /* La altura de todo el carrusel será del 100% de la ventana */
+}
+
+  

@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
-import { InicioComponent } from './pages/inicio/inicio.component'; // Asegúrate de que esta ruta sea correcta
+import { InicioComponent } from './pages/inicio/inicio.component';
+import { NavbarComponent } from './pages/navbar/navbar.component';
 
 export const routes: Routes = [
   { path: '', component: InicioComponent },
-  // Puedes agregar más rutas aquí
+  { path: '', component: NavbarComponent},
 ];
