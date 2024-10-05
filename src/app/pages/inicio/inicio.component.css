@@ -1,0 +1,4 @@
+/* Velocidad de trnsicion entre las fotos */
+.carousel-fade .carousel-item {
+    transition: opacity 6s ease; /* Cambia "2s" por el valor que prefieras */
+  }
