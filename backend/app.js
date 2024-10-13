@@ -37,7 +37,7 @@ const apiKey = process.env.API_KEY;
 app.get('/api/external', async (req, res) => {
     try {
         // Reemplaza con la URL correcta de la API que estás consumiendo
-        const response = await fetch(`https://api.externa.com/data?api_key=${BH0TuLMfvbaj6gZAk8rnhOKI187RM9xGdietQ8cDx8zUJjzmOL-MjSxIj9gP4T_Cab10r9Ht8XXWyF7zMO8NPi38iFx4__Xbcbokfn8Q7yEm_9Ds_Iw2QDKkEWIJZ3Yx}`);
+        const response = await fetch(`https://api.externa.com/data?api_key=${123456789}`);
         const data = await response.json();
         res.json(data);  // Envía los datos de la API externa al frontend
     } catch (error) {
