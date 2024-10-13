@@ -1,0 +1,80 @@
+<!-- Carrusel de imagenes -->
+
+<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
+  <div class="carousel-inner">
+      <div class="carousel-item active">
+          <img src="foto_carrusel1.jpg" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+          <img src="foto_carrusel2.jpg" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+          <img src="foto_carrusel3.jpg" class="d-block w-100" alt="...">
+      </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+
+
+<!-- Cards de tiendas -->
+
+<p>Tiendas destacadas</p>
+ 
+<div class="card-container">
+  <div *ngFor="let card of cards"> <!-- Itera sobre el array de tarjetas -->
+    <mat-card class="example-card" appearance="outlined">
+      <mat-card-header>
+        <!-- Imagen pequeña del gerente -->
+        <div mat-card-avatar class="foto_gerente">
+          <img src="{{ card.foto_gerente.url }}" alt="Foto de {{ card.nombre_gerente }}"> <!-- Usa una propiedad de fotoGerente -->
+        </div>
+        <mat-card-title>{{ card.title }}</mat-card-title> <!-- Usa card.title -->
+        <mat-card-subtitle>{{ card.nombre_gerente }}</mat-card-subtitle> <!-- Usa card.nombre_gerente -->
+      </mat-card-header>
+
+      <!-- Imagen principal de la tarjeta -->
+      <img mat-card-image src="{{ card.imagen.url }}" alt="Photo of {{ card.title }}"> <!-- Usa card.imagen -->
+
+      <mat-card-content>
+        <p>{{ card.descripcion }}</p>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button>Enter</button>
+        <div class="card flex justify-content-center">
+          <p-rating [(ngModel)]="card.rating" [cancel]="false"></p-rating> <!-- Usa card.rating -->
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+
+
+<!-- Search -->
+
+<div class="image-search">
+  <h1 class="titulo_search" *ngIf="showContent">Buscas tu tienda?</h1>
+  <p class="texto_search" *ngIf="showContent">Aquí encontrarás exactamente lo que quieres</p>
+  <div class="button-container" *ngIf="showContent">
+    <p-button label="Buscar tienda" (click)="hideContent()" [text]="true" [raised]="true" severity="success"></p-button>
+  </div>
+</div>
+
+
+
+
+
+
+
+  
+ 
+
+

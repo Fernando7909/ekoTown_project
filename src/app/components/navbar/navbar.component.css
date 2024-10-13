@@ -1,0 +1,27 @@
+.navbar {
+    position: fixed; /* Mantiene el navbar en la parte superior */
+    top: 0; /* Alinea el navbar en la parte superior */
+    width: 100%; /* Ancho completo */
+    z-index: 1000; /* Asegúrate de que esté por encima */
+    background-color: transparent; /* Sin fondo */
+}
+
+.nav-link {
+    color: white; /* Color del texto de los enlaces */
+}
+
+.nav-link:hover {
+    color: #f8f9fa; /* Color al pasar el mouse sobre el enlace */
+}
+
+.navbar-brand {
+    color: white; /* Color del texto de la marca */
+}
+
+.navbar-toggler {
+    border-color: white; /* Cambia el color del borde del botón toggler si es necesario */
+}
+
+.navbar-toggler .navbar-toggler-icon {
+    background-image: url('data:image/svg+xml;...'); /* Asegúrate de que el icono del toggler sea visible */
+}
