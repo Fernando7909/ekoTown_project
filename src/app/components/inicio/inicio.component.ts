@@ -4,6 +4,8 @@ import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
+import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 interface Image {
   url: string;
@@ -26,7 +28,8 @@ interface Card {
     RatingModule,
     FormsModule,
     CommonModule,
-    ButtonModule
+    ButtonModule,
+    RouterModule
   ],
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css'] // Corregido: styleUrl -> styleUrls
@@ -133,8 +136,9 @@ export class InicioComponent {
     }
   ];
   
-  // Método para ocultar el contenido
-  hideContent() {
-    this.showContent = false; // Cambia la variable a false para ocultar el contenido
+  constructor(private router: Router) {} // Inyecta el Router en el constructor
+
+  goToSearch() {
+    this.router.navigate(['/search']); // Redirige a la página de búsqueda
   }
 }  

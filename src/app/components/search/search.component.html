@@ -1,0 +1,43 @@
+<form (ngSubmit)="onSearch()">
+  <fieldset>
+    <legend>BUSCADOR DE TIENDAS</legend>
+    <div class="mb-3">
+      <label for="locationInput" class="form-label">Introduce la ciudad o municipio</label>
+      <input 
+        type="text" 
+        id="locationInput" 
+        class="form-control" 
+        placeholder="Barcelona, Madrid..." 
+        [(ngModel)]="location"  
+        name="location" 
+        required>
+    </div>
+    <div class="mb-3">
+      <label for="radiusInput" class="form-label">Radio de búsqueda (metros)</label>
+      <input 
+        type="number" 
+        id="radiusInput" 
+        class="form-control" 
+        placeholder="Introduce la distancia en metros" 
+        [(ngModel)]="radius" 
+        name="radius"  
+        required>
+    </div>
+    <button type="submit" class="btn btn-primary">Buscar</button>
+  </fieldset>
+</form>
+
+<!-- Resultados de la búsqueda -->
+<div *ngIf="searchResults.length > 0">
+  <h2>Resultados de la búsqueda:</h2>
+  <ul>
+    <li *ngFor="let result of searchResults">
+      {{ result.name }} - {{ result.location.address1 }} - Distancia: {{ result.distance | number:'1.0-2' }} metros
+    </li>
+  </ul>
+</div>
+
+<!-- Mensaje de error cuando no hay resultados -->
+<div *ngIf="searchResults.length === 0 && location && radius">
+  <p>No se encontraron resultados para la búsqueda.</p>
+</div>

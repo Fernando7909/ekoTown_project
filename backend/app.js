@@ -31,19 +31,35 @@ app.get('/api/comercios/:municipio', (req, res) => {
     res.json(resultados);
 });
 
-// **Nuevo código**: Ruta para hacer una petición a una API externa
+// Ruta para buscar tiendas en la API de Yelp con location, categories y radius
 const apiKey = process.env.API_KEY;
 
-app.get('/api/external', async (req, res) => {
+app.get('/api/yelp', async (req, res) => {
+    const { location, categories, radius } = req.query;
+
     try {
-        // Reemplaza con la URL correcta de la API que estás consumiendo
-        const response = await fetch(`https://api.externa.com/data?api_key=${123456789}`);
+        // Construir la URL con los parámetros de búsqueda
+        const yelpUrl = `https://api.yelp.com/v3/businesses/search?location=${location}&categories=${categories}&radius=${radius}`;
+
+        // Hacer la solicitud a la API de Yelp
+        const response = await fetch(yelpUrl, {
+            headers: {
+                'Authorization': `Bearer ${apiKey}`
+            }
+        });
+
+        // Parsear la respuesta a JSON
         const data = await response.json();
-        res.json(data);  // Envía los datos de la API externa al frontend
+
+        // Enviar la respuesta JSON al frontend
+        res.json(data);
     } catch (error) {
-        res.status(500).json({ error: 'Error al obtener datos de la API externa' });
+        console.error('Error al buscar datos en Yelp:', error);
+        res.status(500).json({ error: 'Error al obtener datos de Yelp' });
     }
 });
+
+
 
 // Configurar el puerto del servidor
 const PORT = process.env.PORT || 3000;

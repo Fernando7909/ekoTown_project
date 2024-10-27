@@ -61,12 +61,13 @@
 <!-- Search -->
 
 <div class="image-search">
-  <h1 class="titulo_search" *ngIf="showContent">Buscas tu tienda?</h1>
-  <p class="texto_search" *ngIf="showContent">Aquí encontrarás exactamente lo que quieres</p>
-  <div class="button-container" *ngIf="showContent">
-    <p-button label="Buscar tienda" (click)="hideContent()" [text]="true" [raised]="true" severity="success"></p-button>
+  <h1 class="titulo_search">Buscas tu tienda?</h1>
+  <p class="texto_search">Aquí encontrarás exactamente lo que quieres</p>
+  <div class="button-container">
+    <p-button label="Buscar tienda" (click)="goToSearch()" [text]="true" [raised]="true" severity="success"></p-button>
   </div>
 </div>
+
 
 
 
