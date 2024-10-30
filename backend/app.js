@@ -1,23 +1,27 @@
-import dotenv from 'dotenv';  // Cambiado a import
-import express from 'express';  // Cambiado a import
-import cors from 'cors';  // Cambiado a import
-import fetch from 'node-fetch';  // Cambiado a import
+// Importaciones existentes que ya tienes
+import dotenv from 'dotenv';  // Cargar variables de entorno desde .env
+import express from 'express';  // Framework para construir el servidor
+import cors from 'cors';  // Manejar CORS
+import fetch from 'node-fetch';  // Para hacer solicitudes HTTP
 
-dotenv.config();
-const app = express();
+// Importaciones nuevas
+import userRoutes from './routes/userRoutes.js'; // Importar rutas de usuarios
 
-// Middleware para habilitar CORS y manejar JSON
+dotenv.config();  // Cargar las variables de entorno
+const app = express(); // Crear la aplicación Express
+
+// Middleware existente
 app.use(cors());
 app.use(express.json());
 
-// Datos de ejemplo de comercios ecológicos (esto es solo para tu caso específico)
+// Datos de ejemplo de comercios ecológicos
 const comerciosEcologicos = [
     { municipio: 'Madrid', nombre: 'EcoMadrid', tipo: 'Tienda de alimentos' },
     { municipio: 'Barcelona', nombre: 'EcoBarcelona', tipo: 'Tienda de ropa' },
     { municipio: 'Valencia', nombre: 'EcoValencia', tipo: 'Restaurante' },
 ];
 
-// Ruta para obtener comercios por municipio (esto ya lo tienes)
+// Ruta para obtener comercios por municipio (manteniendo la lógica que ya tienes)
 app.get('/api/comercios/:municipio', (req, res) => {
     const municipio = req.params.municipio.toLowerCase();
     const resultados = comerciosEcologicos.filter(comercio =>
@@ -31,7 +35,7 @@ app.get('/api/comercios/:municipio', (req, res) => {
     res.json(resultados);
 });
 
-// Ruta para buscar tiendas en la API de Yelp con location, categories y radius
+// Ruta para buscar tiendas en la API de Yelp con location, categories y radius (manteniendo la lógica actual)
 const apiKey = process.env.API_KEY;
 
 app.get('/api/yelp', async (req, res) => {
@@ -59,9 +63,14 @@ app.get('/api/yelp', async (req, res) => {
     }
 });
 
+// === INICIO DE NUEVA LÓGICA ===
 
+// Agregar las rutas para gestionar usuarios (registro e inicio de sesión)
+app.use('/api/users', userRoutes);
 
-// Configurar el puerto del servidor
+// === FIN DE NUEVA LÓGICA ===
+
+// Configurar el puerto del servidor (manteniendo el que ya tienes)
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
