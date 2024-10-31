@@ -1,11 +1,11 @@
 // Importaciones existentes que ya tienes
-import dotenv from 'dotenv';  // Cargar variables de entorno desde .env
-import express from 'express';  // Framework para construir el servidor
-import cors from 'cors';  // Manejar CORS
-import fetch from 'node-fetch';  // Para hacer solicitudes HTTP
+const dotenv = require('dotenv');  // Cargar variables de entorno desde .env
+const express = require('express');  // Framework para construir el servidor
+const cors = require('cors');  // Manejar CORS
+const fetch = require('node-fetch');  // Para hacer solicitudes HTTP con la versión 2.x de node-fetch
 
 // Importaciones nuevas
-import userRoutes from './routes/userRoutes.js'; // Importar rutas de usuarios
+const userRoutes = require('./routes/userRoutes'); // Importar rutas de usuarios
 
 dotenv.config();  // Cargar las variables de entorno
 const app = express(); // Crear la aplicación Express

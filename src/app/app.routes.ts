@@ -7,10 +7,17 @@ export const routes: Routes = [
   { 
     path: '', 
     loadComponent: () => import('./components/inicio/inicio.component').then(m => m.InicioComponent) 
-  },   // Carga perezosa (lazy load) del componente de inicio
+  },
+     
   { 
     path: 'search', 
     loadComponent: () => import('./components/search/search.component').then(m => m.SearchComponent) 
-  },  // Carga perezosa (lazy load) del componente de búsqueda
+  },
+
+  { 
+    path: 'loginregister', 
+    loadComponent: () => import('./components/loginregister/loginregister.component').then(m => m.LoginregisterComponent) 
+  }, 
+
   { path: '**', redirectTo: '', pathMatch: 'full' }  // Redirige rutas desconocidas a la página de inicio
 ];

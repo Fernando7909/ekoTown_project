@@ -1,0 +1,51 @@
+<div class="container">
+  <!-- Contenedor principal -->
+  <div class="form-wrapper" [ngClass]="{'register-active': isRegisterActive}" >
+    
+    <!-- Botones de Toggle para cambiar entre Login y Registro -->
+    <div class="toggle-buttons">
+      <button (click)="togglePanel()" class="btn-toggle" [ngClass]="{'active': !isRegisterActive}">Iniciar sesión</button>
+      <button (click)="togglePanel()" class="btn-toggle" [ngClass]="{'active': isRegisterActive}">Registro</button>
+    </div>
+
+    <!-- Contenedor para el formulario de Login -->
+    <div class="form login-form" *ngIf="!isRegisterActive">
+      <h2>Iniciar sesión</h2>
+      <form (ngSubmit)="onLogin()">
+        <div class="input-group">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" [(ngModel)]="loginEmail" name="loginEmail" required>
+        </div>
+        <div class="input-group">
+          <label for="loginPassword">Contraseña</label>
+          <input type="password" id="loginPassword" [(ngModel)]="loginPassword" name="loginPassword" required>
+        </div>
+        <button type="submit" class="btn-submit">Iniciar sesión</button>
+      </form>
+    </div>
+
+    <!-- Contenedor para el formulario de Registro -->
+    <div class="form register-form" *ngIf="isRegisterActive">
+      <h2>Registro</h2>
+      <form (ngSubmit)="onRegister()">
+        <div class="input-group">
+          <label for="registerName">Nombre</label>
+          <input type="text" id="registerName" [(ngModel)]="registerName" name="registerName" required>
+        </div>
+        <div class="input-group">
+          <label for="registerLastName">Apellido</label>
+          <input type="text" id="registerLastName" [(ngModel)]="registerLastName" name="registerLastName" required>
+        </div>
+        <div class="input-group">
+          <label for="registerEmail">Email</label>
+          <input type="email" id="registerEmail" [(ngModel)]="registerEmail" name="registerEmail" required>
+        </div>
+        <div class="input-group">
+          <label for="registerPassword">Contraseña</label>
+          <input type="password" id="registerPassword" [(ngModel)]="registerPassword" name="registerPassword" required>
+        </div>
+        <button type="submit" class="btn-submit">Registrarse</button>
+      </form>
+    </div>
+  </div>
+</div>
