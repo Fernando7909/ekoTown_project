@@ -1,0 +1,32 @@
+<section class="testimonials-section">
+    <div class="container">
+      <div class="testimonials-grid">
+        <!-- Flecha izquierda -->
+        <button (click)="previousTestimonial()" class="arrow left-arrow" *ngIf="currentIndex > 0">
+          &lt;
+        </button>
+  
+        <!-- Mostrar tres testimonios a la vez -->
+        <div *ngFor="let testimonial of visibleTestimonials" class="testimonial-card">
+          <img [src]="testimonial.image" [alt]="testimonial.name" class="testimonial-image">
+          <div class="rating">
+            <span class="star" *ngFor="let star of [1,2,3,4,5]; trackBy: trackByStar"
+              [class.filled]="star <= testimonial.rating">★</span>
+          </div>
+          
+          <p class="testimonial-text">{{testimonial.comment}}</p>
+          <div class="testimonial-author">
+            <h3>{{testimonial.name}}</h3>
+            <p>{{testimonial.date}}</p>
+          </div>
+        </div>
+  
+        <!-- Flecha derecha -->
+        <button (click)="nextTestimonial()" class="arrow right-arrow" 
+                *ngIf="currentIndex < testimonials.length - testimonialsPerPage">
+          &gt;
+        </button>
+      </div>
+    </div>
+  </section>
+  

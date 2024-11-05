@@ -6,6 +6,7 @@ const fetch = require('node-fetch');  // Para hacer solicitudes HTTP con la vers
 
 // Importaciones nuevas
 const userRoutes = require('./routes/userRoutes'); // Importar rutas de usuarios
+const businessManagerRoutes = require('./routes/businessManagerRoutes'); // Importar rutas de Business Managers
 
 dotenv.config();  // Cargar las variables de entorno
 const app = express(); // Crear la aplicación Express
@@ -67,6 +68,9 @@ app.get('/api/yelp', async (req, res) => {
 
 // Agregar las rutas para gestionar usuarios (registro e inicio de sesión)
 app.use('/api/users', userRoutes);
+
+// Agregar las rutas para gestionar Business Managers (registro e inicio de sesión)
+app.use('/api/business-managers', businessManagerRoutes);
 
 // === FIN DE NUEVA LÓGICA ===
 

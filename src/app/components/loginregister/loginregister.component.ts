@@ -12,26 +12,46 @@ import { Router } from '@angular/router';
   imports: [CommonModule, FormsModule]
 })
 export class LoginregisterComponent {
-  // Control del panel de login/registro
+  // Control del panel de login/registro de usuarios y Business Managers
   isRegisterActive: boolean = false;
+  isBusinessManagerActive: boolean = false; // Nueva propiedad para Business Managers
 
-  // Variables para el formulario de login
+  // Variables para el formulario de login de usuarios
   loginEmail: string = '';
   loginPassword: string = '';
 
-  // Variables para el formulario de registro
+  // Variables para el formulario de registro de usuarios
   registerName: string = '';
   registerLastName: string = '';
   registerEmail: string = '';
   registerPassword: string = '';
 
+  // Variables para el formulario de login de Business Manager
+  loginManagerEmail: string = '';
+  loginCommerceId: string = '';
+  loginManagerPassword: string = '';
+
+  // Variables para el formulario de registro de Business Manager
+  managerName: string = '';
+  managerLastName: string = '';
+  managerDNI: string = '';
+  managerEmail: string = '';
+  managerAddress: string = '';
+  managerPassword: string = '';
+
   constructor(private authService: AuthService, private router: Router) {}
 
+  // Cambiar entre los paneles de registro/login de usuario
   togglePanel() {
     this.isRegisterActive = !this.isRegisterActive;
   }
 
-  // Método para iniciar sesión
+  // Cambiar entre los paneles de registro/login de Business Manager
+  toggleManagerPanel() {
+    this.isBusinessManagerActive = !this.isBusinessManagerActive;
+  }
+
+  // Método para iniciar sesión de usuario
   onLogin() {
     const credentials = {
       email: this.loginEmail,
@@ -41,7 +61,7 @@ export class LoginregisterComponent {
     this.authService.login(credentials).subscribe(
       (response: any) => {
         console.log('Inicio de sesión exitoso:', response);
-        this.router.navigate(['/dashboard']); // Cambiar por la ruta que desees
+        this.router.navigate(['/dashboard']); // Cambia por la ruta deseada
       },
       (error: any) => {
         console.error('Error al iniciar sesión:', error);
@@ -50,7 +70,7 @@ export class LoginregisterComponent {
     );
   }
 
-  // Método para registrarse
+  // Método para registrar un usuario
   onRegister() {
     const userData = {
       name: this.registerName,
@@ -67,6 +87,50 @@ export class LoginregisterComponent {
       },
       (error: any) => {
         console.error('Error al registrar usuario:', error);
+        alert('Error al registrarse. Por favor, intenta de nuevo.');
+      }
+    );
+  }
+
+  // Método para iniciar sesión de Business Manager
+  onManagerLogin() {
+    const managerCredentials = {
+      email: this.loginManagerEmail,
+      commerce_id: this.loginCommerceId,
+      password: this.loginManagerPassword,
+    };
+
+    this.authService.login(managerCredentials).subscribe(
+      (response: any) => {
+        console.log('Inicio de sesión de Business Manager exitoso:', response);
+        this.router.navigate(['/business-dashboard']); // Cambia por la ruta de Business Manager
+      },
+      (error: any) => {
+        console.error('Error al iniciar sesión de Business Manager:', error);
+        alert('Error al iniciar sesión de Business Manager. Verifica tus credenciales.');
+      }
+    );
+  }
+
+  // Método para registrar un Business Manager
+  onManagerRegister() {
+    const managerData = {
+      name: this.managerName,
+      last_name: this.managerLastName,
+      dni: this.managerDNI,
+      email: this.managerEmail,
+      address: this.managerAddress,
+      password: this.managerPassword,
+    };
+
+    this.authService.registerManager(managerData).subscribe(
+      (response: any) => {
+        console.log('Registro de Business Manager exitoso:', response);
+        alert('Business Manager registrado exitosamente. Ahora puedes iniciar sesión.');
+        this.toggleManagerPanel();
+      },
+      (error: any) => {
+        console.error('Error al registrar Business Manager:', error);
         alert('Error al registrarse. Por favor, intenta de nuevo.');
       }
     );

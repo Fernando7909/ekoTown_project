@@ -8,27 +8,42 @@ import { LoginResponse } from './types';
   providedIn: 'root'
 })
 export class AuthService {
-  // URL del backend donde se procesan las solicitudes de registro e inicio de sesión
   private apiUrl = 'http://localhost:3000/api/users';
+  private apiManagerUrl = 'http://localhost:3000/api/business-managers';
+
 
   constructor(private http: HttpClient) {}
 
   // Método para registrar un nuevo usuario
   register(userData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, userData).pipe(
+      tap(response => console.log('Registro de usuario exitoso:', response))
+    );
+  }
+
+  // Método para iniciar sesión de usuario
+  login(credentials: any): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials).pipe(
       tap(response => {
-        console.log('Registro exitoso:', response);
+        localStorage.setItem('token', response.token);
+        console.log('Inicio de sesión de usuario exitoso:', response);
       })
     );
   }
 
-  // Método para iniciar sesión
-  login(credentials: any): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials).pipe(
+  // Método para registrar un nuevo Business Manager
+  registerManager(managerData: any): Observable<any> {
+    return this.http.post(`${this.apiManagerUrl}/register`, managerData).pipe(
+      tap(response => console.log('Registro de Business Manager exitoso:', response))
+    );
+  }
+
+  // Método para iniciar sesión de Business Manager
+  loginManager(managerCredentials: any): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiManagerUrl}/login`, managerCredentials).pipe(
       tap(response => {
-        // Guardar el token en el almacenamiento local si el login es exitoso
         localStorage.setItem('token', response.token);
-        console.log('Inicio de sesión exitoso:', response);
+        console.log('Inicio de sesión de Business Manager exitoso:', response);
       })
     );
   }
@@ -42,6 +57,6 @@ export class AuthService {
   // Método para verificar si el usuario está autenticado
   isAuthenticated(): boolean {
     const token = localStorage.getItem('token');
-    return !!token; // Devuelve true si hay un token almacenado, false si no
+    return !!token; 
   }
 }

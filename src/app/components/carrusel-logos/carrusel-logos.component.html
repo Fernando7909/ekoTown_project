@@ -1,0 +1,11 @@
+<div class="slider">
+  <div class="slide-track">
+    <div class="slide" *ngFor="let image of images">
+      <img [src]="image" height="100" width="250" alt="Logo">
+    </div>
+    <!-- Duplicamos la lista para que el desplazamiento sea continuo -->
+    <div class="slide" *ngFor="let image of images">
+      <img [src]="image" height="100" width="250" alt="Logo">
+    </div>
+  </div>
+</div>

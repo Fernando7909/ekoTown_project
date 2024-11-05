@@ -1,3 +1,5 @@
+<app-navbar></app-navbar>
+
 <!-- Carrusel de imagenes -->
 
 <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
@@ -67,6 +69,125 @@
     <p-button label="Buscar tienda" (click)="goToSearch()" [text]="true" [raised]="true" severity="success"></p-button>
   </div>
 </div>
+
+
+<!-- Info01 -->
+
+<div class="container info-01">
+  <div class="row align-items-center">
+    <!-- Columna para el texto -->
+    <div class="col-md-6">
+      <p class="quote-text">
+        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+        sed quia consequuntur magni dolores eos qui ratione."
+      </p>
+    </div>
+    
+    <!-- Columna para la imagen -->
+    <div class="col-md-6 d-flex justify-content-center">
+      <img src="https://images.pexels.com/photos/95425/pexels-photo-95425.jpeg" alt="Imagen de vegetales orgánicos" class="quote-image img-fluid rounded">
+    </div>
+  </div>
+</div>
+
+
+<!-- CONTADOR DINAMICO -->
+<div class="container-fluid contador-dinamico bg-light-green py-4">
+  <div class="row text-center counters justify-content-center" id="counterSection">
+    <div class="col-md-4 d-flex flex-column align-items-center">
+      <h2 class="counter-wrapper">
+        <span class="counter" #counterElement1 data-target="425">0</span><span class="plus-symbol">+</span>
+      </h2>
+      <p>tiendas</p>
+    </div>
+    <div class="col-md-4 d-flex flex-column align-items-center">
+      <h2 class="counter-wrapper">
+        <span class="counter" #counterElement2 data-target="8000">0</span><span class="plus-symbol">+</span>
+      </h2>
+      <p>clientes registrados</p>
+    </div>
+    <div class="col-md-4 d-flex flex-column align-items-center">
+      <h2 class="counter-wrapper">
+        <span class="counter" #counterElement3 data-target="25">0</span><span class="plus-symbol">+</span>
+      </h2>
+      <p>partners</p>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Info02 -->
+<div class="container info-02">
+  <div class="row align-items-center">
+    <!-- Columna para la imagen -->
+    <div class="col-md-6 d-flex justify-content-center">
+      <img 
+        src="https://cdn.pixabay.com/photo/2016/12/20/22/32/holiday-shopping-1921658_960_720.jpg" 
+        srcset="https://cdn.pixabay.com/photo/2016/12/20/22/32/holiday-shopping-1921658_960_720.jpg 1x, 
+                https://cdn.pixabay.com/photo/2016/12/20/22/32/holiday-shopping-1921658_1280.jpg 2x" 
+        alt="Imagen de compras navideñas" 
+        class="quote-image img-fluid rounded">
+    </div>
+    
+    <!-- Columna para el texto -->
+    <div class="col-md-6">
+      <p class="quote-text">
+        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+        sed quia consequuntur magni dolores eos qui ratione."
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<!-- Call to Action -->
+<div class="cta my-5">
+  <h2>¡Únete a ekoTwon!</h2>
+  <p>Suscríbete y sé el primero en descubrir nuestras novedades, ofertas exclusivas y consejos para un estilo de vida más sostenible. 🌱✨<br>
+  ¡Únete a la comunidad que cuida del planeta!</p>
+  <button class="cta-button">REGISTRO</button>
+</div>
+
+<!-- Info03 -->
+<div class="container info-03">
+  <div class="row align-items-center">
+    <!-- Columna para la imagen -->
+    <div class="col-md-6 d-flex justify-content-center">
+      <img 
+        src="https://cdn.pixabay.com/photo/2016/12/20/22/32/holiday-shopping-1921658_960_720.jpg" 
+        srcset="https://cdn.pixabay.com/photo/2016/12/20/22/32/holiday-shopping-1921658_960_720.jpg 1x, 
+                https://cdn.pixabay.com/photo/2016/12/20/22/32/holiday-shopping-1921658_1280.jpg 2x" 
+        alt="Imagen de compras navideñas" 
+        class="quote-image img-fluid rounded">
+    </div>
+    
+    <!-- Columna para el texto -->
+    <div class="col-md-6">
+      <p class="quote-text">
+        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+        sed quia consequuntur magni dolores eos qui ratione."
+      </p>
+    </div>
+  </div>
+</div>
+
+<app-testimonials></app-testimonials>
+
+<app-carrusel-logos></app-carrusel-logos>
+
+
+
+
+
+
 
 
 

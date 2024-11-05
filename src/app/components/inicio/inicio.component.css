@@ -1,3 +1,10 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
 
 /* Velocidad de trnsicion entre las fotos */
 .carousel-fade .carousel-item {
@@ -98,6 +105,131 @@ mat-card img {
   margin-top: 20px;  /* Añade un margen superior si lo deseas */
 }
 
+
+/* Info01 */
+.info-01 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin: 150px auto;
+}
+
+.quote-text {
+  font-size: 1.1em;
+  line-height: 1.5;
+  color: #333;
+}
+
+.quote-image {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+/* Contador dinamico */
+.contador-dinamico {
+  width: 100%;
+  background-color: #b4cd68; /* Color de fondo similar al de la imagen */
+}
+
+.counter-wrapper {
+  display: inline-flex;
+  align-items: center;
+}
+
+.counter {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.plus-symbol {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-left: 5px;
+}
+
+
+
+/* Info02 */
+.info-02 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin: 150px auto;
+}
+
+.quote-text {
+  font-size: 1.1em;
+  line-height: 1.5;
+  color: #333;
+}
+
+.quote-image {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Call to Action */
+.cta {
+  background: linear-gradient(135deg, #c3d497, #d8e0a0);
+  border-radius: 15px;
+  padding: 70px 30px 30px; /* Añadir padding en la parte superior en lugar de margin */
+  text-align: center;
+  max-width: 1200px;
+  margin: auto;
+  color: #333;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.cta-container h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2f2f2f;
+  margin-bottom: 10px;
+}
+
+.cta-container p {
+  font-size: 16px;
+  color: #2f2f2f;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.cta-button {
+  background-color: #6aab83; /* Color verde para el botón */
+  color: white;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: #589b6c; /* Color más oscuro al hacer hover */
+}
+
+/* Info03 */
+.info-03 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin: 150px auto;
+}
+
+.quote-text {
+  font-size: 1.1em;
+  line-height: 1.5;
+  color: #333;
+}
+
+.quote-image {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
 
 
 

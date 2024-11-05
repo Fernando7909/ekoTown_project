@@ -1,27 +1,35 @@
 .navbar {
-    position: fixed; /* Mantiene el navbar en la parte superior */
-    top: 0; /* Alinea el navbar en la parte superior */
-    width: 100%; /* Ancho completo */
-    z-index: 1000; /* Asegúrate de que esté por encima */
-    background-color: transparent; /* Sin fondo */
-}
-
-.nav-link {
-    color: white; /* Color del texto de los enlaces */
-}
-
-.nav-link:hover {
-    color: #f8f9fa; /* Color al pasar el mouse sobre el enlace */
-}
-
-.navbar-brand {
-    color: white; /* Color del texto de la marca */
-}
-
-.navbar-toggler {
-    border-color: white; /* Cambia el color del borde del botón toggler si es necesario */
-}
-
-.navbar-toggler .navbar-toggler-icon {
-    background-image: url('data:image/svg+xml;...'); /* Asegúrate de que el icono del toggler sea visible */
-}
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, var(--opacity, 0)); /* Fondo con opacidad variable */
+    backdrop-filter: blur(var(--blur-amount, 0px)); /* Efecto borroso variable */
+    -webkit-backdrop-filter: blur(var(--blur-amount, 0px)); /* Compatibilidad con Safari */
+    transition: background-color 0.3s ease, backdrop-filter 0.3s ease; /* Suaviza la transición */
+    height: 80px; /* Altura del navbar */
+  }
+  
+  .navbar-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-size, 70px); /* Aplica el gap dinámico */
+  }
+  
+  /* Otros estilos */
+  .nav-item {
+    list-style: none;
+  }
+  
+  .nav-link {
+    color: rgb(0, 0, 0);
+  }
+  
+  .navbar .nav-link {
+    color: white; /* Color inicial del texto */
+  }
+  
+  .navbar .nav-link:hover {
+    color: #f8f9fa;
+  }
+  
