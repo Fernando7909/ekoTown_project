@@ -7,8 +7,9 @@ import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { TestimonialsComponent } from '../testimonials/testimonials.component';
-import { CarruselLogosComponent } from '../carrusel-logos/carrusel-logos.component';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { CarruselLogosComponent } from '../carrusel-logos/carrusel-logos.component';
+import { FooterComponent } from '../footer/footer.component';
 
 interface Image {
   url: string;
@@ -34,8 +35,9 @@ interface Card {
     ButtonModule,
     RouterModule,
     TestimonialsComponent,
-    CarruselLogosComponent,
     NavbarComponent,
+    CarruselLogosComponent,
+    FooterComponent,
   ],
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css']

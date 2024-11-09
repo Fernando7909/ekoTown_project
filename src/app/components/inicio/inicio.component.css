@@ -4,29 +4,22 @@
   box-sizing: border-box;
 }
 
-
-
-/* Velocidad de trnsicion entre las fotos */
-.carousel-fade .carousel-item {
-    transition: opacity 6s ease; /* Cambia "2s" por el valor que prefieras */
-  }
-
-  .carousel,
-.carousel-item {
-  height: 100vh; /* La altura de todo el carrusel será del 100% de la ventana */
+/* Carrusel Styles */
+#carouselExampleInterval {
+  height: 700px;
+  overflow: hidden;
 }
 
-
-.carousel {
-  position: relative; /* Mantén la posición relativa */
-  z-index: 1; /* Asegúrate de que sea menor que el navbar */
-}
-
+/* Configura las imágenes dentro del carrusel para que ocupen toda la altura */
 .carousel-item img {
-  width: 100%; /* Asegúrate de que las imágenes ocupen todo el ancho */
-  height: auto; /* Mantiene la proporción de las imágenes */
-} 
+  height: 700px;
+  object-fit: cover; /* Esto asegura que la imagen ocupe el espacio sin distorsionar su proporción */
+  width: 100%;
+}
 
+.carousel.carousel-fade .carousel-item {
+  transition: opacity 0.9s ease;
+}
 
 
 
