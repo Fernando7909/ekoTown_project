@@ -1,0 +1,45 @@
+/* Estilos Cards tiendas */
+
+/* Estilos para la imagen del gerente */
+.foto_gerente img {
+    width: 50px; /* Define el ancho de la imagen del gerente */
+    height: 50px; /* Define la altura de la imagen del gerente */
+    border-radius: 50%; /* Hace que la imagen del gerente sea completamente redonda */
+    object-fit: cover; /* Asegura que la imagen se recorte si es más grande que el contenedor */
+    display: block; /* Asegura que se muestre como un bloque y sin margen */
+  }
+  
+  /* Estilos para la imagen principal de la tarjeta */
+  mat-card img {
+    width: 100%; /* Ocupa todo el ancho del card */
+    height: 200px; /* Ajusta la altura deseada */
+    object-fit: cover; /* Asegura que la imagen se recorte para llenar el área sin distorsionar */
+  }
+  
+  /* Contenedor de tarjetas */
+  .card-container {
+    display: flex;
+    align-content: flex-start; /* Para espaciar las tarjetas */
+    justify-content: space-evenly;
+    flex-wrap: wrap; /* Permitir que las tarjetas se muevan a la siguiente línea si es necesario */
+    gap: 20px; /* Espacio entre las tarjetas */
+  }
+  
+  /* Estilos de cada tarjeta */
+  .example-card {
+    display: flex; /* Asegura que la tarjeta use flexbox */
+    flex-direction: column; /* Apila los elementos en columna */
+    flex: 0 1 300px; /* Ocupa al menos 300px de ancho */
+    max-width: 300px; /* Limitar el ancho máximo */
+    height: 400px; /* Ajusta la altura deseada para todas las tarjetas */
+    margin: 40px 0; /* Espaciado superior e inferior */
+  }
+  
+  /* Asegura que el contenido de las tarjetas se mantenga dentro del tamaño establecido */
+  .example-card mat-card-content {
+    flex-grow: 1; /* Permite que el contenido ocupe el espacio disponible */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Espacia el contenido dentro de la tarjeta */
+  }
+  
