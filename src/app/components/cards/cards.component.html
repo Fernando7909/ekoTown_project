@@ -1,28 +1,41 @@
 <div class="card-container">
-    <div *ngFor="let card of cards"> <!-- Itera sobre el array de tarjetas -->
-      <mat-card class="example-card" appearance="outlined">
-        <mat-card-header>
-          <!-- Imagen pequeña del gerente -->
-          <div mat-card-avatar class="foto_gerente">
-            <img src="{{ card.foto_gerente.url }}" alt="Foto de {{ card.nombre_gerente }}"> <!-- Usa una propiedad de fotoGerente -->
-          </div>
-          <mat-card-title>{{ card.title }}</mat-card-title> <!-- Usa card.title -->
-          <mat-card-subtitle>{{ card.nombre_gerente }}</mat-card-subtitle> <!-- Usa card.nombre_gerente -->
-        </mat-card-header>
-  
-        <!-- Imagen principal de la tarjeta -->
-        <img mat-card-image src="{{ card.imagen.url }}" alt="Photo of {{ card.title }}"> <!-- Usa card.imagen -->
-  
-        <mat-card-content>
-          <p>{{ card.descripcion }}</p>
-        </mat-card-content>
-  
-        <mat-card-actions>
-          <button mat-button>Enter</button>
-          <div class="card flex justify-content-center">
-            <p-rating [(ngModel)]="card.rating" [cancel]="false"></p-rating> <!-- Usa card.rating -->
-          </div>
-        </mat-card-actions>
-      </mat-card>
+  <div *ngFor="let card of cards"> <!-- Itera sobre el array de tarjetas -->
+    <mat-card class="example-card" appearance="outlined">
+      <mat-card-header>
+        <div mat-card-avatar class="foto_gerente">
+          <img [src]="card.foto_gerente.url" alt="Foto de {{ card.nombre_gerente }}">
+        </div>
+        <mat-card-title>{{ card.title }}</mat-card-title>
+        <mat-card-subtitle>{{ card.nombre_gerente }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <img mat-card-image [src]="card.imagen.url" alt="Photo of {{ card.title }}">
+
+      <mat-card-content>
+        <!-- Descripción corta con el "enlace" Seguir leyendo -->
+        <p>
+          {{ getShortDescription(card.descripcion) }}
+          <span *ngIf="isDescriptionLong(card.descripcion)" class="read-more" (click)="openModal(card.descripcion)">
+            mas
+          </span>
+        </p>
+      </mat-card-content>
+      
+
+      <mat-card-actions>
+        <button mat-button>Enter</button>
+        <div class="card flex justify-content-center">
+          <p-rating [(ngModel)]="card.rating" [cancel]="false"></p-rating>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <!-- Modal para la descripción completa -->
+  <div class="modal" *ngIf="isModalOpen">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <p>{{ fullDescription }}</p>
     </div>
   </div>
+</div>

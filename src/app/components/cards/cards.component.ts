@@ -34,23 +34,23 @@ export class CardsComponent {
   showContent: boolean = true;
   cards: Card[] = [
     {
-      title: 'Tienda 1',
+      title: '4eco',
       foto_gerente: { 
-        url: "plant.png" 
+        url: "faces/cara01.jpg" 
       },
-      nombre_gerente: 'Gerente 1',
+      nombre_gerente: 'Francesc Castany',
       imagen: { 
         url: "https://images.pexels.com/photos/1884573/pexels-photo-1884573.jpeg"
       },
-      descripcion: 'Esta es la tienda 1, especializada en productos electrónicos.',
+      descripcion: 'En las tiendas de 4eco tenemos la mayor variedad de productos de limpieza a granel que puedes encontrar. Desde los productos para la ropa hasta los del hogar. Genéricos, específicos, diferentes superficies, madera, mármol, acero, cristales… Todo lo que se te ocurra. Productos biodegradables, aptos para pieles delicadas, más económicos y más concentrados, lo que los convierte en más rentables aún. Una cosa más.',
       rating: 1
     },
     {
-      title: 'Tienda 2',
+      title: 'El Pí',
       foto_gerente: { 
-        url: "plant.png" 
+        url: "faces/cara02.jpg" 
       },
-      nombre_gerente: 'Gerente 2',
+      nombre_gerente: 'Raquel Alvarez',
       imagen: { 
         url: "https://images.pexels.com/photos/2574474/pexels-photo-2574474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
       },
@@ -58,11 +58,11 @@ export class CardsComponent {
       rating: 4
     },
     {
-      title: 'Tienda 3',
+      title: 'Veritas',
       foto_gerente: { 
-        url: "plant.png" 
+        url: "faces/cara03.jpg" 
       },
-      nombre_gerente: 'Gerente 3',
+      nombre_gerente: 'Ruben Rámos',
       imagen: { 
         url: "https://images.pexels.com/photos/2651935/pexels-photo-2651935.jpeg" 
       },
@@ -70,11 +70,11 @@ export class CardsComponent {
       rating: 5
     },
     {
-      title: 'Tienda 4',
+      title: 'Ecoaliment',
       foto_gerente: { 
-        url: "plant.png" 
+        url: "faces/cara04.jpg" 
       },
-      nombre_gerente: 'Gerente 4',
+      nombre_gerente: 'Pau Alemany',
       imagen: { 
         url: "https://images.pexels.com/photos/4030663/pexels-photo-4030663.jpeg" 
       },
@@ -82,11 +82,11 @@ export class CardsComponent {
       rating: 3
     },
     {
-      title: 'Tienda 5',
+      title: 'Linverd',
       foto_gerente: { 
-        url: "plant.png" 
+        url: "faces/cara05.jpg" 
       },
-      nombre_gerente: 'Gerente 5',
+      nombre_gerente: 'Nuria Cardona',
       imagen: { 
         url: "https://images.pexels.com/photos/1597966/pexels-photo-1597966.jpeg" 
       },
@@ -94,11 +94,11 @@ export class CardsComponent {
       rating: 4
     },
     {
-      title: 'Tienda 6',
+      title: 'Organic Market',
       foto_gerente: { 
-        url: "plant.png" 
+        url: "faces/cara06.jpg" 
       },
-      nombre_gerente: 'Gerente 6',
+      nombre_gerente: 'Beatriz González',
       imagen: { 
         url: "https://images.pexels.com/photos/2204533/pexels-photo-2204533.jpeg"
       },
@@ -106,11 +106,11 @@ export class CardsComponent {
       rating: 2
     },
     {
-      title: 'Tienda 7',
+      title: 'BioBarri',
       foto_gerente: { 
-        url: "plant.png" 
+        url: "faces/cara07.jpg" 
       },
-      nombre_gerente: 'Gerente 7',
+      nombre_gerente: 'Marc Oliván',
       imagen: { 
         url: "https://images.pexels.com/photos/1560921/pexels-photo-1560921.jpeg" 
       },
@@ -118,11 +118,11 @@ export class CardsComponent {
       rating: 5
     },
     {
-      title: 'Tienda 8',
+      title: 'IDONI BONCOR',
       foto_gerente: { 
-        url: "plant.png" 
+        url: "faces/cara08.jpg" 
       },
-      nombre_gerente: 'Gerente 8',
+      nombre_gerente: 'Isabel García',
       imagen: { 
         url: "https://images.pexels.com/photos/1560921/pexels-photo-1560921.jpeg" 
       },
@@ -130,4 +130,30 @@ export class CardsComponent {
       rating: 1
     }
   ];
+
+  isModalOpen = false;
+  fullDescription = '';
+
+  // Función para obtener una descripción corta
+  getShortDescription(description: string): string {
+    const maxLength = 20; // Limita el número de palabras
+    const words = description.split(' ');
+    return words.length > maxLength ? words.slice(0, maxLength).join(' ') + '...' : description;
+  }
+
+  // Función para verificar si la descripción es larga
+  isDescriptionLong(description: string): boolean {
+    const maxLength = 20; // Misma longitud que en getShortDescription
+    return description.split(' ').length > maxLength;
+  }
+
+  // Funciones para abrir y cerrar el modal
+  openModal(description: string): void {
+    this.fullDescription = description;
+    this.isModalOpen = true;
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
+  }
 }
