@@ -22,7 +22,11 @@
     align-content: flex-start; /* Para espaciar las tarjetas */
     justify-content: space-evenly;
     flex-wrap: wrap; /* Permitir que las tarjetas se muevan a la siguiente línea si es necesario */
-    gap: 20px; /* Espacio entre las tarjetas */
+    margin: auto 70px;
+  }
+
+  .mat-mdc-card-content {
+    padding: 10px 15px;
   }
   
   /* Estilos de cada tarjeta */
@@ -31,8 +35,8 @@
     flex-direction: column; /* Apila los elementos en columna */
     flex: 0 1 300px; /* Ocupa al menos 300px de ancho */
     max-width: 300px; /* Limitar el ancho máximo */
-    height: 400px; /* Ajusta la altura deseada para todas las tarjetas */
-    margin: 40px 0; /* Espaciado superior e inferior */
+    height: 440px; /* Ajusta la altura deseada para todas las tarjetas */
+    margin: 40px 20px;
   }
   
   /* Asegura que el contenido de las tarjetas se mantenga dentro del tamaño establecido */
@@ -82,5 +86,46 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+
+/* RATING */
+
+.rating {
+  display: flex;
+  align-items: center;
+  font-size: 1.2em;
+  color: #FF6D00; /* Color de la estrella llena */
+}
+
+.rating-number {
+  font-weight: bold;
+  font-size: 35px;
+  margin-right: 5px;
+}
+
+.stars {
+  display: flex;
+  margin-right: 5px;
+}
+
+.stars span {
+  font-size: 1.2em;
+  color: #ccc; /* Color de la estrella vacía */
+}
+
+.stars .filled {
+  color: #FF6D00; /* Color de la estrella llena */
+}
+
+.review-count {
+  font-size: 0.6em;
+  color: #666;
+}
+
+.mat-mdc-card-actions {
+  justify-content: center;
+  align-content: flex-end;
+}
+
 
   
