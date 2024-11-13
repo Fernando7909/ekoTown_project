@@ -138,7 +138,7 @@ export class CardsComponent {
 
   // Función para obtener una descripción corta
   getShortDescription(description: string): string {
-    const maxLength = 15; // Limita el número de palabras
+    const maxLength = 25; // Limita el número de palabras
     const words = description.split(' ');
     return words.length > maxLength ? words.slice(0, maxLength).join(' ') + '...' : description;
   }

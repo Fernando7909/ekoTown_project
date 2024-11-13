@@ -1,6 +1,16 @@
 /* Estilos Cards tiendas */
 
 /* Estilos para la imagen del gerente */
+.example-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animación suave */
+}
+
+.example-card:hover {
+  transform: scale(1.02); /* Agranda la tarjeta al 105% de su tamaño original */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Añade sombra para destacar la tarjeta */
+}
+
+
 .foto_gerente img {
     width: 50px; /* Define el ancho de la imagen del gerente */
     height: 50px; /* Define la altura de la imagen del gerente */
@@ -15,6 +25,10 @@
     height: 200px; /* Ajusta la altura deseada */
     object-fit: cover; /* Asegura que la imagen se recorte para llenar el área sin distorsionar */
   }
+
+  .mat-mdc-card-header {
+    padding-bottom: 10px;
+  }
   
   /* Contenedor de tarjetas */
   .card-container {
@@ -27,6 +41,7 @@
 
   .mat-mdc-card-content {
     padding: 10px 15px;
+    font-size: 14px;
   }
   
   /* Estilos de cada tarjeta */
@@ -65,7 +80,7 @@
 
 .modal-content {
   background-color: #fff;
-  padding: 20px;
+  padding: 50px 20px 30px 20px;
   border-radius: 8px;
   max-width: 500px;
   text-align: center;
@@ -74,9 +89,9 @@
 
 .close {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
+  top: 5px;
+  right: 20px;
+  font-size: 27px;
   cursor: pointer;
 }
 
@@ -94,7 +109,7 @@
   display: flex;
   align-items: center;
   font-size: 1.2em;
-  color: #FF6D00; /* Color de la estrella llena */
+  color: #000000; /* Color de la estrella llena */
 }
 
 .rating-number {
@@ -106,6 +121,7 @@
 .stars {
   display: flex;
   margin-right: 5px;
+  padding-top: 10px;
 }
 
 .stars span {
@@ -114,18 +130,20 @@
 }
 
 .stars .filled {
-  color: #FF6D00; /* Color de la estrella llena */
+  color: #ffd900; /* Color de la estrella llena */
 }
 
 .review-count {
   font-size: 0.6em;
   color: #666;
+  padding-top: 18px;
 }
 
 .mat-mdc-card-actions {
   justify-content: center;
-  align-content: flex-end;
 }
+
+
 
 
   

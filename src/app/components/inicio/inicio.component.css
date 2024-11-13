@@ -10,10 +10,9 @@
   overflow: hidden;
 }
 
-/* Configura las imágenes dentro del carrusel para que ocupen toda la altura */
 .carousel-item img {
   height: 700px;
-  object-fit: cover; /* Esto asegura que la imagen ocupe el espacio sin distorsionar su proporción */
+  object-fit: cover;
   width: 100%;
 }
 
@@ -27,15 +26,33 @@
 
 
 /* Search */
-
 .image-search {
-  background-image: url("https://images.pexels.com/photos/10183613/pexels-photo-10183613.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: center calc(100px);
-  height: 20em; /* La imagen ocupará el 60% de la ventana */
+  position: relative;
+  overflow: hidden;
+  height: 350px;
+  margin: 100px 0;
 }
+
+.image-search img {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw; /* Ocupa el ancho completo de la pantalla */
+  height: 350px; /* Altura fija */
+  object-fit: cover; /* Ajusta la imagen para cubrir toda el área definida */
+  z-index: -1; /* Coloca la imagen detrás del contenido */
+}
+
+.image-search .titulo_search,
+.image-search .texto_search,
+.image-search .button-container {
+  position: relative;
+  z-index: 1; /* Asegura que el texto y botón estén sobre la imagen */
+  color: #fff; /* Ajusta el color del texto para que sea legible sobre la imagen */
+  text-align: center;
+}
+
+
 
 .titulo_search {
   color: azure;
