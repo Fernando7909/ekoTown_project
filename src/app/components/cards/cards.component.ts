@@ -3,6 +3,8 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
+import { Input } from '@angular/core';
+
 
 interface Image {
   url: string;
@@ -43,7 +45,7 @@ export class CardsComponent {
         url: "https://images.pexels.com/photos/1884573/pexels-photo-1884573.jpeg"
       },
       descripcion: 'En las tiendas de 4eco tenemos la mayor variedad de productos de limpieza a granel que puedes encontrar. Desde los productos para la ropa hasta los del hogar. Genéricos, específicos, diferentes superficies, madera, mármol, acero, cristales… Todo lo que se te ocurra. Productos biodegradables, aptos para pieles delicadas, más económicos y más concentrados, lo que los convierte en más rentables aún. Una cosa más.',
-      rating: 1
+      rating: 2
     },
     {
       title: 'El Pí',
@@ -136,7 +138,7 @@ export class CardsComponent {
 
   // Función para obtener una descripción corta
   getShortDescription(description: string): string {
-    const maxLength = 20; // Limita el número de palabras
+    const maxLength = 15; // Limita el número de palabras
     const words = description.split(' ');
     return words.length > maxLength ? words.slice(0, maxLength).join(' ') + '...' : description;
   }
@@ -156,4 +158,10 @@ export class CardsComponent {
   closeModal(): void {
     this.isModalOpen = false;
   }
+
+
+  /* RATING */
+  @Input() rating: number = 1.0;          // Calificación entre 1 y 5
+  @Input() reviewsCount: number = 1;      // Cantidad de reseñas
+  stars: number[] = [1, 2, 3, 4, 5];      // Para iterar y mostrar estrellas
 }

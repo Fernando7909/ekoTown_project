@@ -1,7 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+/* Establece la altura completa para html y body */
+html, body { 
+    height: 100%; 
+}
 
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-
+body { 
+    margin: 0; 
+    font-family: "Mulish", sans-serif;  /* Aplica la fuente Mulish */
+    font-optical-sizing: auto;          /* Permite ajustes ópticos en la fuente */
+    font-weight: 400;                   /* Ajusta el grosor de la fuente (400 es normal) */
+    font-style: normal;                 /* Define el estilo de fuente normal (sin cursiva) */
+}
