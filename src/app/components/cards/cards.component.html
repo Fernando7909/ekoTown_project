@@ -9,7 +9,10 @@
         <mat-card-subtitle>{{ card.nombre_gerente }}</mat-card-subtitle>
       </mat-card-header>
 
-      <img mat-card-image [src]="card.imagen.url" alt="Photo of {{ card.title }}">
+      <div class="image-container">
+        <img mat-card-image [src]="card.imagen.url" alt="Photo of {{ card.title }}">
+      </div>
+      
 
       <mat-card-content>
         <!-- Descripción corta con el "enlace" Seguir leyendo -->

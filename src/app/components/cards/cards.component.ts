@@ -42,9 +42,9 @@ export class CardsComponent {
       },
       nombre_gerente: 'Francesc Castany',
       imagen: { 
-        url: "https://images.pexels.com/photos/1884573/pexels-photo-1884573.jpeg"
+        url: "fotosTiendas/tienda1.jpg"
       },
-      descripcion: 'En las tiendas de 4eco tenemos la mayor variedad de productos de limpieza a granel que puedes encontrar. Desde los productos para la ropa hasta los del hogar. Genéricos, específicos, diferentes superficies, madera, mármol, acero, cristales… Todo lo que se te ocurra. Productos biodegradables, aptos para pieles delicadas, más económicos y más concentrados, lo que los convierte en más rentables aún. Una cosa más.',
+      descripcion: 'En las tiendas de 4eco tenemos la mayor variedad de productos de limpieza a granel que puedes encontrar. Desde los productos para la ropa hasta los del hogar. Genéricos, específicos, diferentes superficies, madera, mármol, acero, cristales… Todo lo que se te ocurra. Productos biodegradables, aptos para pieles delicadas, más económicos y más concentrados, lo que los convierte en más rentables aún.',
       rating: 2
     },
     {
@@ -54,9 +54,9 @@ export class CardsComponent {
       },
       nombre_gerente: 'Raquel Alvarez',
       imagen: { 
-        url: "https://images.pexels.com/photos/2574474/pexels-photo-2574474.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        url: "fotosTiendas/tienda2.jpg"
       },
-      descripcion: 'Esta es la tienda 2, especializada en productos de moda.',
+      descripcion: 'En EL PÍ, nos dedicamos a ofrecer frutas y verduras frescas, cultivadas de manera sostenible y sin químicos. Nuestro compromiso es brindar productos de temporada directamente de productores locales para asegurar la frescura y calidad en cada bocado. Además, contamos con una amplia selección de granos, legumbres y productos ecológicos para ayudarte a mantener una dieta saludable y equilibrada. Visítanos y descubre el sabor auténtico de lo natural.',
       rating: 4
     },
     {
@@ -66,9 +66,9 @@ export class CardsComponent {
       },
       nombre_gerente: 'Ruben Rámos',
       imagen: { 
-        url: "https://images.pexels.com/photos/2651935/pexels-photo-2651935.jpeg" 
+        url: "fotosTiendas/tienda3.jpg" 
       },
-      descripcion: 'Esta es la tienda 3, especializada en productos de hogar.',
+      descripcion: 'VERITAS es más que una tienda, es un espacio donde la alimentación ecológica cobra vida. Aquí encontrarás una selección cuidada de productos orgánicos: desde aceites de oliva virgen extra y vinos ecológicos hasta snacks saludables y alimentos sin gluten. Creemos en una alimentación consciente y de calidad, por eso trabajamos directamente con agricultores y productores comprometidos con el medio ambiente. Ven y déjate sorprender por nuestra variedad de productos frescos y artesanales.',
       rating: 5
     },
     {
@@ -78,9 +78,9 @@ export class CardsComponent {
       },
       nombre_gerente: 'Pau Alemany',
       imagen: { 
-        url: "https://images.pexels.com/photos/4030663/pexels-photo-4030663.jpeg" 
+        url: "fotosTiendas/tienda4.jpg" 
       },
-      descripcion: 'Esta es la tienda 4, especializada en productos deportivos.',
+      descripcion: 'En ECOALIMENT, nos especializamos en productos ecológicos y sostenibles, ideales para quienes buscan cuidar de su salud y del planeta. Nuestro catálogo incluye desde alimentos frescos como frutas, verduras, carnes y lácteos, hasta productos de despensa sin aditivos ni conservantes. Además, contamos con opciones veganas, sin gluten y libres de transgénicos para adaptarnos a todas las dietas y estilos de vida. Haz de tu alimentación un acto de respeto hacia la naturaleza con BioMarket.',
       rating: 3
     },
     {
@@ -90,7 +90,7 @@ export class CardsComponent {
       },
       nombre_gerente: 'Nuria Cardona',
       imagen: { 
-        url: "https://images.pexels.com/photos/1597966/pexels-photo-1597966.jpeg" 
+        url: "fotosTiendas/tienda5.jpg" 
       },
       descripcion: 'Esta es la tienda 5, especializada en tecnología.',
       rating: 4
@@ -102,9 +102,9 @@ export class CardsComponent {
       },
       nombre_gerente: 'Beatriz González',
       imagen: { 
-        url: "https://images.pexels.com/photos/2204533/pexels-photo-2204533.jpeg"
+        url: "fotosTiendas/tienda6.jpg"
       },
-      descripcion: 'Esta es la tienda 6, especializada en juguetes.',
+      descripcion: 'ORGANIC MARKET es el lugar perfecto para los amantes de la alimentación natural y saludable. Ofrecemos productos ecológicos de alta calidad, cultivados de manera responsable y sin pesticidas. Aquí podrás encontrar desde panes artesanales y quesos locales hasta alimentos frescos y suplementos naturales. Nuestro equipo está comprometido en brindarte asesoría para ayudarte a hacer elecciones saludables que respeten el medio ambiente. Mejora tu calidad de vida con los productos de Sabores Orgánicos..',
       rating: 2
     },
     {
@@ -114,7 +114,7 @@ export class CardsComponent {
       },
       nombre_gerente: 'Marc Oliván',
       imagen: { 
-        url: "https://images.pexels.com/photos/1560921/pexels-photo-1560921.jpeg" 
+        url: "fotosTiendas/tienda7.jpg" 
       },
       descripcion: 'Esta es la tienda 7, especializada en libros.',
       rating: 5
@@ -126,7 +126,7 @@ export class CardsComponent {
       },
       nombre_gerente: 'Isabel García',
       imagen: { 
-        url: "https://images.pexels.com/photos/1560921/pexels-photo-1560921.jpeg" 
+        url: "fotosTiendas/tienda8.jpg" 
       },
       descripcion: 'Esta es la tienda 8, especializada productos veggie.',
       rating: 1
@@ -138,7 +138,7 @@ export class CardsComponent {
 
   // Función para obtener una descripción corta
   getShortDescription(description: string): string {
-    const maxLength = 25; // Limita el número de palabras
+    const maxLength = 20; // Limita el número de palabras
     const words = description.split(' ');
     return words.length > maxLength ? words.slice(0, maxLength).join(' ') + '...' : description;
   }

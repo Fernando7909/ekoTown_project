@@ -20,6 +20,27 @@
   transition: opacity 0.9s ease;
 }
 
+/* TITULO TIENDAS */
+.titulo-tiendas {
+  display: flex;
+  word-spacing: 15px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 40px;
+  margin: 55px;
+  position: relative; /* Necesario para posicionar el pseudo-elemento */
+}
+
+.titulo-tiendas::after {
+  content: "";
+  position: absolute;
+  bottom: -10px; /* Ajusta la distancia entre el texto y la línea */
+  width: 60%; /* Controla el ancho de la línea para que sea más corta que el texto */
+  height: 3px; /* Grosor de la línea */
+  background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, #000 50%, rgba(0, 0, 0, 0) 100%);
+  /* Línea con difuminado en los extremos */
+}
 
 
 
@@ -31,45 +52,62 @@
   overflow: hidden;
   height: 350px;
   margin: 100px 0;
-}
-
-.image-search img {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw; /* Ocupa el ancho completo de la pantalla */
-  height: 350px; /* Altura fija */
-  object-fit: cover; /* Ajusta la imagen para cubrir toda el área definida */
-  z-index: -1; /* Coloca la imagen detrás del contenido */
-}
-
-.image-search .titulo_search,
-.image-search .texto_search,
-.image-search .button-container {
-  position: relative;
-  z-index: 1; /* Asegura que el texto y botón estén sobre la imagen */
-  color: #fff; /* Ajusta el color del texto para que sea legible sobre la imagen */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
   text-align: center;
+  background-image: url('/search.jpg'); /* Usa la imagen como fondo */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Efecto parallax */
 }
 
-
+.filter {
+  backdrop-filter: blur(15px); /* Efecto de desenfoque */
+  background: rgba(255, 255, 255, 0.2); /* Fondo blanco semi-transparente */
+  padding: 20px 40px;
+  border-radius: 20px; /* Bordes redondeados */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  width: 100%;
+  max-width: 600px;
+}
 
 .titulo_search {
-  color: azure;
-  text-align: center;
-  padding-top: 2em;
+  font-size: 3em;
+  margin: 0;
+  color: rgb(0, 0, 0);
 }
 
-.texto_search{
-  color: azure;
-  text-align: center;
-  padding-top: 1em;
+.texto_search {
+  font-size: 1.2em;
+  margin: 0.5em 0; /* Espacio entre el título y el texto */
+  color: #000000;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .button-container {
-  text-align: center; /* Centra el contenido dentro de este contenedor */
-  margin-top: 20px;  /* Añade un margen superior si lo deseas */
+  margin-top: 1.5em;
 }
+
+.button-container p-button {
+  font-size: 1em;
+  padding: 0.75em 1.5em;
+}
+
+
+
+
 
 
 /* Info01 */

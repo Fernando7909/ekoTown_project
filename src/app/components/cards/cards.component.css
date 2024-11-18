@@ -10,6 +10,11 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Añade sombra para destacar la tarjeta */
 }
 
+mat-card-subtitle {
+  font-weight: normal; /* Quita la negrita */
+}
+
+
 
 .foto_gerente img {
     width: 50px; /* Define el ancho de la imagen del gerente */
@@ -25,6 +30,7 @@
     height: 200px; /* Ajusta la altura deseada */
     object-fit: cover; /* Asegura que la imagen se recorte para llenar el área sin distorsionar */
   }
+  
 
   .mat-mdc-card-header {
     padding-bottom: 10px;
@@ -43,6 +49,20 @@
     padding: 10px 15px;
     font-size: 14px;
   }
+
+  /* Nuevo contenedor para asegurar consistencia en la altura */
+.image-container {
+  width: 100%;
+  height: 200px; /* Altura fija para todas las imágenes */
+  overflow: hidden; /* Recorta cualquier parte de la imagen que exceda el tamaño */
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Asegura que la imagen se ajuste y recorte para llenar el contenedor */
+}
+
   
   /* Estilos de cada tarjeta */
   .example-card {
