@@ -1,0 +1,49 @@
+<div class="card-container">
+  <div *ngFor="let card of cards"> <!-- Itera sobre el array de tarjetas -->
+    <mat-card class="example-card" appearance="outlined">
+      <mat-card-header>
+        <div mat-card-avatar class="foto_gerente">
+          <img [src]="card.foto_gerente.url" alt="Foto de {{ card.nombre_gerente }}">
+        </div>
+        <mat-card-title>{{ card.title }}</mat-card-title>
+        <mat-card-subtitle>{{ card.nombre_gerente }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <img mat-card-image [src]="card.imagen.url" alt="Photo of {{ card.title }}">
+
+      <mat-card-content>
+        <!-- Descripción corta con el "enlace" Seguir leyendo -->
+        <p>
+          {{ getShortDescription(card.descripcion) }}
+          <span *ngIf="isDescriptionLong(card.descripcion)" class="read-more" (click)="openModal(card.descripcion)">
+            mas
+          </span>
+        </p>
+      </mat-card-content>
+      
+
+      <mat-card-actions>
+        <div class="rating">
+          <!-- Aplica el DecimalPipe para que siempre muestre 1 decimal (e.g., 1,0 o 3,7) -->
+          <span class="rating-number">{{ rating | number: '1.1-1' }}</span>
+          
+          <div class="stars">
+              <ng-container *ngFor="let star of stars; let i = index">
+                  <span [ngClass]="{ 'filled': i < rating, 'empty': i >= rating }">&#9733;</span>
+              </ng-container>
+          </div>
+          
+          <span class="review-count">{{ reviewsCount }} review{{ reviewsCount > 1 ? 's' : '' }}</span>
+        </div>   
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <!-- Modal para la descripción completa -->
+  <div class="modal" *ngIf="isModalOpen">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <p>{{ fullDescription }}</p>
+    </div>
+  </div>
+</div>
