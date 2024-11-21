@@ -21,7 +21,7 @@ body {
   margin: 50px 0;
   overflow: hidden;
   position: relative;
-  width: 95%;
+  width: 100%;
   z-index: 1000;
 }
 

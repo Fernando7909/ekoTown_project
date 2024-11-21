@@ -92,7 +92,7 @@ export class CardsComponent {
       imagen: { 
         url: "fotosTiendas/tienda5.jpg" 
       },
-      descripcion: 'Esta es la tienda 5, especializada en tecnología.',
+      descripcion: 'En el 2020 Esteve Domenech decide poner rumbo a abrir un supermercado más acorde con las necesidades del consumidor y el planeta, un lugar donde el cliente puede sentirse cómodo y puede comprar producto a granel, de proximidad, ecológico y justo para el planeta. Dar la oportunidad al consumidor de encontrar un lugar transparente y cercano, dónde el cliente sea el pilar del proyecto y juntos podamos trabajar para lograr una alimentación responsable para todos y el planeta. Y por ello abrimos el primer supermercado ecológico donde los valores eran firmes y claros, productos ecológicos, próximos, transparentes y minimizando el plástico al máximo. Lo hicimos la ilusión de crear un espacio dónde solo hubiera alimentos con vida, sin químicos y nada perjudicial para las personas y el planeta. Dónde lo prioritario sea el consumidor y el planeta, de verdad.',
       rating: 4
     },
     {
@@ -116,7 +116,7 @@ export class CardsComponent {
       imagen: { 
         url: "fotosTiendas/tienda7.jpg" 
       },
-      descripcion: 'Esta es la tienda 7, especializada en libros.',
+      descripcion: 'Bio Barri es un negocio de alimentación súper bonito y cuidado. Aquí podéis encontrar un sinfín de productos orgánicos, dietéticos, cosméticos, etc. Todos con certificados biológico y ecológico, tanto en frescos como en envasados. La idea de este negocio es volver a encontrar una tienda “como las de antes”. Un sitio donde prima el trato con el cliente y su bienestar, donde podéis pedir consejo y recomendaciones y donde seguro que vais a querer volver, ya que tienen un montón de productos con una pinta deliciosa e irresistible. Además, ¡hay unas neveritas donde podéis encontrar LOV en todos los sabores y tamaños disponibles!',
       rating: 5
     },
     {
@@ -128,7 +128,7 @@ export class CardsComponent {
       imagen: { 
         url: "fotosTiendas/tienda8.jpg" 
       },
-      descripcion: 'Esta es la tienda 8, especializada productos veggie.',
+      descripcion: 'IDONI-BONCOR es el resultado de la unión de dos historias con valores compartidos y un objetivo común: transformar la economía hacia un modelo más sostenible y social. La fusión de IDONI, fundada en 2014 para promover un consumo responsable y saludable, y Botiga Bon Cor, nacida de la colaboración entre las cooperativas Menjar dHort y Solucions Socials Sostenibles, da vida a un proyecto que apuesta por la soberanía alimentaria, la inclusión social y el respeto al medio ambiente. En IDONI-BONCOR trabajamos para ofrecer productos locales, de temporada y ecológicos, a la vez que promovemos la inserción laboral de personas en riesgo de exclusión. Nuestra misión es clara: transformar la economía en una actividad con un impacto social positivo y sostenible, respetando nuestro entorno y apoyando a los pequeños productores locales.',
       rating: 1
     }
   ];

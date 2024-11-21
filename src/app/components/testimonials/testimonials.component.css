@@ -1,6 +1,7 @@
 .testimonials-section {
   padding: 4rem 0;
   background-color: #ffffff;
+  overflow: hidden; /* Evita el margen blanco */
 }
 
 .container {
@@ -9,19 +10,14 @@
   padding: 0 1rem;
 }
 
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
 .testimonial-card {
-  background: white;
+  background: rgb(246, 246, 246);
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 10px;
   text-align: center;
-  border: 1px solid #eee;
+  border: 2px solid #e4e4e4;
   transition: transform 0.3s ease;
+  height: 100%; /* Permite que las tarjetas crezcan según el contenido */
 }
 
 .testimonial-card:hover {
@@ -37,7 +33,7 @@
 }
 
 .rating {
-  margin: 1rem 0;
+  margin: 0rem 0 1rem;
 }
 
 .star {
@@ -73,35 +69,43 @@
   font-size: 0.9rem;
 }
 
-.testimonials-grid {
-    display: flex;
-    align-items: center;
-    position: relative;
-  }
-  
-  .testimonial-card {
-    flex: 1 0 30%; /* Ajusta el tamaño para mostrar tres testimonios */
-    margin: 0 10px;
-    box-sizing: border-box;
-  }
-  
-  .arrow {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-  }
-  
-  .left-arrow {
-    left: -20px;
-  }
-  
-  .right-arrow {
-    right: -20px;
-  }
-  
-  
+
+/* Flechas */
+.arrow {
+  background: none;
+  border: none;
+  font-size: 30px; /* Tamaño del icono */
+  cursor: pointer;
+  color: #333; /* Color del icono */
+  transition: transform 0.3s ease, color 0.3s ease;
+  margin: 0 10px; /* Espaciado horizontal entre las flechas */
+  position: relative;
+}
+
+.arrow:hover {
+  transform: scale(1.2); /* Efecto de zoom */
+}
+
+/* Estado deshabilitado */
+.arrow:disabled {
+  cursor: not-allowed;
+  color: #ddd; /* Color gris para flechas deshabilitadas */
+  transform: none; /* Elimina el efecto de hover */
+}
+
+.left-arrow {
+  left: 0;
+  top: 0;
+}
+
+.right-arrow {
+  right: 0;
+  top: 0;
+}
+
+
+/* Centrar flechas debajo */
+.row.justify-content-center.mt-4 {
+  text-align: center; /* Centra las flechas */
+  margin-top: 20px; /* Espaciado entre testimonios y flechas */
+}

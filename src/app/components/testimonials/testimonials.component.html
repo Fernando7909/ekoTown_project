@@ -1,32 +1,43 @@
 <section class="testimonials-section">
-    <div class="container">
-      <div class="testimonials-grid">
-        <!-- Flecha izquierda -->
-        <button (click)="previousTestimonial()" class="arrow left-arrow" *ngIf="currentIndex > 0">
-          &lt;
-        </button>
-  
-        <!-- Mostrar tres testimonios a la vez -->
-        <div *ngFor="let testimonial of visibleTestimonials" class="testimonial-card">
-          <img [src]="testimonial.image" [alt]="testimonial.name" class="testimonial-image">
-          <div class="rating">
-            <span class="star" *ngFor="let star of [1,2,3,4,5]; trackBy: trackByStar"
+  <div class="container">
+    <!-- Testimonios -->
+    <div class="row justify-content-center">
+      <div 
+        *ngFor="let testimonial of visibleTestimonials" 
+        class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="testimonial-card p-4">
+          <img [src]="testimonial.image" [alt]="testimonial.name" class="testimonial-image mb-3">
+          <div class="rating mb-2">
+            <span 
+              class="star" 
+              *ngFor="let star of [1,2,3,4,5]; trackBy: trackByStar"
               [class.filled]="star <= testimonial.rating">★</span>
           </div>
-          
-          <p class="testimonial-text">{{testimonial.comment}}</p>
+          <p class="testimonial-text mb-3">{{testimonial.comment}}</p>
           <div class="testimonial-author">
-            <h3>{{testimonial.name}}</h3>
-            <p>{{testimonial.date}}</p>
+            <h3 class="h5">{{testimonial.name}}</h3>
+            <p class="text-muted small">{{testimonial.date}}</p>
           </div>
         </div>
-  
-        <!-- Flecha derecha -->
-        <button (click)="nextTestimonial()" class="arrow right-arrow" 
-                *ngIf="currentIndex < testimonials.length - testimonialsPerPage">
-          &gt;
+      </div>
+    </div>
+
+    <!-- Flechas debajo -->
+    <div class="row justify-content-center mt-4">
+      <div class="col-auto">
+        <button 
+          (click)="previousTestimonial()" 
+          class="arrow left-arrow">
+          <i class="bi bi-arrow-bar-left"></i>
+        </button>
+      </div>
+      <div class="col-auto">
+        <button 
+          (click)="nextTestimonial()" 
+          class="arrow right-arrow">
+          <i class="bi bi-arrow-bar-right"></i>
         </button>
       </div>
     </div>
-  </section>
-  
+  </div>
+</section>
