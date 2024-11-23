@@ -7,6 +7,13 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
+      <div class="mensaje-bienvenida">
+        <p *ngIf="userName; else noUser">Bienvenido, {{ userName }}</p>
+        <ng-template #noUser>
+          <p>Bienvenido a ekoTown</p>
+        </ng-template>
+      </div>
+      
       <ul class="navbar-nav mx-auto">
         <li class="nav-item">
           <a class="nav-link" aria-current="page" href="#">INICIO</a>
@@ -39,9 +46,20 @@
           </ul>
         </li>
       </ul>
-      <a [routerLink]="'/loginregister'" class="nav-link">
-        <img src="acceso.png" alt="Acceso" width="30" height="30" class="d-inline-block align-text-top">
-      </a>
+      
+      <!-- Imagen con submenú activado por clic -->
+      <div class="dropdown">
+        <a class="nav-link" (click)="toggleDropdown()" aria-expanded="false">
+          <img src="acceso.png" alt="Acceso" width="30" height="30" class="d-inline-block align-text-top">
+        </a>
+      
+        <!-- Submenú que se muestra según el estado de showDropdown -->
+        <ul class="dropdown-menu" [ngClass]="{'show': showDropdown}">
+          <li><a class="dropdown-item" routerLink="/loginregister">Iniciar sesión</a></li>
+          <li><a class="dropdown-item" (click)="logout()">Cerrar sesión</a></li>
+        </ul>
+      </div>
+      
       <a href="#" class="navbar-brand ms-3">
         <img src="carrito_blanco.png" alt="Carrito" width="30" height="30" class="d-inline-block align-text-top">
       </a>  

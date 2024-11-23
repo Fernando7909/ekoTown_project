@@ -1,9 +1,17 @@
+<!-- Mensaje de éxito -->
+<app-navbar></app-navbar>
+
+<div *ngIf="showMessage" [ngClass]="{'alert': true, 'success-message': !isError, 'error-message': isError}">
+  {{ successMessage }}
+</div>
+
+
 <h2 class="titulo-usuarios">ACCESO PARA USUARIOS</h2>
 
 <div class="container login-usuarios my-5">
   <!-- Contenedor principal para Usuarios -->
   <div class="form-wrapper" [ngClass]="{'register-active': isRegisterActive}">
-    
+
     <!-- Botones de Toggle para cambiar entre Login y Registro de Usuario -->
     <div class="toggle-buttons">
       <button (click)="togglePanel()" class="btn-toggle" [ngClass]="{'active': !isRegisterActive}">Iniciar sesión</button>
@@ -57,7 +65,7 @@
 <div class="container login-business my-5">
   <!-- Contenedor principal para Business Managers -->
   <div class="form-wrapper" [ngClass]="{'register-active': isBusinessManagerActive}">
-    
+
     <!-- Botones de Toggle para cambiar entre Login y Registro de Business Manager -->
     <div class="toggle-buttons">
       <button (click)="toggleManagerPanel()" class="btn-toggle" [ngClass]="{'active': !isBusinessManagerActive}">Iniciar sesión</button>

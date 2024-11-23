@@ -32,4 +32,55 @@
   .navbar .nav-link:hover {
     color: #f8f9fa;
   }
+
+  .mensaje-bienvenida {
+    color: white;
+    font-size: 20px;
+  }
+
+  .mensaje-bienvenida p {
+    margin: 0px;
+  }
+  
+
+/* Ajusta la posición del menú desplegable */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%; /* Mantiene el menú debajo de la imagen */
+  left: auto; /* Por defecto usa auto, pero puedes ajustar más hacia la izquierda */
+  right: 0; /* Alinea el menú al borde derecho del contenedor */
+  z-index: 1000;
+  float: left;
+  min-width: 10rem;
+  padding: 0.5rem 0;
+  margin: 0.125rem 0 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
+  /* transform: translateX(-30%); */
+}
+
+/* Mostrar el menú cuando la clase show esté presente */
+.dropdown-menu.show {
+  display: block;
+}
+
+/* Ajustes opcionales */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Opcional: Estilo al pasar el ratón */
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #000;
+}
+
+
   

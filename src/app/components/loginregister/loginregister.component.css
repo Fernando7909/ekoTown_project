@@ -1,4 +1,30 @@
 /* Estilos para el título de Usuarios y Business Managers */
+.success-message {
+  color: #155724; /* Verde oscuro */
+  background-color: #d4edda; /* Verde claro */
+  border: 1px solid #c3e6cb; /* Borde verde */
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.error-message {
+  color: #721c24; /* Rojo oscuro */
+  background-color: #f8d7da; /* Rojo claro */
+  border: 1px solid #f5c6cb; /* Borde rojo */
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+
+
 .titulo-usuarios, .titulo-business {
   display: flex;
   justify-content: center;

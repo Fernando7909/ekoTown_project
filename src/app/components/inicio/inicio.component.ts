@@ -13,6 +13,7 @@ import { FooterComponent } from '../footer/footer.component';
 import { CardsComponent } from "../cards/cards.component";
 
 
+
 @Component({
   selector: 'app-inicio',
   standalone: true,
@@ -27,7 +28,7 @@ import { CardsComponent } from "../cards/cards.component";
     NavbarComponent,
     CarruselLogosComponent,
     FooterComponent,
-    CardsComponent
+    CardsComponent,
 ],
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css']

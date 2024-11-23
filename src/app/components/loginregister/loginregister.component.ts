@@ -3,18 +3,19 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { NavbarComponent } from "../navbar/navbar.component";
 
 @Component({
   selector: 'app-login-register',
   standalone: true,
   templateUrl: './loginregister.component.html',
   styleUrls: ['./loginregister.component.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, NavbarComponent]
 })
 export class LoginregisterComponent {
   // Control del panel de login/registro de usuarios y Business Managers
   isRegisterActive: boolean = false;
-  isBusinessManagerActive: boolean = false; // Nueva propiedad para Business Managers
+  isBusinessManagerActive: boolean = false;
 
   // Variables para el formulario de login de usuarios
   loginEmail: string = '';
@@ -39,7 +40,25 @@ export class LoginregisterComponent {
   managerAddress: string = '';
   managerPassword: string = '';
 
+  // Variables para controlar mensajes dinámicos
+  successMessage: string = ''; // Texto del mensaje
+  showMessage: boolean = false; // Control de visibilidad del mensaje
+  isError: boolean = false; // Indica si el mensaje es un error
+
   constructor(private authService: AuthService, private router: Router) {}
+
+  // Método para mostrar mensajes de éxito o error
+  displayMessage(message: string, isError: boolean = false) {
+    this.successMessage = message;
+    this.showMessage = true;
+    this.isError = isError;
+
+    // Ocultar el mensaje después de 5 segundos
+    setTimeout(() => {
+      this.showMessage = false;
+      this.successMessage = '';
+    }, 5000);
+  }
 
   // Cambiar entre los paneles de registro/login de usuario
   togglePanel() {
@@ -61,13 +80,24 @@ export class LoginregisterComponent {
     this.authService.login(credentials).subscribe(
       (response: any) => {
         console.log('Inicio de sesión exitoso:', response);
-        this.router.navigate(['/dashboard']); // Cambia por la ruta deseada
+    
+        // Extraer y usar el nombre del usuario
+        const userName = response?.name; 
+        this.authService.setUserName(userName); // Guardar el nombre en el estado global
+    
+        // Mostrar mensaje de éxito
+        this.displayMessage(`Inicio de sesión exitoso. Bienvenido, ${userName}.`);
+    
+        // Redirigir después de 4 segundos
+        setTimeout(() => {
+          this.router.navigate(['']); 
+        }, 4000);
       },
       (error: any) => {
         console.error('Error al iniciar sesión:', error);
-        alert('Error al iniciar sesión. Verifica tus credenciales.');
+        this.displayMessage('Error al iniciar sesión. Verifica tus credenciales.', true);
       }
-    );
+    );    
   }
 
   // Método para registrar un usuario
@@ -82,12 +112,12 @@ export class LoginregisterComponent {
     this.authService.register(userData).subscribe(
       (response: any) => {
         console.log('Registro exitoso:', response);
-        alert('Usuario registrado exitosamente. Ahora puedes iniciar sesión.');
+        this.displayMessage('Usuario registrado exitosamente. Ahora puedes iniciar sesión.');
         this.togglePanel();
       },
       (error: any) => {
         console.error('Error al registrar usuario:', error);
-        alert('Error al registrarse. Por favor, intenta de nuevo.');
+        this.displayMessage('Error al registrarse. Por favor, intenta de nuevo.', true);
       }
     );
   }
@@ -100,14 +130,25 @@ export class LoginregisterComponent {
       password: this.loginManagerPassword,
     };
 
-    this.authService.login(managerCredentials).subscribe(
+    this.authService.loginManager(managerCredentials).subscribe(
       (response: any) => {
         console.log('Inicio de sesión de Business Manager exitoso:', response);
-        this.router.navigate(['/business-dashboard']); // Cambia por la ruta de Business Manager
+
+        // Actualizar el nombre del Business Manager en AuthService
+        const managerName = response?.name || 'Manager';
+        this.authService.setUserName(managerName);
+
+        // Mostrar mensaje de éxito
+        this.displayMessage(`Inicio de sesión de Business Manager exitoso. Bienvenido, ${managerName}.`);
+
+        // Esperar 4 segundos antes de redirigir a la página de inicio
+        setTimeout(() => {
+          this.router.navigate(['']); // Redirige a la ruta de inicio ('')
+        }, 4000);
       },
       (error: any) => {
         console.error('Error al iniciar sesión de Business Manager:', error);
-        alert('Error al iniciar sesión de Business Manager. Verifica tus credenciales.');
+        this.displayMessage('Error al iniciar sesión de Business Manager. Verifica tus credenciales.', true);
       }
     );
   }
@@ -122,17 +163,17 @@ export class LoginregisterComponent {
       address: this.managerAddress,
       password: this.managerPassword,
     };
-
+  
     this.authService.registerManager(managerData).subscribe(
       (response: any) => {
         console.log('Registro de Business Manager exitoso:', response);
-        alert('Business Manager registrado exitosamente. Ahora puedes iniciar sesión.');
+        this.displayMessage('Business Manager registrado exitosamente. Ahora puedes iniciar sesión.');
         this.toggleManagerPanel();
       },
       (error: any) => {
         console.error('Error al registrar Business Manager:', error);
-        alert('Error al registrarse. Por favor, intenta de nuevo.');
+        this.displayMessage('Error al registrarse como Business Manager. Por favor, intenta de nuevo.', true);
       }
     );
-  }
+  }  
 }

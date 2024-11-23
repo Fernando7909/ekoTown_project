@@ -1,6 +1,7 @@
-import { Component, HostListener } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { RouterModule, Router } from '@angular/router'; // Importa Router para redirecciones
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,10 +10,31 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./navbar.component.css'],
   imports: [CommonModule, RouterModule]
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   opacity = 0;
   blurAmount = 0;
   gapSize = 70; // Inicializa el gap a 70px
+  userName: string | null = null; // Variable para el nombre del usuario
+  showDropdown = false; // Estado del submenú
+
+  constructor(private authService: AuthService, private router: Router) {} // Agrega Router para redirigir tras logout
+
+  ngOnInit(): void {
+    // Suscribirse al estado del nombre del usuario desde AuthService
+    this.authService.userName$.subscribe((name) => {
+      this.userName = name;
+    });
+  }
+
+  toggleDropdown(): void {
+    this.showDropdown = !this.showDropdown; // Alterna el estado del submenú
+  }
+
+  logout(): void {
+    this.authService.logout(); // Llama al método de logout en AuthService
+    this.router.navigate(['/loginregister']); // Redirige a la página de login
+    this.showDropdown = false; // Cierra el submenú tras cerrar sesión
+  }
 
   @HostListener('window:scroll', [])
   onWindowScroll() {

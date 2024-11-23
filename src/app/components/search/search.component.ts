@@ -3,14 +3,13 @@ import { StoreSearchService } from '../../services/store-search.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-search',
   standalone: true,
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css'],
-  imports: [CommonModule, FormsModule, RouterModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, RouterModule],
 })
 export class SearchComponent {
   location: string = '';  // Ciudad o municipio

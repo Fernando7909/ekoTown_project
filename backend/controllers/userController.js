@@ -20,6 +20,7 @@ exports.register = (req, res) => {
   });
 };
 
+
 // Inicio de sesión
 exports.login = (req, res) => {
   const { email, password } = req.body;
@@ -34,8 +35,17 @@ exports.login = (req, res) => {
         return res.status(400).json({ error: 'Contraseña incorrecta' });
       }
 
+      // Generar el token
       const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-      res.json({ message: 'Inicio de sesión exitoso', token });
+
+      // Responder con el token y el nombre del usuario
+      res.json({
+        message: 'Inicio de sesión exitoso',
+        token,
+        name: user.name, // Incluir el nombre del usuario
+        last_name: user.last_name, // Incluir el apellido del usuario (opcional)
+      });
     });
   });
 };
+

@@ -3,15 +3,14 @@ import { AppComponent } from './app/app.component';
 import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { importProvidersFrom } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';  // Importa HttpClientModule
+import { provideHttpClient } from '@angular/common/http'; // Proveedor recomendado para HttpClient
 
 // Crea una configuración básica
 const appConfig = {
   providers: [
     provideRouter(routes),       // Proporciona el enrutador con las rutas
     provideAnimations(),         // Proporciona las animaciones
-    importProvidersFrom(HttpClientModule)  // Importa y registra HttpClientModule globalmente
+    provideHttpClient()          // Registra HttpClient como un proveedor global
   ]
 };
 
