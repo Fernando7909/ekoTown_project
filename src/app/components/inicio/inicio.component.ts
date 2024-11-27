@@ -11,6 +11,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { CarruselLogosComponent } from '../carrusel-logos/carrusel-logos.component';
 import { FooterComponent } from '../footer/footer.component';
 import { CardsComponent } from "../cards/cards.component";
+import { CarouselComponent } from "../carousel/carousel.component";
 
 
 
@@ -29,6 +30,7 @@ import { CardsComponent } from "../cards/cards.component";
     CarruselLogosComponent,
     FooterComponent,
     CardsComponent,
+    CarouselComponent
 ],
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css']

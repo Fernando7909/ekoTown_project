@@ -18,14 +18,14 @@ export const routes: Routes = [
   { 
     path: 'loginregister', 
     loadComponent: () => import('./components/loginregister/loginregister.component').then(m => m.LoginregisterComponent) 
+  },
+  
+  { 
+    path: 'area-personal-usuarios', 
+    loadComponent: () => import('./pages/area-personal-usuarios/area-personal-usuarios').then(m => m.AreaPersonalUsuariosPage) 
   }, 
 
   { path: '**', redirectTo: '', pathMatch: 'full' 
 
-  },
-
-  { 
-    path: 'area-personal-usuarios', 
-    loadComponent: () => import('./pages/area-personal-usuarios/area-personal-usuarios').then(m => m.AreaPersonalUsuariosPage) 
-  }  
+  } 
 ];

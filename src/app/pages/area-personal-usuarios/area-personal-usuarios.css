@@ -1,0 +1,108 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e6f2f2;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .container {
+    max-width: 100%;
+    text-align: center;
+  }
+  
+  /* Profile header */
+  .profile-header {
+    margin-bottom: 20px;
+  }
+  
+  .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid #ccc;
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin: 10px 0;
+  }
+  
+  .role-badge {
+    background-color: #47c067;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+  }
+  
+  /* Actions */
+  .actions {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+  }
+  
+  .column {
+    width: 45%;
+  }
+  
+  h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #666;
+  }
+  
+  .action-button {
+    background-color: #d9f0ff;
+    border: 1px solid #c0e4ff;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .action-button:hover {
+    background-color: #bde4ff;
+  }
+  
+  .icon {
+    font-size: 24px;
+    margin-right: 10px;
+  }
+  
+  .action-button strong {
+    font-size: 16px;
+  }
+  
+  .action-button p {
+    margin: 0;
+    font-size: 12px;
+    color: #555;
+  }
+  
+  /* Save Button */
+  .save-button {
+    background-color: #47c067;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .save-button:hover {
+    background-color: #3ba859;
+  }
+  

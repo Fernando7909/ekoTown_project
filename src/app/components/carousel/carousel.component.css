@@ -1,0 +1,44 @@
+/* Estilo de los ítems del carrusel */
+.carousel-item {
+  position: relative;
+  width: 100%;
+  height: 700px;
+  background-size: cover;
+  background-position: center;
+}
+
+.carousel-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background-color: rgba(0, 0, 0, 0.5); */
+}
+
+/* Ocultar números generados automáticamente */
+.carousel-indicators li::before,
+.carousel-indicators li::after {
+    content: ''; /* Eliminar cualquier contenido generado */
+    display: none !important; /* Asegurarse de que no se muestren */
+}
+
+/* Opcional: Ajustar los indicadores para que solo se vean los puntos */
+.carousel-indicators li {
+    background-color: #fff; /* Cambia el color según tu diseño */
+    width: 10px; /* Tamaño de los puntos */
+    height: 10px;
+    border-radius: 50%; /* Forma circular */
+    margin: 5px;
+    display: inline-block;
+    position: relative;
+}
+
+/* Mantener la alineación central */
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
+import { FooterComponent } from "../../components/footer/footer.component";
 
 @Component({
   selector: 'app-area-personal-usuarios',
@@ -8,7 +9,8 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
   styleUrls: ['./area-personal-usuarios.css'],
   imports: [
     NavbarComponent,
-  ]
+    FooterComponent
+]
 })
 export class AreaPersonalUsuariosPage {
   // Variables para manejar el estado de la vista

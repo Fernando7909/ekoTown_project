@@ -1,86 +1,107 @@
+/* Estilo del navbar */
 .navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    background-color: rgba(0, 0, 0, var(--opacity, 0)); /* Fondo con opacidad variable */
-    backdrop-filter: blur(var(--blur-amount, 0px)); /* Efecto borroso variable */
-    -webkit-backdrop-filter: blur(var(--blur-amount, 0px)); /* Compatibilidad con Safari */
-    transition: background-color 0.3s ease, backdrop-filter 0.3s ease; /* Suaviza la transición */
-    height: 80px; /* Altura del navbar */
-  }
-  
-  .navbar-nav {
-    display: flex;
-    align-items: center;
-    gap: var(--gap-size, 70px); /* Aplica el gap dinámico */
-  }
-  
-  /* Otros estilos */
-  .nav-item {
-    list-style: none;
-  }
-  
-  .nav-link {
-    color: rgb(0, 0, 0);
-  }
-  
-  .navbar .nav-link {
-    color: white; /* Color inicial del texto */
-  }
-  
-  .navbar .nav-link:hover {
-    color: #f8f9fa;
-  }
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, var(--opacity, 0)); /* Fondo con opacidad variable */
+  backdrop-filter: blur(var(--blur-amount, 0px)); /* Efecto borroso variable */
+  -webkit-backdrop-filter: blur(var(--blur-amount, 0px)); /* Compatibilidad con Safari */
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease; /* Suaviza la transición */
+  height: 80px; /* Altura del navbar */
+}
 
-  .mensaje-bienvenida {
-    color: white;
-    font-size: 20px;
-  }
+/* Espaciado dinámico entre los elementos del navbar */
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-size, 70px); /* Aplica el gap dinámico */
+}
 
-  .mensaje-bienvenida p {
-    margin: 0px;
-  }
-  
+/* Estilo de los enlaces predeterminados */
+.navbar .nav-link {
+  color: black; /* Color negro inicial */
+  transition: color 0.3s ease; /* Transición suave del color */
+}
+
+/* Estilo de los enlaces al hacer scroll */
+.navbar.scrolled .nav-link {
+  color: white; /* Cambia a blanco al hacer scroll */
+}
+
+/* Estilo del mensaje de bienvenida */
+.mensaje-bienvenida {
+  font-size: 20px;
+  color: black; /* Negro predeterminado */
+}
+
+/* Cambia el color del mensaje de bienvenida al hacer scroll */
+.navbar.scrolled .mensaje-bienvenida {
+  color: white;
+}
+
+/* Quita el margen de los párrafos del mensaje de bienvenida */
+.mensaje-bienvenida p {
+  margin: 0;
+}
 
 /* Ajusta la posición del menú desplegable */
 .dropdown-menu {
   display: none;
   position: absolute;
   top: 100%; /* Mantiene el menú debajo de la imagen */
-  left: auto; /* Por defecto usa auto, pero puedes ajustar más hacia la izquierda */
+  left: auto;
   right: 0; /* Alinea el menú al borde derecho del contenedor */
   z-index: 1000;
-  float: left;
   min-width: 10rem;
   padding: 0.5rem 0;
-  margin: 0.125rem 0 0;
   font-size: 1rem;
-  color: #212529;
-  text-align: left;
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 0.25rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
-  /* transform: translateX(-30%); */
 }
 
-/* Mostrar el menú cuando la clase show esté presente */
+/* Mostrar el menú desplegable cuando esté activo */
 .dropdown-menu.show {
   display: block;
 }
 
-/* Ajustes opcionales */
+/* Ajustes opcionales para el menú desplegable */
 .dropdown {
   position: relative;
   display: inline-block;
 }
 
-/* Opcional: Estilo al pasar el ratón */
+/* Cambiar el estilo de los ítems del menú al pasar el ratón */
 .dropdown-item:hover {
   background-color: #f8f9fa;
   color: #000;
 }
 
+/* Opcional: Estilo para íconos dentro del navbar */
+.navbar img {
+  width: 30px;
+  height: 30px;
+}
 
-  
+/* Animaciones y transiciones suaves */
+.navbar .nav-link:hover {
+  color: #000000;
+  text-decoration: none; /* Sin subrayado */
+}
+
+/* Responsive (opcional, para pantallas pequeñas) */
+@media (max-width: 768px) {
+  .navbar {
+    height: auto;
+  }
+
+  .navbar-nav {
+    gap: 20px; /* Reduce el gap en pantallas pequeñas */
+  }
+
+  .mensaje-bienvenida {
+    font-size: 16px; /* Reduce el tamaño del texto */
+  }
+}
