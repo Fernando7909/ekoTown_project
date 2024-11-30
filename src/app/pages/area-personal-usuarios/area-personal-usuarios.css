@@ -1,108 +1,129 @@
-/* General styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #e6f2f2;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .container {
-    max-width: 100%;
-    text-align: center;
-  }
-  
-  /* Profile header */
-  .profile-header {
-    margin-bottom: 20px;
-  }
-  
-  .avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 3px solid #ccc;
-  }
-  
-  h2 {
-    font-size: 24px;
-    margin: 10px 0;
-  }
-  
-  .role-badge {
-    background-color: #47c067;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 14px;
-  }
-  
-  /* Actions */
-  .actions {
-    display: flex;
-    justify-content: space-around;
-    margin: 20px 0;
-  }
-  
-  .column {
-    width: 45%;
-  }
-  
-  h3 {
-    font-size: 18px;
-    margin-bottom: 15px;
-    color: #666;
-  }
-  
-  .action-button {
-    background-color: #d9f0ff;
-    border: 1px solid #c0e4ff;
-    border-radius: 10px;
-    padding: 10px;
-    text-align: left;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .action-button:hover {
-    background-color: #bde4ff;
-  }
-  
-  .icon {
-    font-size: 24px;
-    margin-right: 10px;
-  }
-  
-  .action-button strong {
-    font-size: 16px;
-  }
-  
-  .action-button p {
-    margin: 0;
-    font-size: 12px;
-    color: #555;
-  }
-  
-  /* Save Button */
-  .save-button {
-    background-color: #47c067;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .save-button:hover {
-    background-color: #3ba859;
-  }
-  
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #e6f2f2;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden; /* Ocultar desbordamiento horizontal */
+}
+
+*, *::before, *::after {
+  box-sizing: border-box; /* Asegura un cálculo correcto del ancho */
+}
+
+/* Contenedor principal */
+.main-section {
+  flex: 1;
+  max-width: 100%;
+  text-align: center;
+  margin-top: 80px;
+  box-sizing: border-box;
+  display: grid;
+  min-height: 100dvh;
+  grid-template-rows: auto 1fr auto;
+}
+
+.custom-height {
+  height: 150px; /* O ajusta según la altura deseada */
+  display: flex; /* Habilita flexbox para que los hijos puedan ajustarse */
+  margin-bottom: 45px;
+}
+
+.row {
+  flex: 1; /* Hace que ocupe el máximo espacio disponible */
+  height: 100%; /* Asegura que tome toda la altura del contenedor padre */
+}
+
+.profile-header {
+  height: 100%; /* Toma toda la altura del contenedor padre */
+  display: flex; /* Mantiene las propiedades flexibles */
+  align-items: center; /* Centra el contenido verticalmente */
+}
+
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 25%;
+  border: 2px solid #ccc;
+}
+
+.icon {
+  width: 30px; /* Ajusta el ancho según tus necesidades */
+  height: 30px; /* Asegura que tenga proporciones consistentes */
+  object-fit: contain; /* Mantiene las proporciones de la imagen */
+  display: inline-block;
+}
+
+
+.action-button:hover {
+  background-color: #eef6ff;
+}
+
+/* Solución para márgenes de filas */
+.container-fluid {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Asegurar el ajuste al contenedor */
+img, button, .profile-header, app-footer {
+  max-width: 100%;
+}
+
+.action-button {
+  padding: 1.5rem 1rem; /* Incrementa el espacio interno para aumentar la altura */
+  font-size: 1rem; /* Aumenta el tamaño del texto si es necesario */
+  height: auto; /* Ajusta automáticamente la altura según el contenido */
+  border-radius: 8px; /* Opcional: ajusta los bordes para un diseño más moderno */
+}
+
+.action-button div {
+  line-height: 1.2; /* Ajusta el espaciado entre las líneas dentro del botón */
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column; /* Asegura que el título y el badge estén en columnas (líneas separadas) */
+  align-items: flex-start; /* Alinea el contenido a la izquierda */
+}
+
+.profile-info h2 {
+  margin: 0; /* Elimina márgenes extra alrededor del título */
+}
+
+.profile-info .badge {
+  margin: 0; /* Elimina márgenes predeterminados del badge */
+  margin-top: 0.5rem; /* Espacio entre el título y el badge */
+  align-self: flex-start; /* Asegura que el badge esté alineado a la izquierda */
+  font-size: 15px;
+}
+
+.action-button div {
+  text-align: left !important; /* Forzar alineación izquierda */
+  display: block; /* Asegurar que se comporte como un bloque */
+  padding-left: 15px;
+}
+
+.action-button strong {
+  font-size: 1.25rem; /* Ajusta el tamaño según tus necesidades */
+  font-weight: bold;  /* Opcional: hace el texto más grueso */
+}
+
+
+
+
+/* Footer */
+app-footer {
+  margin-top: 100px;
+  color: #fff;
+  text-align: center;
+  padding: 0;
+  width: 100%;
+  display: block;
+}
