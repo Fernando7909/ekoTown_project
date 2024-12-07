@@ -57,18 +57,16 @@
 <div class="container info-01">
   <div class="row align-items-center">
     <!-- Columna para el texto -->
-    <div class="col-md-6">
-      <p class="quote-text">
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
-        sed quia consequuntur magni dolores eos qui ratione."
-      </p>
+    <div class="col-md-6 bloque-texto">
+      <h3 class="subtitulo-buscador">Encuentra tiendas ecológicas con ekoTown.</h3> 
+      <p>Con ekoTown, tienes la oportunidad de localizar tiendas orgánicas, productos sostenibles y espacios de comercio justo, ya sea cerca de ti o en tu próximo destino. Esta herramienta te permite encontrar todo lo que necesitas con un solo clic, de manera sencilla, rápida y eficiente.<br><br>
+          Explora nuevas opciones para adoptar un estilo de vida más consciente, apoyando iniciativas responsables que promueven el bienestar del planeta. Reduce tu impacto ambiental mientras descubres alternativas que transforman tus hábitos de consumo hacia un futuro más sostenible.<br><br>
+          ¡Únete al cambio con ekoTown y marca la diferencia!</p>
     </div>
     
     <!-- Columna para la imagen -->
     <div class="col-md-6 d-flex justify-content-center">
-      <img src="https://images.pexels.com/photos/95425/pexels-photo-95425.jpeg" alt="Imagen de vegetales orgánicos" class="quote-image img-fluid rounded">
+      <img src="buscador.png" alt="Imagen buscador" class="quote-image img-fluid rounded">
     </div>
   </div>
 </div>
@@ -106,59 +104,41 @@
   <div class="row align-items-center">
     <!-- Columna para la imagen -->
     <div class="col-md-6 d-flex justify-content-center">
-      <img 
-        src="https://cdn.pixabay.com/photo/2016/12/20/22/32/holiday-shopping-1921658_960_720.jpg" 
-        srcset="https://cdn.pixabay.com/photo/2016/12/20/22/32/holiday-shopping-1921658_960_720.jpg 1x, 
-                https://cdn.pixabay.com/photo/2016/12/20/22/32/holiday-shopping-1921658_1280.jpg 2x" 
-        alt="Imagen de compras navideñas" 
-        class="quote-image img-fluid rounded">
+      <img src="ordenador.jpg" class="info-image img-fluid">
     </div>
-    
     <!-- Columna para el texto -->
-    <div class="col-md-6">
-      <p class="quote-text">
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
-        sed quia consequuntur magni dolores eos qui ratione."
+    <div class="col-md-6 bloque-texto-02">
+      <h3>Explora perfiles y productos únicos en ekoTown</h3>
+      <p>
+        En <strong>ekoTown</strong>, tienes la oportunidad de acceder a los perfiles de cada tienda y descubrir todo lo que tienen para ofrecer. Cada tienda cuenta con un catálogo único, donde puedes explorar una amplia variedad de productos pensados para un consumo más consciente, sostenible y responsable. Además, puedes conocer más sobre la filosofía de cada negocio y su compromiso con el medio ambiente.
       </p>
+      <ul class="info-list">
+        <li><strong>Encuentra todo tipo de productos:</strong> desde alimentos frescos y orgánicos hasta artículos sostenibles y ecológicos, todo en un solo lugar.</li>
+        <li><strong>Comparte tu experiencia:</strong> realiza reseñas de las tiendas, valora sus productos y ayuda a otros usuarios a tomar decisiones más informadas.</li>
+      </ul>
     </div>
   </div>
 </div>
 
 
-<!-- Call to Action -->
-<div class="cta my-5">
-  <h2>¡Únete a ekoTwon!</h2>
-  <p>Suscríbete y sé el primero en descubrir nuestras novedades, ofertas exclusivas y consejos para un estilo de vida más sostenible. 🌱✨<br>
-  ¡Únete a la comunidad que cuida del planeta!</p>
-  <button class="cta-button">REGISTRO</button>
-</div>
-
-<!-- Info03 -->
-<div class="container info-03">
+<!-- Call to action -->
+<div class="cta my-5 container">
   <div class="row align-items-center">
-    <!-- Columna para la imagen -->
-    <div class="col-md-6 d-flex justify-content-center">
-      <img 
-        src="https://cdn.pixabay.com/photo/2016/12/20/22/32/holiday-shopping-1921658_960_720.jpg" 
-        srcset="https://cdn.pixabay.com/photo/2016/12/20/22/32/holiday-shopping-1921658_960_720.jpg 1x, 
-                https://cdn.pixabay.com/photo/2016/12/20/22/32/holiday-shopping-1921658_1280.jpg 2x" 
-        alt="Imagen de compras navideñas" 
-        class="quote-image img-fluid rounded">
+    <!-- Contenido del texto -->
+    <div class="col-lg-8 col-md-12 px-4 text-lg-start text-center">
+      <h2>¡Únete a ekoTown!</h2>
+      <p>Suscríbete y sé el primero en descubrir nuestras novedades, ofertas exclusivas y consejos para un estilo de vida más sostenible y respetuoso con el medio ambiente.<br>
+        <strong>¡Únete a la comunidad que cuida del planeta!</strong></p>
+      <button class="cta-button" (click)="navigateToLoginRegister()">REGISTRO</button>
     </div>
-    
-    <!-- Columna para el texto -->
-    <div class="col-md-6">
-      <p class="quote-text">
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
-        sed quia consequuntur magni dolores eos qui ratione."
-      </p>
+    <!-- Imágenes -->
+    <div class="col-lg-4 col-md-12 d-flex flex-column align-items-center mt-4 mt-lg-0">
+      <img src="mockup1.png" alt="Imagen 1" class="img-fluid rounded">
     </div>
   </div>
 </div>
+
+
 
 <app-testimonials></app-testimonials>
 

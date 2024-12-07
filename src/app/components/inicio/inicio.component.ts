@@ -13,8 +13,6 @@ import { FooterComponent } from '../footer/footer.component';
 import { CardsComponent } from "../cards/cards.component";
 import { CarouselComponent } from "../carousel/carousel.component";
 
-
-
 @Component({
   selector: 'app-inicio',
   standalone: true,
@@ -31,15 +29,18 @@ import { CarouselComponent } from "../carousel/carousel.component";
     FooterComponent,
     CardsComponent,
     CarouselComponent
-],
+  ],
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css']
 })
 export class InicioComponent {
 
-
-  
   constructor(private router: Router) {} 
+
+  // Método para redirigir a la ruta loginregister
+  navigateToLoginRegister() {
+    this.router.navigate(['/loginregister']);
+  }
 
   goToSearch() {
     this.router.navigate(['/search']);

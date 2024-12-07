@@ -6,20 +6,27 @@
     <!-- Contenedor de perfil -->
     <div class="container-fluid mt-5 px-5 custom-height">
         <div class="row gx-5">
-            <!-- Columna Izquierda -->
-            <div class="col-md-6 ps-0">
-                <div class="profile-header d-flex align-items-center border border-secondary rounded p-3">
-                    <img src="avatar_face.png" alt="Avatar de Usuario" class="avatar me-3">
-                    <div class="profile-info">
-                        <h2 class="mb-1">Fernando Hernández</h2>
-                        <span class="badge bg-success">Usuario de ekoTown</span>
-                    </div>
-                </div>
+          <!-- Columna Izquierda -->
+          <div class="col-md-6 ps-0">
+            <div class="profile-header d-flex align-items-center border border-secondary rounded p-3">
+              <!-- Imagen de perfil dinámica -->
+              <img
+                [src]="profileImageUrl || 'avatar_face.png'" 
+                alt="Avatar de Usuario" 
+                class="avatar me-3"
+                style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;"
+              >
+              <div class="profile-info">
+                <h2 class="mb-1">{{ userName }} {{ userLastName }}</h2>
+                <span class="badge bg-success">Usuario de ekoTown</span>
+              </div>
             </div>
-            <!-- Columna Derecha (vacía) -->
-            <div class="col-md-6"></div>
+          </div>
+          <!-- Columna Derecha (vacía) -->
+          <div class="col-md-6"></div>
         </div>
-    </div>
+      </div>
+      
     
 
     <!-- Contenedor de acciones -->
@@ -28,22 +35,60 @@
             <!-- Columna: Gestionar -->
             <div class="col-md-6">
                 <h3 class="text-secondary mb-4">GESTIONAR</h3>
-                <button class="action-button btn btn-light d-flex align-items-center w-100 mb-3">
-                    <img src="profileIcons/ajustes.png" alt="ajustes" class="icon me-2">
+                <button
+                    class="action-button btn btn-light d-flex align-items-center w-100 mb-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#profileModal"
+                    >
+                    <img src="profileIcons/ajustes.png" alt="ajustes" class="icon me-2" />
                     <div class="text-left">
                         <strong>Configuración de perfil</strong>
                         <p class="mb-0 small text-muted">Editar tu información personal</p>
                     </div>
                 </button>
-                <button class="action-button btn btn-light d-flex align-items-center w-100 mb-3">
+
+                <!-- Modal para editar información del usuario -->
+                <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="profileModalLabel">Configuración de perfil</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        <form #profileForm="ngForm">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="name" [(ngModel)]="userName" name="name" required />
+                            </div>
+                            <div class="mb-3">
+                             <label for="lastName" class="form-label">Apellido</label>
+                                <input type="text" class="form-control" id="lastName" [(ngModel)]="userLastName" name="lastName" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" [(ngModel)]="userEmail" name="email" required />
+                            </div>
+                        </form>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" (click)="saveProfile()">Guardar cambios</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+  
+
+                <button class="action-button btn btn-light d-flex align-items-center w-100 mb-3" (click)="deleteAccount()">
                     <img src="profileIcons/cruz.png" alt="Eliminar cuenta" class="icon me-2">
                     <div class="text-left">
-                        <strong>Eliminar cuenta</strong>
-                        <p class="mb-0 small text-muted">Eliminar tu cuenta y todos tus datos</p>
+                      <strong>Eliminar cuenta</strong>
+                      <p class="mb-0 small text-muted">Eliminar tu cuenta y todos tus datos</p>
                     </div>
-                </button>
+                  </button>               
                 
-                <button class="action-button btn btn-light d-flex align-items-center w-100">
+                <button class="action-button btn btn-light d-flex align-items-center w-100" (click)="logout()">
                     <img src="profileIcons/energia.png" alt="cerrar sesión" class="icon me-2">
                     <div class="text-left">
                         <strong>Cerrar sesión</strong>
@@ -55,13 +100,24 @@
             <!-- Columna: Personalizar -->
             <div class="col-md-6">
                 <h3 class="text-secondary mb-4">PERSONALIZAR</h3>
-                <button class="action-button btn btn-light d-flex align-items-center w-100 mb-3">
-                    <img src="profileIcons/usuario.png" alt="Foto Perfil" class="icon me-2">
+                <button
+                    class="action-button btn btn-light d-flex align-items-center w-100 mb-3" (click)="selectProfileImage()">
+                        <img src="profileIcons/usuario.png" alt="Foto Perfil" class="icon me-2" />
                     <div class="text-left">
                         <strong>Cambiar foto perfil</strong>
                         <p class="mb-0 small text-muted">Editar tu foto personal</p>
                     </div>
-                </button>
+                    </button>
+
+                    <!-- Input de tipo file oculto -->
+                    <input
+                    type="file"
+                    id="profileImageInput"
+                    accept="image/*"
+                    style="display: none"
+                    (change)="uploadProfileImage($event)"/>
+              
+
                 <button class="action-button btn btn-light d-flex align-items-center w-100">
                     <img src="profileIcons/eclipse-alt.png" alt="Tema" class="icon me-2">
                     <div class="text-left">
@@ -70,11 +126,6 @@
                     </div>
                 </button>
             </div>
-        </div>
-
-        <!-- Botón Guardar Cambios -->
-        <div class="text-center mt-4">
-            <button class="save-button btn btn-success">Guardar cambios</button>
         </div>
     </div>
 

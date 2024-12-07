@@ -1,19 +1,29 @@
-// Importaciones existentes que ya tienes
-const dotenv = require('dotenv');  // Cargar variables de entorno desde .env
-const express = require('express');  // Framework para construir el servidor
-const cors = require('cors');  // Manejar CORS
-const fetch = require('node-fetch');  // Para hacer solicitudes HTTP con la versión 2.x de node-fetch
+const dotenv = require('dotenv');
+const express = require('express');
+const cors = require('cors');
+const fetch = require('node-fetch');
+const path = require('path');
 
-// Importaciones nuevas
-const userRoutes = require('./routes/userRoutes'); // Importar rutas de usuarios
-const businessManagerRoutes = require('./routes/businessManagerRoutes'); // Importar rutas de Business Managers
+// Importar rutas
+const userRoutes = require('./routes/userRoutes');
+const businessManagerRoutes = require('./routes/businessManagerRoutes');
 
-dotenv.config();  // Cargar las variables de entorno
-const app = express(); // Crear la aplicación Express
+dotenv.config();
+const app = express();
 
-// Middleware existente
+// Middleware global
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // Manejar solicitudes JSON
+
+// Middleware para servir archivos estáticos
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Registrar solicitudes en la consola
+app.use((req, res, next) => {
+    console.log(`Solicitud recibida: ${req.method} ${req.url}`);
+    console.log('Cuerpo:', req.body);
+    next();
+});
 
 // Datos de ejemplo de comercios ecológicos
 const comerciosEcologicos = [
@@ -22,7 +32,7 @@ const comerciosEcologicos = [
     { municipio: 'Valencia', nombre: 'EcoValencia', tipo: 'Restaurante' },
 ];
 
-// Ruta para obtener comercios por municipio (manteniendo la lógica que ya tienes)
+// Ruta para obtener comercios por municipio
 app.get('/api/comercios/:municipio', (req, res) => {
     const municipio = req.params.municipio.toLowerCase();
     const resultados = comerciosEcologicos.filter(comercio =>
@@ -36,27 +46,18 @@ app.get('/api/comercios/:municipio', (req, res) => {
     res.json(resultados);
 });
 
-// Ruta para buscar tiendas en la API de Yelp con location, categories y radius (manteniendo la lógica actual)
+// Ruta para buscar tiendas en la API de Yelp
 const apiKey = process.env.API_KEY;
 
 app.get('/api/yelp', async (req, res) => {
     const { location, categories, radius } = req.query;
 
     try {
-        // Construir la URL con los parámetros de búsqueda
         const yelpUrl = `https://api.yelp.com/v3/businesses/search?location=${location}&categories=${categories}&radius=${radius}`;
-
-        // Hacer la solicitud a la API de Yelp
         const response = await fetch(yelpUrl, {
-            headers: {
-                'Authorization': `Bearer ${apiKey}`
-            }
+            headers: { 'Authorization': `Bearer ${apiKey}` },
         });
-
-        // Parsear la respuesta a JSON
         const data = await response.json();
-
-        // Enviar la respuesta JSON al frontend
         res.json(data);
     } catch (error) {
         console.error('Error al buscar datos en Yelp:', error);
@@ -64,17 +65,13 @@ app.get('/api/yelp', async (req, res) => {
     }
 });
 
-// === INICIO DE NUEVA LÓGICA ===
-
-// Agregar las rutas para gestionar usuarios (registro e inicio de sesión)
+// Rutas para usuarios
 app.use('/api/users', userRoutes);
 
-// Agregar las rutas para gestionar Business Managers (registro e inicio de sesión)
+// Rutas para Business Managers
 app.use('/api/business-managers', businessManagerRoutes);
 
-// === FIN DE NUEVA LÓGICA ===
-
-// Configurar el puerto del servidor (manteniendo el que ya tienes)
+// Configuración del puerto del servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);

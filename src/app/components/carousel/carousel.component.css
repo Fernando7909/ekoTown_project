@@ -14,31 +14,91 @@
   left: 0;
   width: 100%;
   height: 100%;
-  /* background-color: rgba(0, 0, 0, 0.5); */
+}
+
+
+
+/* Estilo para los textos dentro de .carousel-caption usando flexbox */
+.carousel-caption {
+  position: absolute;
+  width: 80%;
+  text-align: center;
+  padding: 20px; 
+  background-color: rgba(255, 255, 255, 0.5); 
+  box-sizing: border-box; 
+  display: flex;
+  justify-content: center;
+  height: auto;
+
+}
+
+.carousel-caption::after {
+  display: block;
+  content: "";
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  border-top: 5px solid rgb(0, 0, 0);
+  border-right: 5px solid rgb(0, 0, 0);
+}
+
+.carousel-caption::before {
+  display: block;
+  content: "";
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  bottom: -5px;
+  left: -5px;
+  border-bottom: 5px solid rgb(0, 0, 0);
+  border-left: 5px solid rgb(0, 0, 0);
+}
+
+
+
+/* Estilo para las etiquetas <strong> dentro de h2 */
+.carousel-caption h2 {
+  font-size: 2.5rem; /* Aumenta el tamaño del texto dentro de <strong> */
+  font-weight: bold; /* Asegura que el texto se mantenga en negrita */
+  padding-bottom: 15px;
+  margin: 0;
+  color: black;
+}
+
+.carousel-caption p {
+  color: black;
+  font-size: 21px;
+}
+
+/* Aseguramos que la imagen se vea correctamente */
+.carousel-item img {
+  width: 100%;
+  height: auto;
 }
 
 /* Ocultar números generados automáticamente */
 .carousel-indicators li::before,
 .carousel-indicators li::after {
-    content: ''; /* Eliminar cualquier contenido generado */
-    display: none !important; /* Asegurarse de que no se muestren */
+  content: ''; /* Eliminar cualquier contenido generado */
+  display: none !important; /* Asegurarse de que no se muestren */
 }
 
 /* Opcional: Ajustar los indicadores para que solo se vean los puntos */
 .carousel-indicators li {
-    background-color: #fff; /* Cambia el color según tu diseño */
-    width: 10px; /* Tamaño de los puntos */
-    height: 10px;
-    border-radius: 50%; /* Forma circular */
-    margin: 5px;
-    display: inline-block;
-    position: relative;
+  background-color: #fff; /* Cambia el color según tu diseño */
+  width: 10px; /* Tamaño de los puntos */
+  height: 10px;
+  border-radius: 50%; /* Forma circular */
+  margin: 5px;
+  display: inline-block;
+  position: relative;
 }
 
 /* Mantener la alineación central */
 .carousel-indicators {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-

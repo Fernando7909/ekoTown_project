@@ -35,10 +35,15 @@ export class NavbarComponent implements OnInit {
 
   // Lógica de logout
   logout(): void {
-    this.authService.logout(); // Llama al método de logout en AuthService
-    this.router.navigate(['/loginregister']); // Redirige a la página de login
-    this.showDropdown = false; // Cierra el submenú tras cerrar sesión
+    const confirmation = window.confirm('¿Estás seguro de que deseas cerrar sesión?'); // Mensaje de confirmación
+    if (confirmation) {
+      this.authService.logout(); // Limpia el estado del usuario y el almacenamiento
+      this.router.navigate(['/loginregister']); // Redirige a la página de login
+      this.showDropdown = false; // Cierra el menú desplegable
+    }
   }
+  
+  
 
   goToAreaPersonal(): void {
     this.router.navigate(['/area-personal-usuarios']);

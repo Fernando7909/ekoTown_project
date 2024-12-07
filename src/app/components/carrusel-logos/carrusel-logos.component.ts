@@ -10,12 +10,13 @@ import { CommonModule } from '@angular/common';
 })
 export class CarruselLogosComponent {
   images = [
-    'logo01.jpg',
-    'logo02.jpg',
-    'logo03.jpg',
-    'logo04.jpg',
-    'logo05.jpg',
-    'logo06.jpg',
-    'logo07.jpg'
+    'logosCarrusel/logo01.png',
+    'logosCarrusel/logo02.png',
+    'logosCarrusel/logo03.png',
+    'logosCarrusel/logo04.png',
+    'logosCarrusel/logo05.jpg',
+    'logosCarrusel/logo06.png',
+    'logosCarrusel/logo07.png',
+    'logosCarrusel/logo08.png'
   ];
 }

@@ -45,7 +45,10 @@ export class LoginregisterComponent {
   showMessage: boolean = false; // Control de visibilidad del mensaje
   isError: boolean = false; // Indica si el mensaje es un error
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService, 
+    private router: Router
+  ) {}
 
   // Método para mostrar mensajes de éxito o error
   displayMessage(message: string, isError: boolean = false) {
@@ -100,27 +103,43 @@ export class LoginregisterComponent {
     );    
   }
 
-  // Método para registrar un usuario
-  onRegister() {
-    const userData = {
-      name: this.registerName,
-      last_name: this.registerLastName,
-      email: this.registerEmail,
-      password: this.registerPassword,
-    };
 
-    this.authService.register(userData).subscribe(
-      (response: any) => {
-        console.log('Registro exitoso:', response);
-        this.displayMessage('Usuario registrado exitosamente. Ahora puedes iniciar sesión.');
-        this.togglePanel();
-      },
-      (error: any) => {
-        console.error('Error al registrar usuario:', error);
-        this.displayMessage('Error al registrarse. Por favor, intenta de nuevo.', true);
-      }
-    );
-  }
+ // Método para registrar un usuario
+ onRegister() {
+  const userData = {
+    name: this.registerName,
+    last_name: this.registerLastName, // Cambia a last_name si el backend lo espera así
+    email: this.registerEmail,
+    password: this.registerPassword,
+  };
+
+  this.authService.register(userData).subscribe(
+    (response: any) => {
+      console.log('Registro exitoso:', response);
+
+      // Guarda el nombre y apellido en AuthService
+      this.authService.setUserFullName({
+        name: this.registerName,
+        lastName: this.registerLastName,
+        email: this.registerEmail 
+      });
+
+      console.log('Datos enviados a setUserFullName:', {
+        name: this.registerName,
+        lastName: this.registerLastName,
+      });
+
+      // Redirigir a la página de área personal
+      this.router.navigate(['/area-personal-usuarios']);
+    },
+    (error: any) => {
+      console.error('Error al registrarse:', error);
+    }
+  );
+}
+
+
+
 
   // Método para iniciar sesión de Business Manager
   onManagerLogin() {

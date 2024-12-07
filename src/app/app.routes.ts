@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
-import { importProvidersFrom } from '@angular/core';  // Necesario para cargar componentes standalone
-import { InicioComponent } from './components/inicio/inicio.component';  // Verifica que este sea un componente standalone
-import { SearchComponent } from './components/search/search.component';  // Verifica que este sea un componente standalone
+import { importProvidersFrom } from '@angular/core';
+import { InicioComponent } from './components/inicio/inicio.component'; 
+import { SearchComponent } from './components/search/search.component'; 
 import { AreaPersonalUsuariosPage } from './pages/area-personal-usuarios/area-personal-usuarios';
+import { AreaPersonalBmPage } from './pages/area-personal-bm/area-personal-bm';
 
 export const routes: Routes = [
   { 
@@ -23,6 +24,11 @@ export const routes: Routes = [
   { 
     path: 'area-personal-usuarios', 
     loadComponent: () => import('./pages/area-personal-usuarios/area-personal-usuarios').then(m => m.AreaPersonalUsuariosPage) 
+  },
+  
+  { 
+    path: 'area-personal-vm', 
+    loadComponent: () => import('./pages/area-personal-bm/area-personal-bm').then(m => m.AreaPersonalBmPage) 
   }, 
 
   { path: '**', redirectTo: '', pathMatch: 'full' 
