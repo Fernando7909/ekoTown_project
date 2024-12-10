@@ -1,0 +1,127 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f8fa; /* Cambiado para diferenciar visualmente */
+    font-family: Arial, sans-serif;
+    overflow-x: hidden; /* Ocultar desbordamiento horizontal */
+  }
+  
+  *, *::before, *::after {
+    box-sizing: border-box; /* Asegura un cálculo correcto del ancho */
+  }
+  
+  /* Contenedor principal */
+  .main-section {
+    flex: 1;
+    max-width: 100%;
+    text-align: center;
+    margin-top: 80px;
+    box-sizing: border-box;
+    display: grid;
+    min-height: 100dvh;
+    grid-template-rows: auto 1fr auto;
+  }
+  
+  .custom-height {
+    height: 150px; /* O ajusta según la altura deseada */
+    display: flex; /* Habilita flexbox para que los hijos puedan ajustarse */
+    margin-bottom: 45px;
+  }
+  
+  .row {
+    flex: 1; /* Hace que ocupe el máximo espacio disponible */
+    height: 100%; /* Asegura que tome toda la altura del contenedor padre */
+  }
+  
+  .profile-header {
+    height: 100%; /* Toma toda la altura del contenedor padre */
+    display: flex; /* Mantiene las propiedades flexibles */
+    align-items: center; /* Centra el contenido verticalmente */
+  }
+  
+  .avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%; /* Cambiado a circular para diferenciar */
+    border: 3px solid #007bff; /* Borde azul para Business Managers */
+  }
+  
+  .icon {
+    width: 30px; /* Ajusta el ancho según tus necesidades */
+    height: 30px; /* Asegura que tenga proporciones consistentes */
+    object-fit: contain; /* Mantiene las proporciones de la imagen */
+    display: inline-block;
+  }
+  
+  .action-button:hover {
+    background-color: #e8f4ff; /* Azul claro para la experiencia de BM */
+  }
+  
+  /* Solución para márgenes de filas */
+  .container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  /* Asegurar el ajuste al contenedor */
+  img, button, .profile-header, app-footer {
+    max-width: 100%;
+  }
+  
+  .action-button {
+    padding: 1.5rem 1rem; /* Incrementa el espacio interno para aumentar la altura */
+    font-size: 1rem; /* Aumenta el tamaño del texto si es necesario */
+    height: auto; /* Ajusta automáticamente la altura según el contenido */
+    border-radius: 8px; /* Opcional: ajusta los bordes para un diseño más moderno */
+  }
+  
+  .action-button div {
+    line-height: 1.2; /* Ajusta el espaciado entre las líneas dentro del botón */
+  }
+  
+  .profile-info {
+    display: flex;
+    flex-direction: column; /* Asegura que el título y el badge estén en columnas (líneas separadas) */
+    align-items: flex-start; /* Alinea el contenido a la izquierda */
+  }
+  
+  .profile-info h2 {
+    margin: 0; /* Elimina márgenes extra alrededor del título */
+  }
+  
+  .profile-info .badge {
+    margin: 0; /* Elimina márgenes predeterminados del badge */
+    margin-top: 0.5rem; /* Espacio entre el título y el badge */
+    align-self: flex-start; /* Asegura que el badge esté alineado a la izquierda */
+    font-size: 15px;
+    background-color: #007bff; /* Badge azul para Business Managers */
+    color: #fff;
+  }
+  
+  .action-button div {
+    text-align: left !important; /* Forzar alineación izquierda */
+    display: block; /* Asegurar que se comporte como un bloque */
+    padding-left: 15px;
+  }
+  
+  .action-button strong {
+    font-size: 1.25rem; /* Ajusta el tamaño según tus necesidades */
+    font-weight: bold;  /* Opcional: hace el texto más grueso */
+  }
+  
+  /* Footer */
+  app-footer {
+    margin-top: 100px;
+    color: #fff;
+    text-align: center;
+    padding: 0;
+    width: 100%;
+    display: block;
+  }
+  

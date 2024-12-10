@@ -29,7 +29,7 @@ export class LoginregisterComponent {
 
   // Variables para el formulario de login de Business Manager
   loginManagerEmail: string = '';
-  loginCommerceId: string = '';
+  // loginCommerceId: string = ''; // Comentado: Campo relacionado con ID Comercio
   loginManagerPassword: string = '';
 
   // Variables para el formulario de registro de Business Manager
@@ -103,74 +103,71 @@ export class LoginregisterComponent {
     );    
   }
 
+  // Método para registrar un usuario
+  onRegister() {
+    const userData = {
+      name: this.registerName,
+      last_name: this.registerLastName,
+      email: this.registerEmail,
+      password: this.registerPassword,
+    };
 
- // Método para registrar un usuario
- onRegister() {
-  const userData = {
-    name: this.registerName,
-    last_name: this.registerLastName, // Cambia a last_name si el backend lo espera así
-    email: this.registerEmail,
-    password: this.registerPassword,
+    this.authService.register(userData).subscribe(
+      (response: any) => {
+        console.log('Registro exitoso:', response);
+        this.authService.setUserFullName({
+          name: this.registerName,
+          lastName: this.registerLastName,
+          email: this.registerEmail 
+        });
+
+        this.router.navigate(['/area-personal-usuarios']);
+      },
+      (error: any) => {
+        console.error('Error al registrarse:', error);
+      }
+    );
+  }
+
+  // Método para iniciar sesión de Business Manager
+ // Método para iniciar sesión de Business Manager
+onManagerLogin() {
+  const managerCredentials = {
+    email: this.loginManagerEmail,
+    password: this.loginManagerPassword,
   };
 
-  this.authService.register(userData).subscribe(
+  console.log('Credenciales enviadas al backend:', managerCredentials); // Log de las credenciales enviadas
+
+  this.authService.loginManager(managerCredentials).subscribe(
     (response: any) => {
-      console.log('Registro exitoso:', response);
+      console.log('Respuesta del backend:', response); // Log de la respuesta exitosa del backend
 
-      // Guarda el nombre y apellido en AuthService
-      this.authService.setUserFullName({
-        name: this.registerName,
-        lastName: this.registerLastName,
-        email: this.registerEmail 
-      });
+      const managerName = response?.name || 'Manager';
+      console.log('Nombre del Business Manager recibido:', managerName); // Log del nombre recibido
 
-      console.log('Datos enviados a setUserFullName:', {
-        name: this.registerName,
-        lastName: this.registerLastName,
-      });
+      this.authService.setUserName(managerName);
 
-      // Redirigir a la página de área personal
-      this.router.navigate(['/area-personal-usuarios']);
+      this.displayMessage(`Inicio de sesión de Business Manager exitoso. Bienvenido, ${managerName}.`);
+
+      setTimeout(() => {
+        console.log('Redirigiendo a la página principal...'); // Log antes de redirigir
+        this.router.navigate(['']);
+      }, 4000);
     },
     (error: any) => {
-      console.error('Error al registrarse:', error);
+      console.error('Error recibido del backend:', error); // Log detallado del error recibido
+      if (error.status === 400) {
+        console.error('Error 400: Credenciales inválidas o problema con el backend.');
+      } else {
+        console.error('Error desconocido:', error);
+      }
+      this.displayMessage('Error al iniciar sesión de Business Manager. Verifica tus credenciales.', true);
     }
   );
 }
 
-
-
-
-  // Método para iniciar sesión de Business Manager
-  onManagerLogin() {
-    const managerCredentials = {
-      email: this.loginManagerEmail,
-      commerce_id: this.loginCommerceId,
-      password: this.loginManagerPassword,
-    };
-
-    this.authService.loginManager(managerCredentials).subscribe(
-      (response: any) => {
-        console.log('Inicio de sesión de Business Manager exitoso:', response);
-
-        // Actualizar el nombre del Business Manager en AuthService
-        const managerName = response?.name || 'Manager';
-        this.authService.setUserName(managerName);
-
-        // Mostrar mensaje de éxito
-        this.displayMessage(`Inicio de sesión de Business Manager exitoso. Bienvenido, ${managerName}.`);
-
-        // Esperar 4 segundos antes de redirigir a la página de inicio
-        setTimeout(() => {
-          this.router.navigate(['']); // Redirige a la ruta de inicio ('')
-        }, 4000);
-      },
-      (error: any) => {
-        console.error('Error al iniciar sesión de Business Manager:', error);
-        this.displayMessage('Error al iniciar sesión de Business Manager. Verifica tus credenciales.', true);
-      }
-    );
-  }
+  
 
   // Método para registrar un Business Manager
   onManagerRegister() {
@@ -190,7 +187,7 @@ export class LoginregisterComponent {
         this.toggleManagerPanel();
       },
       (error: any) => {
-        console.error('Error al registrar Business Manager:', error);
+        console.error('Error al registrarse como Business Manager:', error);
         this.displayMessage('Error al registrarse como Business Manager. Por favor, intenta de nuevo.', true);
       }
     );

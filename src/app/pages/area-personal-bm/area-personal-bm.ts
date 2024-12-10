@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth.service'; // Importar AuthService
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -10,18 +10,18 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-area-personal-bm',
   standalone: true,
   templateUrl: './area-personal-bm.html',
-  styleUrls: ['./area-personal-bs.css'],
+  styleUrls: ['./area-personal-bm.css'],
   imports: [
     NavbarComponent,
     FooterComponent,
     FormsModule,
-  ],
+  ]
 })
 export class AreaPersonalBmPage implements OnInit {
   // Variables para manejar el estado de la vista
   bmName: string = '';
   bmLastName: string = '';
-  bmEmail: string = '';
+  bmEmail: string = ''; // Nueva variable para el email
   bmStatus: string = 'Activo';
   bmId: number | undefined; // ID del Business Manager autenticado
   profileImageUrl: string = ''; // URL de la imagen de perfil
@@ -33,18 +33,18 @@ export class AreaPersonalBmPage implements OnInit {
   }
 
   private loadBmProfile(): void {
-    const bmFullName = this.authService.getBmFullName(); // Adaptado para Business Manager
+    const bmFullName = this.authService.getBmFullName();
     console.log('Cargando perfil del Business Manager:', bmFullName);
     if (bmFullName) {
       this.bmName = bmFullName.name;
       this.bmLastName = bmFullName.lastName;
-      this.bmEmail = this.authService.getBmEmail() || ''; // Obtener el email del Business Manager
-      this.bmId = this.authService.getBmId(); // Obtener el ID del Business Manager
+      this.bmEmail = this.authService.getBmEmail() || ''; // Actualizar email si es necesario
+      this.bmId = this.authService.getBmId(); // Asegurar que se obtiene el ID
 
       // Actualizar la URL de la imagen de perfil
       this.profileImageUrl = bmFullName.profileImage
         ? `http://localhost:3000/${bmFullName.profileImage}`
-        : 'profileIcons/business_manager.png'; // Imagen por defecto para Business Managers
+        : 'profileIcons/usuario.png'; // Imagen por defecto si no hay una imagen subida
     } else {
       console.error('No se encontraron datos del Business Manager. Redirigiendo al login...');
       this.router.navigate(['/login']);
@@ -52,10 +52,10 @@ export class AreaPersonalBmPage implements OnInit {
   }
 
   logout(): void {
-    const confirmation = window.confirm('¿Estás seguro de que deseas cerrar sesión?');
+    const confirmation = window.confirm('¿Estás seguro de que deseas cerrar sesión?'); // Mensaje de confirmación
     if (confirmation) {
-      this.authService.logout();
-      this.router.navigate(['/loginregister']);
+      this.authService.logout(); // Limpia el estado del usuario y el almacenamiento
+      this.router.navigate(['/loginregister']); // Redirige a la página de login
     }
   }
 
@@ -66,15 +66,13 @@ export class AreaPersonalBmPage implements OnInit {
   }
 
   // Eliminar cuenta
-  deleteAccount(): void {
-    const confirmation = window.confirm(
-      '¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.'
-    );
-    if (confirmation && this.bmId) {
+  deleteBmAccount(): void {
+    const confirmation = window.confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.');
+    if (confirmation && this.bmId) { // Asegúrate de que this.bmId está definido
       this.http.delete(`http://localhost:3000/api/business-managers/delete/${this.bmId}`).subscribe(
         (response: any) => {
           console.log('Cuenta eliminada correctamente:', response.message);
-          this.authService.logout();
+          this.authService.logout(); // Limpia la sesión y redirige
           this.router.navigate(['/loginregister']);
         },
         (error: any) => {
@@ -87,7 +85,7 @@ export class AreaPersonalBmPage implements OnInit {
   }
 
   // Guardar cambios en el perfil
-  saveProfile(): void {
+  saveBmProfile(): void {
     if (!this.bmId) {
       console.error('No se puede actualizar el perfil porque el bmId no está definido.');
       return;
@@ -112,6 +110,7 @@ export class AreaPersonalBmPage implements OnInit {
   }
 
   selectProfileImage(): void {
+    // Simula un clic en el input de tipo file
     const fileInput = document.getElementById('profileImageInput') as HTMLInputElement;
     fileInput.click();
   }
@@ -120,27 +119,33 @@ export class AreaPersonalBmPage implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-
+  
+      // Validar el tipo de archivo
       if (!file.type.startsWith('image/')) {
         alert('Por favor, selecciona un archivo de imagen válido.');
         return;
       }
-
+  
+      // Crear un objeto FormData para enviar la imagen al backend
       const formData = new FormData();
       formData.append('profileImage', file);
-      formData.append('bmId', this.bmId?.toString() || '');
-
+      formData.append('bmId', this.bmId?.toString() || ''); // Asegúrate de incluir el bmId
+  
+      // Realizar la solicitud al backend
       this.http.post('http://localhost:3000/api/business-managers/uploadProfileImage', formData).subscribe({
         next: (response: any) => {
           console.log('Imagen de perfil actualizada:', response);
-
+  
+          // Actualizar el localStorage directamente
           const bmFullName = this.authService.getBmFullName();
           if (bmFullName) {
-            bmFullName.profileImage = response.imagePath;
-            this.authService.setBmFullName(bmFullName);
+            bmFullName.profileImage = response.imagePath; // Actualizamos la ruta de la imagen
+            this.authService.setBmFullName(bmFullName); // Guardamos en el localStorage
           }
-
+  
+          // Forzar la actualización de la URL en el frontend
           this.profileImageUrl = `http://localhost:3000/${response.imagePath}?t=${new Date().getTime()}`;
+  
           alert('Imagen actualizada correctamente.');
         },
         error: (error: any) => {

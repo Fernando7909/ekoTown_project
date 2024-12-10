@@ -9,7 +9,7 @@ export interface LoginResponse {
   name?: string;
   last_name?: string;
   email?: string;
-  profileImage?: string; // Agregar propiedad para manejar la imagen de perfil
+  profileImage?: string; 
 }
 
 @Injectable({
@@ -30,6 +30,13 @@ export class AuthService {
       const userFullName = JSON.parse(storedUser);
       this.userFullName = userFullName;
       this.setUserName(userFullName.name); // Actualizar el nombre en BehaviorSubject
+    }
+
+    // Inicializar estado del Business Manager desde localStorage
+    const storedBm = localStorage.getItem('bmFullName');
+    if (storedBm) {
+      const bmFullName = JSON.parse(storedBm);
+      this.bmFullName = bmFullName;
     }
   }
 
@@ -55,11 +62,17 @@ export class AuthService {
     );
   }
 
-  registerManager(managerData: any): Observable<any> {
-    return this.http.post(`${this.apiManagerUrl}/register`, managerData).pipe(
-      tap((response) => console.log('Registro de Business Manager exitoso:', response))
-    );
-  }
+ // Método para registrar un Business Manager
+registerManager(managerData: any): Observable<any> {
+  console.log('Intentando registrar un Business Manager con los datos:', managerData); // Log de datos enviados
+  return this.http.post(`${this.apiManagerUrl}/register`, managerData).pipe(
+    tap((response) => {
+      console.log('Respuesta exitosa del backend para registro de Business Manager:', response);
+    }, (error) => {
+      console.error('Error recibido del backend para registro de Business Manager:', error);
+    })
+  );
+}
 
   // Método para iniciar sesión de usuario
   login(credentials: any): Observable<LoginResponse> {
@@ -81,33 +94,47 @@ export class AuthService {
       })
     );
   }
-
-  // Método para iniciar sesión de Business Manager
-  loginManager(managerCredentials: any): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiManagerUrl}/login`, managerCredentials).pipe(
-      tap((response) => {
-        localStorage.setItem('token', response.token);
-
-        // Actualiza el estado del nombre del Business Manager si está presente en la respuesta
-        if (response.name) {
-          this.setUserName(response.name);
-          this.setUserFullName({
+// Método para iniciar sesión de Business Manager
+loginManager(managerCredentials: any): Observable<LoginResponse> {
+  console.log('Intentando iniciar sesión con las credenciales:', managerCredentials); // Log de credenciales enviadas
+  return this.http.post<LoginResponse>(`${this.apiManagerUrl}/login`, managerCredentials).pipe(
+    tap({
+      next: (response) => {
+        console.log('Respuesta exitosa del backend para login de Business Manager:', response);
+        localStorage.setItem('token', response.token); // Guardar el token
+        if (response.name && response.last_name && response.email) {
+          console.log('Guardando datos del Business Manager en localStorage:', {
             name: response.name,
-            lastName: '',
-            email: '',
-            profileImage: '', // Imagen vacía para Business Managers
+            lastName: response.last_name,
+            email: response.email,
+          });
+          this.setBmFullName({
+            name: response.name,
+            lastName: response.last_name,
+            email: response.email,
+            profileImage: response.profileImage || '',
           });
         }
-
-        console.log('Inicio de sesión de Business Manager exitoso:', response);
-      })
-    );
-  }
+      },
+      error: (error) => {
+        console.error('Error recibido del backend para login de Business Manager:', error);
+        if (error.status === 400) {
+          console.error('Error 400: Credenciales incorrectas o Business Manager no encontrado.');
+        } else {
+          console.error('Error inesperado en el backend:', error.message);
+        }
+      }
+    })
+  );
+}
+  
+  
 
   // Método para cerrar sesión
   logout(): void {
     localStorage.removeItem('token');
-    localStorage.removeItem('userFullName'); // Limpia también el almacenamiento persistente
+    localStorage.removeItem('userFullName'); // Limpia también el almacenamiento persistente de usuarios
+    localStorage.removeItem('bmFullName'); // Limpia el almacenamiento persistente de Business Managers
     this.clearUserName(); // Limpia el estado del usuario al cerrar sesión
     console.log('Sesión cerrada');
 
@@ -151,5 +178,43 @@ export class AuthService {
   getUserEmail(): string {
     const user = this.getUserFullName();
     return user ? user.email : ''; // Devuelve el email o una cadena vacía
+  }
+
+  // Manejo del nombre, apellido, email y profileImage del Business Manager
+  private bmFullName: { name: string; lastName: string; email: string; profileImage?: string } | null = null;
+
+  // Manejo del nombre, apellido, email y profileImage del Business Manager
+setBmFullName(fullName: { name: string; lastName: string; email: string; profileImage?: string }): void {
+  console.log('Seteando datos del Business Manager en el estado y localStorage:', fullName);
+  this.bmFullName = fullName;
+  localStorage.setItem('bmFullName', JSON.stringify(fullName));
+}
+
+getBmFullName(): { name: string; lastName: string; email: string; profileImage?: string } | null {
+  if (!this.bmFullName) {
+    console.log('Intentando recuperar datos del Business Manager desde localStorage.');
+    const storedBm = localStorage.getItem('bmFullName');
+    if (storedBm) {
+      this.bmFullName = JSON.parse(storedBm);
+      console.log('Datos recuperados del Business Manager desde localStorage:', this.bmFullName);
+    } else {
+      console.warn('No se encontraron datos del Business Manager en localStorage.');
+    }
+  }
+  return this.bmFullName;
+}
+
+  getBmId(): number | undefined {
+    const token = localStorage.getItem('token'); // Supongamos que el token almacena el bmId
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1])); // Decodifica el JWT
+      return payload.managerId; // Asegúrate de que el backend incluya managerId en el token
+    }
+    return undefined;
+  }
+
+  getBmEmail(): string {
+    const bm = this.getBmFullName();
+    return bm ? bm.email : ''; // Devuelve el email o una cadena vacía
   }
 }
