@@ -27,7 +27,7 @@ export const routes: Routes = [
   },
   
   { 
-    path: 'area-personal-vm', 
+    path: 'area-personal-bm', 
     loadComponent: () => import('./pages/area-personal-bm/area-personal-bm').then(m => m.AreaPersonalBmPage) 
   }, 
 

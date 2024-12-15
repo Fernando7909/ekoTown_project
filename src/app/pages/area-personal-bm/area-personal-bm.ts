@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
-import { AuthService } from '../../services/auth.service'; // Importar AuthService
+import { AuthManagerService } from '../../services/auth-manager.service'; // Importar AuthService
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -26,20 +26,20 @@ export class AreaPersonalBmPage implements OnInit {
   bmId: number | undefined; // ID del Business Manager autenticado
   profileImageUrl: string = ''; // URL de la imagen de perfil
 
-  constructor(private authService: AuthService, private router: Router, private http: HttpClient) {}
+  constructor(private authManagerService: AuthManagerService, private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.loadBmProfile(); // Cargar el perfil del Business Manager al inicializar el componente
   }
 
   private loadBmProfile(): void {
-    const bmFullName = this.authService.getBmFullName();
+    const bmFullName = this.authManagerService.getBmFullName();
     console.log('Cargando perfil del Business Manager:', bmFullName);
     if (bmFullName) {
       this.bmName = bmFullName.name;
       this.bmLastName = bmFullName.lastName;
-      this.bmEmail = this.authService.getBmEmail() || ''; // Actualizar email si es necesario
-      this.bmId = this.authService.getBmId(); // Asegurar que se obtiene el ID
+      this.bmEmail = this.authManagerService.getBmEmail() || ''; // Actualizar email si es necesario
+      this.bmId = this.authManagerService.getBmId(); // Asegurar que se obtiene el ID
 
       // Actualizar la URL de la imagen de perfil
       this.profileImageUrl = bmFullName.profileImage
@@ -54,7 +54,7 @@ export class AreaPersonalBmPage implements OnInit {
   logout(): void {
     const confirmation = window.confirm('¿Estás seguro de que deseas cerrar sesión?'); // Mensaje de confirmación
     if (confirmation) {
-      this.authService.logout(); // Limpia el estado del usuario y el almacenamiento
+      this.authManagerService.logout(); // Limpia el estado del usuario y el almacenamiento
       this.router.navigate(['/loginregister']); // Redirige a la página de login
     }
   }
@@ -72,7 +72,7 @@ export class AreaPersonalBmPage implements OnInit {
       this.http.delete(`http://localhost:3000/api/business-managers/delete/${this.bmId}`).subscribe(
         (response: any) => {
           console.log('Cuenta eliminada correctamente:', response.message);
-          this.authService.logout(); // Limpia la sesión y redirige
+          this.authManagerService.logout(); // Limpia la sesión y redirige
           this.router.navigate(['/loginregister']);
         },
         (error: any) => {
@@ -137,10 +137,10 @@ export class AreaPersonalBmPage implements OnInit {
           console.log('Imagen de perfil actualizada:', response);
   
           // Actualizar el localStorage directamente
-          const bmFullName = this.authService.getBmFullName();
+          const bmFullName = this.authManagerService.getBmFullName();
           if (bmFullName) {
             bmFullName.profileImage = response.imagePath; // Actualizamos la ruta de la imagen
-            this.authService.setBmFullName(bmFullName); // Guardamos en el localStorage
+            this.authManagerService.setBmFullName(bmFullName); // Guardamos en el localStorage
           }
   
           // Forzar la actualización de la URL en el frontend

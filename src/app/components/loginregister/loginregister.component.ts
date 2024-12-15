@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { AuthUserService } from '../../services/auth-user.service';
+import { AuthManagerService } from '../../services/auth-manager.service';
 import { Router } from '@angular/router';
 import { NavbarComponent } from "../navbar/navbar.component";
 
@@ -46,7 +47,8 @@ export class LoginregisterComponent {
   isError: boolean = false; // Indica si el mensaje es un error
 
   constructor(
-    private authService: AuthService, 
+    private authUserService: AuthUserService,
+    private authManagerService: AuthManagerService,
     private router: Router
   ) {}
 
@@ -80,13 +82,13 @@ export class LoginregisterComponent {
       password: this.loginPassword,
     };
 
-    this.authService.login(credentials).subscribe(
+    this.authUserService.login(credentials).subscribe(
       (response: any) => {
         console.log('Inicio de sesión exitoso:', response);
     
         // Extraer y usar el nombre del usuario
         const userName = response?.name; 
-        this.authService.setUserName(userName); // Guardar el nombre en el estado global
+        this.authUserService.setUserName(userName); // Guardar el nombre en el estado global
     
         // Mostrar mensaje de éxito
         this.displayMessage(`Inicio de sesión exitoso. Bienvenido, ${userName}.`);
@@ -105,31 +107,47 @@ export class LoginregisterComponent {
 
   // Método para registrar un usuario
   onRegister() {
+    console.log('Datos antes de enviar al servicio:', {
+      name: this.registerName,
+      lastName: this.registerLastName,
+      email: this.registerEmail,
+      password: this.registerPassword,
+    });
+  
     const userData = {
       name: this.registerName,
       last_name: this.registerLastName,
       email: this.registerEmail,
       password: this.registerPassword,
     };
-
-    this.authService.register(userData).subscribe(
+  
+    this.authUserService.register(userData).subscribe(
       (response: any) => {
         console.log('Registro exitoso:', response);
-        this.authService.setUserFullName({
-          name: this.registerName,
-          lastName: this.registerLastName,
-          email: this.registerEmail 
-        });
-
-        this.router.navigate(['/area-personal-usuarios']);
+        // Muestra un mensaje de éxito sin actualizar el estado global
+        this.displayMessage('Registro exitoso. Por favor, inicia sesión para continuar.');
+  
+        // Limpia los campos del formulario
+        this.registerName = '';
+        this.registerLastName = '';
+        this.registerEmail = '';
+        this.registerPassword = '';
+  
+        // Redirige al formulario de inicio de sesión
+        this.togglePanel();
       },
       (error: any) => {
         console.error('Error al registrarse:', error);
+        this.displayMessage('Error al registrarse. Intenta de nuevo.', true);
       }
     );
   }
+  
+  
 
-  // Método para iniciar sesión de Business Manager
+
+
+
  // Método para iniciar sesión de Business Manager
 onManagerLogin() {
   const managerCredentials = {
@@ -139,14 +157,18 @@ onManagerLogin() {
 
   console.log('Credenciales enviadas al backend:', managerCredentials); // Log de las credenciales enviadas
 
-  this.authService.loginManager(managerCredentials).subscribe(
+  this.authManagerService.loginManager(managerCredentials).subscribe(
     (response: any) => {
       console.log('Respuesta del backend:', response); // Log de la respuesta exitosa del backend
 
       const managerName = response?.name || 'Manager';
       console.log('Nombre del Business Manager recibido:', managerName); // Log del nombre recibido
 
-      this.authService.setUserName(managerName);
+      this.authManagerService.setBmFullName({
+        name: managerName,
+        lastName: response?.last_name || '',
+        email: response?.email || '',
+      });
 
       this.displayMessage(`Inicio de sesión de Business Manager exitoso. Bienvenido, ${managerName}.`);
 
@@ -180,7 +202,7 @@ onManagerLogin() {
       password: this.managerPassword,
     };
   
-    this.authService.registerManager(managerData).subscribe(
+    this.authManagerService.registerManager(managerData).subscribe(
       (response: any) => {
         console.log('Registro de Business Manager exitoso:', response);
         this.displayMessage('Business Manager registrado exitosamente. Ahora puedes iniciar sesión.');

@@ -65,7 +65,7 @@
 }
 
 .filter {
-  backdrop-filter: blur(15px); /* Efecto de desenfoque */
+  backdrop-filter: blur(5px); /* Efecto de desenfoque */
   background: rgba(255, 255, 255, 0.2); /* Fondo blanco semi-transparente */
   padding: 20px 40px;
   border-radius: 20px; /* Bordes redondeados */
@@ -82,7 +82,7 @@
 .titulo_search {
   font-size: 3em;
   margin: 0;
-  color: rgb(0, 0, 0);
+  color: rgb(3, 121, 70);
 }
 
 .texto_search {

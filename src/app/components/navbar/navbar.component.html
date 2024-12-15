@@ -56,10 +56,34 @@
       
         <!-- Submenú que se muestra según el estado de showDropdown -->
         <ul class="dropdown-menu" [ngClass]="{'show': showDropdown}">
-          <li><a class="dropdown-item" routerLink="/loginregister">Iniciar sesión</a></li>
-          <li><a class="dropdown-item" (click)="logout()">Cerrar sesión</a></li>
-          <li><a class="dropdown-item" routerLink="/area-personal-usuarios">Área personal</a></li>
+          <!-- Opción de Iniciar sesión siempre habilitada -->
+          <li>
+            <a class="dropdown-item" routerLink="/loginregister">Iniciar sesión</a>
+          </li>
+        
+          <!-- Opción de Cerrar sesión deshabilitada si no hay sesión -->
+          <li>
+            <a 
+              class="dropdown-item" 
+              [ngClass]="{'disabled': !isLoggedIn}" 
+              aria-disabled="true" 
+              (click)="isLoggedIn && logout()">
+              Cerrar sesión
+            </a>
+          </li>
+        
+          <!-- Opción de Área personal deshabilitada si no hay sesión -->
+          <li>
+            <a 
+              class="dropdown-item" 
+              [ngClass]="{'disabled': !isLoggedIn}" 
+              aria-disabled="true" 
+              (click)="isLoggedIn && goToAreaPersonal()">
+              Área personal
+            </a>
+          </li>
         </ul>
+        
       </div>
       
       <a href="#" class="navbar-brand ms-3">

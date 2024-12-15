@@ -1,7 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { RouterModule, Router } from '@angular/router'; // Importa Router para redirecciones
+import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth.service';
+import { AuthUserService } from '../../services/auth-user.service';
+import { AuthManagerService } from '../../services/auth-manager.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,61 +15,82 @@ export class NavbarComponent implements OnInit {
   // Propiedades para controlar el diseño dinámico del navbar
   opacity = 0;
   blurAmount = 0;
-  gapSize = 70; // Inicializa el gap a 70px
-  userName: string | null = null; // Variable para el nombre del usuario
-  showDropdown = false; // Estado del submenú desplegable
-  isScrolled = false; // Nueva propiedad para manejar la clase `scrolled`
+  gapSize = 70;
+  userName: string | null = null;
+  showDropdown = false;
+  isScrolled = false;
 
-  constructor(private authService: AuthService, private router: Router) {} // Agrega Router para redirigir tras logout
+  isUserLoggedIn: boolean = false;
+  isManagerLoggedIn: boolean = false;
+  isLoggedIn: boolean = false; // Nueva propiedad que combina ambos estados
+
+  constructor(
+    private authUserService: AuthUserService,
+    private authManagerService: AuthManagerService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    // Suscribirse al estado del nombre del usuario desde AuthService
-    this.authService.userName$.subscribe((name) => {
-      this.userName = name;
+    // Suscribirse al estado del nombre del usuario
+    this.authUserService.userName$.subscribe((name: string | null) => {
+      this.isUserLoggedIn = !!name;
+      this.updateLoggedInState();
+    });
+
+    // Suscribirse al estado del nombre del Business Manager
+    this.authManagerService.userName$.subscribe((managerName: string | null) => {
+      this.isManagerLoggedIn = !!managerName;
+      this.updateLoggedInState();
     });
   }
 
-  // Alterna el estado del submenú desplegable
+  // Actualizar el estado combinado de "logueado"
+  updateLoggedInState(): void {
+    this.isLoggedIn = this.isUserLoggedIn || this.isManagerLoggedIn;
+    this.userName = this.isUserLoggedIn
+      ? this.authUserService.getUserFullName()?.name || null
+      : this.authManagerService.getBmFullName()?.name || null;
+  }
+
   toggleDropdown(): void {
     this.showDropdown = !this.showDropdown;
   }
 
-  // Lógica de logout
-  logout(): void {
-    const confirmation = window.confirm('¿Estás seguro de que deseas cerrar sesión?'); // Mensaje de confirmación
-    if (confirmation) {
-      this.authService.logout(); // Limpia el estado del usuario y el almacenamiento
-      this.router.navigate(['/loginregister']); // Redirige a la página de login
-      this.showDropdown = false; // Cierra el menú desplegable
+  goToAreaPersonal(): void {
+    if (this.isUserLoggedIn) {
+      this.router.navigate(['/area-personal-usuarios']);
+    } else if (this.isManagerLoggedIn) {
+      this.router.navigate(['/area-personal-bm']);
     }
   }
-  
-  
 
-  goToAreaPersonal(): void {
-    this.router.navigate(['/area-personal-usuarios']);
+  logout(): void {
+    const confirmation = window.confirm('¿Estás seguro de que deseas cerrar sesión?');
+    if (confirmation) {
+      this.authUserService.logout();
+      this.authManagerService.logout();
+      this.router.navigate(['/loginregister']);
+      this.showDropdown = false;
+      this.isUserLoggedIn = false;
+      this.isManagerLoggedIn = false;
+      this.isLoggedIn = false;
+      this.userName = null;
+    }
   }
-  
 
-  // Detecta el evento de scroll para cambiar propiedades del navbar
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
-    const scrollOffset = window.scrollY || document.documentElement.scrollTop || 0; // Obtiene la posición de scroll
-    const maxScroll = 200; // Máximo scroll considerado para calcular los efectos
-    const maxOpacity = 0.4; // Máxima opacidad del fondo
-    const maxBlur = 15; // Máximo desenfoque
-    const minGap = 40; // Valor mínimo del gap
-    const initialGap = 70; // Valor inicial del gap
+    const scrollOffset = window.scrollY || document.documentElement.scrollTop || 0;
+    const maxScroll = 200;
+    const maxOpacity = 0.4;
+    const maxBlur = 15;
+    const minGap = 40;
+    const initialGap = 70;
 
-    // Calcula opacidad y desenfoque de manera proporcional al scroll
     this.opacity = Math.min((scrollOffset / maxScroll) * maxOpacity, maxOpacity);
     this.blurAmount = Math.min((scrollOffset / maxScroll) * maxBlur, maxBlur);
-
-    // Calcula el gap dinámico de manera proporcional al scroll
     this.gapSize = initialGap - (scrollOffset / maxScroll) * (initialGap - minGap);
-    this.gapSize = Math.max(this.gapSize, minGap); // Asegura que el gap no sea menor al mínimo
-
-    // Cambia la propiedad `isScrolled` si el scroll supera un umbral (50px)
-    this.isScrolled = scrollOffset > 50; // Cambia a `true` si el scroll es mayor a 50px
+    this.gapSize = Math.max(this.gapSize, minGap);
+    this.isScrolled = scrollOffset > 50;
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
-import { AuthService } from '../../services/auth.service'; // Importar AuthService
+import { AuthUserService } from '../../services/auth-user.service'; // Importar AuthService
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -26,20 +26,20 @@ export class AreaPersonalUsuariosPage implements OnInit {
   userId: number | undefined; // ID del usuario autenticado
   profileImageUrl: string = ''; // URL de la imagen de perfil
 
-  constructor(private authService: AuthService, private router: Router, private http: HttpClient) {}
+  constructor(private authUserService: AuthUserService, private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.loadUserProfile(); // Cargar el perfil del usuario al inicializar el componente
   }
 
   private loadUserProfile(): void {
-    const userFullName = this.authService.getUserFullName();
+    const userFullName = this.authUserService.getUserFullName();
     console.log('Cargando perfil del usuario:', userFullName);
     if (userFullName) {
       this.userName = userFullName.name;
       this.userLastName = userFullName.lastName;
-      this.userEmail = this.authService.getUserEmail() || ''; // Actualizar email si es necesario
-      this.userId = this.authService.getUserId(); // Asegurar que se obtiene el ID
+      this.userEmail = this.authUserService.getUserEmail() || ''; // Actualizar email si es necesario
+      this.userId = this.authUserService.getUserId(); // Asegurar que se obtiene el ID
 
       // Actualizar la URL de la imagen de perfil
       this.profileImageUrl = userFullName.profileImage
@@ -54,7 +54,7 @@ export class AreaPersonalUsuariosPage implements OnInit {
   logout(): void {
     const confirmation = window.confirm('¿Estás seguro de que deseas cerrar sesión?'); // Mensaje de confirmación
     if (confirmation) {
-      this.authService.logout(); // Limpia el estado del usuario y el almacenamiento
+      this.authUserService.logout(); // Limpia el estado del usuario y el almacenamiento
       this.router.navigate(['/loginregister']); // Redirige a la página de login
     }
   }
@@ -72,7 +72,7 @@ export class AreaPersonalUsuariosPage implements OnInit {
       this.http.delete(`http://localhost:3000/api/users/delete/${this.userId}`).subscribe(
         (response: any) => {
           console.log('Cuenta eliminada correctamente:', response.message);
-          this.authService.logout(); // Limpia la sesión y redirige
+          this.authUserService.logout(); // Limpia la sesión y redirige
           this.router.navigate(['/loginregister']);
         },
         (error: any) => {
@@ -137,10 +137,10 @@ export class AreaPersonalUsuariosPage implements OnInit {
           console.log('Imagen de perfil actualizada:', response);
   
           // Actualizar el localStorage directamente
-          const userFullName = this.authService.getUserFullName();
+          const userFullName = this.authUserService.getUserFullName();
           if (userFullName) {
             userFullName.profileImage = response.imagePath; // Actualizamos la ruta de la imagen
-            this.authService.setUserFullName(userFullName); // Guardamos en el localStorage
+            this.authUserService.setUserFullName(userFullName); // Guardamos en el localStorage
           }
   
           // Forzar la actualización de la URL en el frontend

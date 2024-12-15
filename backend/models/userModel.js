@@ -3,8 +3,16 @@ const db = require('../config/db');
 // Crear usuario
 exports.createUser = (userData, callback) => {
   const query = 'INSERT INTO users (name, last_name, email, password) VALUES (?, ?, ?, ?)';
-  db.query(query, [userData.name, userData.last_name, userData.email, userData.password], callback);
-};
+  db.query(query, [userData.name, userData.last_name, userData.email, userData.password], (err, result) => {
+    if (err) {
+      if (err.code === 'ER_DUP_ENTRY') {
+        return callback('El correo ya está registrado.');
+      }
+      return callback('Error al crear el usuario.');
+    }
+    callback(null, result);
+  });
+}  
 
 // Buscar usuario por email
 exports.findUserByEmail = (email, callback) => {

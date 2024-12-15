@@ -28,10 +28,11 @@ exports.register = (req, res) => {
 
     User.createUser({ name, last_name, email, password: hashedPassword }, (err, result) => {
       if (err) {
+        console.error('Error al registrar el usuario:', err);
         return res.status(500).json({ error: 'Error al registrar el usuario' });
       }
       res.status(201).json({ message: 'Usuario registrado exitosamente' });
-    });
+    });    
   });
 };
 
