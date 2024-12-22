@@ -17,4 +17,7 @@ router.put('/update/:id', businessManagerController.updateBm);
 // Ruta para subir la imagen de perfil de un Business Manager
 router.post('/uploadProfileImage', businessManagerController.uploadProfileImage);
 
+// *** NUEVA RUTA: Obtener un Business Manager por ID ***
+router.get('/:id', businessManagerController.getBmById);
+
 module.exports = router;

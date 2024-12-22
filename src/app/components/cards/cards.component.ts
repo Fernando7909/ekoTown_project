@@ -1,19 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { Input } from '@angular/core';
-
+import { HttpClient } from '@angular/common/http';
 
 interface Image {
   url: string;
 }
 interface Card {
-  title: string;
-  foto_gerente: Image;
+  nombre_comercio: string;
+  foto_gerente: { url: string }; // Vuelve a ser un objeto con `url`
   nombre_gerente: string;
-  imagen: Image;
+  imagen: { url: string }; // Vuelve a ser un objeto con `url`
   descripcion: string;
   rating: number;
 }
@@ -31,12 +31,12 @@ interface Card {
   styleUrl: './cards.component.css'
 })
 
-export class CardsComponent {
+export class CardsComponent implements OnInit {
 
   showContent: boolean = true;
   cards: Card[] = [
     {
-      title: '4eco',
+      nombre_comercio: '4eco',
       foto_gerente: { 
         url: "faces/cara01.jpg" 
       },
@@ -48,7 +48,7 @@ export class CardsComponent {
       rating: 2
     },
     {
-      title: 'El Pí',
+      nombre_comercio: 'El Pí',
       foto_gerente: { 
         url: "faces/cara02.jpg" 
       },
@@ -60,7 +60,7 @@ export class CardsComponent {
       rating: 4
     },
     {
-      title: 'Veritas',
+      nombre_comercio: 'Veritas',
       foto_gerente: { 
         url: "faces/cara03.jpg" 
       },
@@ -72,7 +72,7 @@ export class CardsComponent {
       rating: 5
     },
     {
-      title: 'Ecoaliment',
+      nombre_comercio: 'Ecoaliment',
       foto_gerente: { 
         url: "faces/cara04.jpg" 
       },
@@ -84,7 +84,7 @@ export class CardsComponent {
       rating: 3
     },
     {
-      title: 'Linverd',
+      nombre_comercio: 'Linverd',
       foto_gerente: { 
         url: "faces/cara05.jpg" 
       },
@@ -96,7 +96,7 @@ export class CardsComponent {
       rating: 4
     },
     {
-      title: 'Organic Market',
+      nombre_comercio: 'Organic Market',
       foto_gerente: { 
         url: "faces/cara06.jpg" 
       },
@@ -108,7 +108,7 @@ export class CardsComponent {
       rating: 2
     },
     {
-      title: 'BioBarri',
+      nombre_comercio: 'BioBarri',
       foto_gerente: { 
         url: "faces/cara07.jpg" 
       },
@@ -120,7 +120,7 @@ export class CardsComponent {
       rating: 5
     },
     {
-      title: 'IDONI BONCOR',
+      nombre_comercio: 'IDONI BONCOR',
       foto_gerente: { 
         url: "faces/cara08.jpg" 
       },
@@ -136,20 +136,41 @@ export class CardsComponent {
   isModalOpen = false;
   fullDescription = '';
 
-  // Función para obtener una descripción corta
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.loadCardsFromDatabase();
+  }
+
+  loadCardsFromDatabase(): void {
+    this.http.get<Card[]>('http://localhost:3000/api/stores/all').subscribe({
+      next: (data) => {
+        const mappedData = data.map((store) => ({
+          ...store,
+          foto_gerente: { url: `http://localhost:3000/uploads/${store.foto_gerente}` },
+          imagen: { url: `http://localhost:3000/uploads/${store.imagen}` },
+        }));
+        this.cards = [...this.cards, ...mappedData];
+        console.log('Datos cargados desde la base de datos:', mappedData);
+      },
+      error: (error) => {
+        console.error('Error al cargar las tarjetas desde la base de datos:', error);
+      },
+    });
+    
+  }
+
   getShortDescription(description: string): string {
-    const maxLength = 20; // Limita el número de palabras
+    const maxLength = 20;
     const words = description.split(' ');
     return words.length > maxLength ? words.slice(0, maxLength).join(' ') + '...' : description;
   }
 
-  // Función para verificar si la descripción es larga
   isDescriptionLong(description: string): boolean {
-    const maxLength = 20; // Misma longitud que en getShortDescription
+    const maxLength = 20;
     return description.split(' ').length > maxLength;
   }
 
-  // Funciones para abrir y cerrar el modal
   openModal(description: string): void {
     this.fullDescription = description;
     this.isModalOpen = true;
@@ -159,9 +180,8 @@ export class CardsComponent {
     this.isModalOpen = false;
   }
 
-
   /* RATING */
-  @Input() rating: number = 1.0;          // Calificación entre 1 y 5
-  @Input() reviewsCount: number = 1;      // Cantidad de reseñas
-  stars: number[] = [1, 2, 3, 4, 5];      // Para iterar y mostrar estrellas
+  @Input() rating: number = 1.0;
+  @Input() reviewsCount: number = 1;
+  stars: number[] = [1, 2, 3, 4, 5];
 }

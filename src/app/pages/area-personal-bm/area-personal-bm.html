@@ -45,6 +45,7 @@
                     </div>
                 </button>
 
+                
                 <!-- Modal para editar información del Business Manager -->
                 <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -67,6 +68,14 @@
                                         <label for="email" class="form-label">Email</label>
                                         <input type="email" class="form-control" id="email" [(ngModel)]="bmEmail" name="email" required />
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="dni" class="form-label">DNI</label>
+                                        <input type="text" class="form-control" id="dni" [(ngModel)]="bmDNI" name="dni" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="address" class="form-label">Dirección del establecimiento</label>
+                                        <input type="text" class="form-control" id="address" [(ngModel)]="bmAddress" name="address" required />
+                                    </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -76,6 +85,7 @@
                         </div>
                     </div>
                 </div>
+
 
                 <button class="action-button btn btn-light d-flex align-items-center w-100 mb-3" (click)="deleteBmAccount()">
                     <img src="profileIcons/cruz.png" alt="Eliminar cuenta" class="icon me-2">
@@ -119,6 +129,75 @@
                     <div class="text-left">
                         <strong>Tema</strong>
                         <p class="mb-0 small text-muted">Elige el color de tu preferencia</p>
+                    </div>
+                </button>
+            </div>
+
+            <!-- columna COMERCIO -->
+            <div class="col-md-6">
+                <h3 class="text-secondary mb-4">COMERCIO</h3>
+                <button
+                class="action-button btn btn-light d-flex align-items-center w-100 mb-3"
+                data-bs-toggle="modal"
+                data-bs-target="#storeProfileModal">
+                    <img src="profileIcons/tienda.png" alt="Foto Perfil" class="icon me-2" />
+                <div class="text-left">
+                    <strong>Generar perfil</strong>
+                    <p class="mb-0 small text-muted">Crea y edita el perfil de tu tienda</p>
+                </div>
+            </button>
+            </div>
+
+            <!-- Modal creacion comercio -->
+            <div class="modal fade" id="storeProfileModal" tabindex="-1" aria-labelledby="storeProfileModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="storeProfileModalLabel">Crear/Editar Perfil de la Tienda</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        <div class="mb-3">
+                          <label for="storeTitle" class="form-label">Nombre del comercio</label>
+                          <input type="text" class="form-control" id="storeTitle" [(ngModel)]="storeProfile.nombreComercio" name="nombre_comercio" required />
+                        </div>
+                        <div class="mb-3">
+                          <label for="managerPhoto" class="form-label">Foto del Gerente</label>
+                          <input type="file" class="form-control" id="managerPhoto" (change)="onManagerPhotoSelected($event)" />
+                        </div>
+                        <div class="mb-3">
+                          <label for="managerName" class="form-label">Nombre del Gerente</label>
+                          <input type="text" class="form-control" id="managerName" [(ngModel)]="storeProfile.managerName" name="managerName" required />
+                        </div>
+                        <div class="mb-3">
+                          <label for="storeImage" class="form-label">Imagen de la Tienda</label>
+                          <input type="file" class="form-control" id="storeImage" (change)="onStoreImageSelected($event)" />
+                        </div>
+                        <div class="mb-3">
+                          <label for="storeDescription" class="form-label">Descripción</label>
+                          <textarea class="form-control" id="storeDescription" rows="3" [(ngModel)]="storeProfile.description" name="description" required></textarea>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                      <button type="button" class="btn btn-primary" (click)="saveStoreProfile()">Publicar perfil</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+
+            <!-- columna PRODUCTOS -->
+            <div class="col-md-6">
+                <h3 class="text-secondary mb-4">PRODUCTOS</h3>
+                <button
+                    class="action-button btn btn-light d-flex align-items-center w-100 mb-3">
+                        <img src="profileIcons/cesta-de-la-compra.png" alt="Foto Perfil" class="icon me-2" />
+                    <div class="text-left">
+                        <strong>Subir productos</strong>
+                        <p class="mb-0 small text-muted">Publica tus productos en tu perfil personal</p>
                     </div>
                 </button>
             </div>

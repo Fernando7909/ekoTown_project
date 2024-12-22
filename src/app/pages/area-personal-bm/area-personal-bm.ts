@@ -21,30 +21,35 @@ export class AreaPersonalBmPage implements OnInit {
   // Variables para manejar el estado de la vista
   bmName: string = '';
   bmLastName: string = '';
-  bmEmail: string = ''; // Nueva variable para el email
+  bmDNI: string = '';
+  bmAddress: string = '';
+  bmEmail: string = ''; 
   bmStatus: string = 'Activo';
-  bmId: number | undefined; // ID del Business Manager autenticado
-  profileImageUrl: string = ''; // URL de la imagen de perfil
+  bmId: number | undefined; 
+  profileImageUrl: string = ''; 
 
   constructor(private authManagerService: AuthManagerService, private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.loadBmProfile(); // Cargar el perfil del Business Manager al inicializar el componente
+    this.loadBmProfile();
   }
 
   private loadBmProfile(): void {
     const bmFullName = this.authManagerService.getBmFullName();
     console.log('Cargando perfil del Business Manager:', bmFullName);
+  
     if (bmFullName) {
-      this.bmName = bmFullName.name;
-      this.bmLastName = bmFullName.lastName;
-      this.bmEmail = this.authManagerService.getBmEmail() || ''; // Actualizar email si es necesario
-      this.bmId = this.authManagerService.getBmId(); // Asegurar que se obtiene el ID
-
-      // Actualizar la URL de la imagen de perfil
+      this.bmName = bmFullName.name || 'Nombre no disponible';
+      this.bmLastName = bmFullName.lastName || 'Apellido no disponible';
+      this.bmEmail = bmFullName.email || 'Email no disponible';
+      this.bmId = this.authManagerService.getBmId();
+  
+      this.bmDNI = bmFullName.dni || 'DNI no disponible';
+      this.bmAddress = bmFullName.address || 'Dirección no disponible';
+  
       this.profileImageUrl = bmFullName.profileImage
         ? `http://localhost:3000/${bmFullName.profileImage}`
-        : 'profileIcons/usuario.png'; // Imagen por defecto si no hay una imagen subida
+        : 'profileIcons/usuario.png';
     } else {
       console.error('No se encontraron datos del Business Manager. Redirigiendo al login...');
       this.router.navigate(['/login']);
@@ -88,25 +93,33 @@ export class AreaPersonalBmPage implements OnInit {
   saveBmProfile(): void {
     if (!this.bmId) {
       console.error('No se puede actualizar el perfil porque el bmId no está definido.');
+      alert('Error al actualizar el perfil: ID no definido.');
       return;
     }
-
+  
+    if (!this.bmName || !this.bmEmail) {
+      alert('Por favor, completa los campos obligatorios.');
+      return;
+    }
+  
     const updatedBm = {
       name: this.bmName,
       last_name: this.bmLastName,
       email: this.bmEmail,
+      dni: this.bmDNI,
+      address: this.bmAddress,
     };
-
-    this.http.put(`http://localhost:3000/api/business-managers/update/${this.bmId}`, updatedBm).subscribe(
-      (response: any) => {
+  
+    this.http.put(`http://localhost:3000/api/business-managers/update/${this.bmId}`, updatedBm).subscribe({
+      next: (response: any) => {
         console.log('Perfil actualizado:', response.message);
         alert('Perfil actualizado con éxito.');
       },
-      (error: any) => {
+      error: (error: any) => {
         console.error('Error al actualizar el perfil:', error);
-        alert('Error al actualizar el perfil.');
-      }
-    );
+        alert('Error al actualizar el perfil. Por favor, intenta nuevamente.');
+      },
+    });
   }
 
   selectProfileImage(): void {
@@ -157,4 +170,75 @@ export class AreaPersonalBmPage implements OnInit {
       alert('No se seleccionó ningún archivo.');
     }
   }
+
+  // ================= SECCIÓN PARA EL PERFIL DE LA TIENDA =================
+
+  // Variables para el perfil de la tienda
+  storeProfile: {
+    nombreComercio: string;
+    managerPhoto: { file?: File; url: string }; // Añadido soporte para `file`
+    managerName: string;
+    storeImage: { file?: File; url: string }; // Añadido soporte para `file`
+    description: string;
+  } = {
+    nombreComercio: '',
+    managerPhoto: { file: undefined, url: '' },
+    managerName: '',
+    storeImage: { file: undefined, url: '' },
+    description: ''
+  };
+  
+
+  // Métodos para manejar la selección de imágenes
+  onManagerPhotoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      this.storeProfile.managerPhoto = { url: '', file }; // Adjuntar el archivo
+      console.log('Foto del gerente seleccionada:', file.name);
+    }
+  }
+  
+  onStoreImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      this.storeProfile.storeImage = { url: '', file }; // Adjuntar el archivo
+      console.log('Imagen de la tienda seleccionada:', file.name);
+    }
+  }
+  
+
+  // Guardar el perfil de la tienda
+  saveStoreProfile(): void {
+    if (!this.storeProfile.nombreComercio || !this.storeProfile.managerName || !this.storeProfile.description) {
+      alert('Por favor, completa todos los campos obligatorios.');
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('nombre_comercio', this.storeProfile.nombreComercio);
+    formData.append('nombre_gerente', this.storeProfile.managerName);
+    formData.append('descripcion', this.storeProfile.description);
+  
+    // Adjuntar archivos seleccionados
+    if (this.storeProfile.managerPhoto.file) {
+      formData.append('foto_gerente', this.storeProfile.managerPhoto.file);
+    }
+    if (this.storeProfile.storeImage.file) {
+      formData.append('imagen', this.storeProfile.storeImage.file);
+    }
+  
+    this.http.post('http://localhost:3000/api/stores/create', formData).subscribe({
+      next: (response: any) => {
+        console.log('Perfil de la tienda guardado en la base de datos:', response);
+        alert('Perfil de la tienda guardado exitosamente.');
+      },
+      error: (error: any) => {
+        console.error('Error al guardar el perfil de la tienda:', error);
+        alert('Hubo un error al guardar el perfil. Por favor, inténtalo de nuevo.');
+      },
+    });
+  } 
+  
 }

@@ -55,7 +55,7 @@ exports.login = (req, res) => {
       console.error('Error: Business Manager no encontrado para email:', email);
       return res.status(400).json({ error: 'Business Manager no encontrado' });
     }
-
+    console.log('Objeto completo del Business Manager:', manager);
     console.log('Contraseña almacenada en la base de datos:', manager.password);
 
     if (manager.password !== password) {
@@ -74,13 +74,16 @@ exports.login = (req, res) => {
       last_name: manager.last_name,
       email: manager.email,
       profileImage: manager.profile_image || '',
+      dni: manager.dni,           
+      address: manager.address,    
     });
   });
 };
 
+
 // Eliminar Business Manager
 exports.deleteBm = (req, res) => {
-  const bmId = req.params.id; // ID del Business Manager a eliminar
+  const bmId = req.params.id; 
   console.log('ID recibido para eliminación:', bmId);
 
   BusinessManager.deleteBusinessManagerById(bmId, (err, result) => {
@@ -96,25 +99,32 @@ exports.deleteBm = (req, res) => {
 // Actualizar Business Manager
 exports.updateBm = (req, res) => {
   const bmId = req.params.id; // ID del Business Manager a actualizar
-  const { name, last_name, email, address } = req.body; // Nuevos datos del Business Manager
+  const { name, last_name, email, address, dni } = req.body; // Añadir DNI a los datos recibidos
 
-  if (!name || !last_name || !email || !address) {
+  // Validación básica
+  if (!name || !last_name || !email || !address || !dni) {
     return res.status(400).json({ error: 'Todos los campos son obligatorios para la actualización' });
   }
 
   console.log('ID recibido para actualización:', bmId);
-  console.log('Datos recibidos para actualización:', { name, last_name, email, address });
+  console.log('Datos recibidos para actualización:', { name, last_name, email, address, dni });
 
-  BusinessManager.updateBusinessManagerById(bmId, { name, last_name, email, address }, (err, result) => {
-    if (err) {
-      console.error('Error al actualizar Business Manager:', err);
-      return res.status(500).json({ error: 'Error al actualizar el Business Manager' });
+  // Llamar al modelo para actualizar los datos
+  BusinessManager.updateBusinessManagerById(
+    bmId,
+    { name, last_name, email, address, dni }, // Pasar todos los campos
+    (err, result) => {
+      if (err) {
+        console.error('Error al actualizar Business Manager:', err);
+        return res.status(500).json({ error: 'Error al actualizar el Business Manager' });
+      }
+
+      console.log('Resultado de la actualización:', result);
+      res.status(200).json({ message: 'Business Manager actualizado correctamente' });
     }
-
-    console.log('Resultado de la actualización:', result);
-    res.status(200).json({ message: 'Business Manager actualizado correctamente' });
-  });
+  );
 };
+
 
 // Subir imagen de perfil para Business Manager
 exports.uploadProfileImage = [
@@ -150,3 +160,19 @@ exports.findBusinessManagerByEmail = (email, callback) => {
     callback(null, results[0]);
   });
 };
+
+
+// función para obtener los datos del Business Manager por ID:
+exports.getBmById = (req, res) => {
+  const bmId = req.params.id; // Obtener ID desde la URL
+  console.log('ID recibido para obtener datos:', bmId);
+
+  BusinessManager.findBusinessManagerById(bmId, (err, manager) => {
+    if (err) {
+      console.error('Error al recuperar Business Manager:', err);
+      return res.status(500).json({ error: 'Error al obtener datos del Business Manager' });
+    }
+    res.status(200).json(manager);
+  });
+};
+

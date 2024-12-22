@@ -53,14 +53,15 @@ exports.updateBusinessManagerById = (id, updatedData, callback) => {
 
   const query = `
     UPDATE business_managers
-    SET name = ?, last_name = ?, email = ?, address = ?
+    SET name = ?, last_name = ?, email = ?, dni = ?, address = ?
     WHERE id = ?
   `;
   const values = [
     updatedData.name,
     updatedData.last_name,
     updatedData.email,
-    updatedData.address,
+    updatedData.dni,   
+    updatedData.address, 
     id,
   ];
 
@@ -74,6 +75,7 @@ exports.updateBusinessManagerById = (id, updatedData, callback) => {
     callback(null, result);
   });
 };
+
 
 // Eliminar Business Manager por ID
 exports.deleteBusinessManagerById = (id, callback) => {
@@ -104,3 +106,23 @@ exports.updateProfileImage = (id, imagePath, callback) => {
     callback(null, result);
   });
 };
+
+
+// función para obtener los datos del Business Manager por ID:
+exports.findBusinessManagerById = (id, callback) => {
+  console.log('Buscando Business Manager por ID:', id);
+  const query = 'SELECT name, last_name, dni, email, address FROM business_managers WHERE id = ?';
+  db.query(query, [id], (err, results) => {
+    if (err) {
+      console.error('Error al buscar Business Manager por ID:', err);
+      return callback(err);
+    }
+    if (results.length === 0) {
+      console.warn('No se encontró un Business Manager con el ID:', id);
+      return callback('Business Manager no encontrado');
+    }
+    console.log('Business Manager encontrado:', results[0]);
+    callback(null, results[0]);
+  });
+};
+

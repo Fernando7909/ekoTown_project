@@ -7,6 +7,7 @@ const path = require('path');
 // Importar rutas
 const userRoutes = require('./routes/userRoutes');
 const businessManagerRoutes = require('./routes/businessManagerRoutes');
+const storeRoutes = require('./routes/storeRoutes');
 
 dotenv.config();
 const app = express();
@@ -70,6 +71,9 @@ app.use('/api/users', userRoutes);
 
 // Rutas para Business Managers
 app.use('/api/business-managers', businessManagerRoutes);
+
+// Ruta para Stores
+app.use('/api/stores', storeRoutes);
 
 // Configuración del puerto del servidor
 const PORT = process.env.PORT || 3000;
