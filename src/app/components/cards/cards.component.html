@@ -3,15 +3,17 @@
     <mat-card class="example-card" appearance="outlined">
       <mat-card-header>
         <div mat-card-avatar class="foto_gerente">
-          <img [src]="card.foto_gerente.url" alt="Foto de {{ card.nombre_gerente }}">
+          <img [src]="card.foto_gerente" alt="Foto de {{ card.nombre_gerente }}">
         </div>
         <mat-card-title>{{ card.nombre_comercio }}</mat-card-title>
         <mat-card-subtitle>{{ card.nombre_gerente }}</mat-card-subtitle>
       </mat-card-header>
-
+      
       <div class="image-container">
-        <img mat-card-image [src]="card.imagen.url" alt="Photo of {{ card.nombre_comercio }}">
+        <img mat-card-image [src]="card.imagen" alt="Photo of {{ card.nombre_comercio }}">
       </div>
+      
+      
 
       <mat-card-content>
         <!-- Descripción corta con el "enlace" Seguir leyendo -->
