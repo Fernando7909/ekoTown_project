@@ -40,6 +40,8 @@ exports.register = (req, res) => {
   );
 };
 
+
+
 // Inicio de sesión de Business Manager
 exports.login = (req, res) => {
   const { email, password } = req.body;
@@ -56,12 +58,18 @@ exports.login = (req, res) => {
       return res.status(400).json({ error: 'Business Manager no encontrado' });
     }
     console.log('Objeto completo del Business Manager:', manager);
-    console.log('Contraseña almacenada en la base de datos:', manager.password);
 
     if (manager.password !== password) {
       console.error('Contraseña incorrecta para el email:', email);
       return res.status(400).json({ error: 'Contraseña incorrecta' });
     }
+
+    // Construir URL completa para profileImage
+    console.log('Ruta original de profile_image:', manager.profile_image);
+    const profileImageUrl = manager.profile_image && manager.profile_image.trim() !== ''
+      ? `http://localhost:3000/${manager.profile_image.replace(/\\/g, '/')}`
+      : 'profileIcons/usuario.png';
+    console.log('URL construida para profileImage:', profileImageUrl);
 
     const token = jwt.sign({ managerId: manager.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
@@ -73,12 +81,14 @@ exports.login = (req, res) => {
       name: manager.name,
       last_name: manager.last_name,
       email: manager.email,
-      profileImage: manager.profile_image || '',
-      dni: manager.dni,           
-      address: manager.address,    
+      profileImage: profileImageUrl,
+      dni: manager.dni,
+      address: manager.address,
     });
   });
 };
+
+
 
 
 // Eliminar Business Manager
@@ -151,15 +161,23 @@ exports.uploadProfileImage = [
 
 exports.findBusinessManagerByEmail = (email, callback) => {
   const query = 'SELECT * FROM business_managers WHERE email = ?';
+  
   db.query(query, [email], (err, results) => {
-    if (err || results.length === 0) {
-      console.error('Error o resultado vacío al buscar Business Manager por email:', email);
-      return callback('Business Manager no encontrado');
+    if (err) {
+      console.error('Error al buscar Business Manager por email:', err);
+      return callback(err); // Retorna el error en caso de fallo en la consulta
     }
-    console.log('Business Manager recuperado:', results[0]); // Log de los resultados
-    callback(null, results[0]);
+
+    if (results.length === 0) {
+      console.warn('No se encontró un Business Manager con el email:', email);
+      return callback('Business Manager no encontrado'); // Mensaje claro si no se encuentra el usuario
+    }
+
+    console.log('Business Manager recuperado:', results[0]); // Log del resultado encontrado
+    callback(null, results[0]); // Devuelve el resultado encontrado
   });
 };
+
 
 
 // función para obtener los datos del Business Manager por ID:

@@ -11,11 +11,13 @@
                 <div class="profile-header d-flex align-items-center border border-secondary rounded p-3">
                     <!-- Imagen de perfil dinámica -->
                     <img
-                        [src]="profileImageUrl || 'avatar_face.png'" 
-                        alt="Avatar de Business Manager" 
+                        [src]="profileImageUrl || 'avatar_face.png'"
+                        (error)="profileImageUrl = 'avatar_face.png'"
+                        alt="Avatar de Business Manager"
                         class="avatar me-3"
                         style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;"
                     >
+
                     <div class="profile-info">
                         <h2 class="mb-1">{{ bmName }} {{ bmLastName }}</h2>
                         <span class="badge bg-primary">Business Manager</span>
@@ -136,57 +138,158 @@
             <!-- columna COMERCIO -->
             <div class="col-md-6">
                 <h3 class="text-secondary mb-4">COMERCIO</h3>
+                <!-- Botón para generar perfil -->
                 <button
-                class="action-button btn btn-light d-flex align-items-center w-100 mb-3"
-                data-bs-toggle="modal"
-                data-bs-target="#storeProfileModal">
+                    class="action-button btn btn-light d-flex align-items-center w-100 mb-3"
+                    [disabled]="storeExists" 
+                    data-bs-toggle="modal"
+                    data-bs-target="#storeProfileModal">
                     <img src="profileIcons/tienda.png" alt="Foto Perfil" class="icon me-2" />
-                <div class="text-left">
-                    <strong>Generar perfil</strong>
-                    <p class="mb-0 small text-muted">Crea y edita el perfil de tu tienda</p>
-                </div>
-            </button>
+                    <div class="text-left">
+                        <strong>Generar perfil</strong>
+                        <p class="mb-0 small text-muted">Crea el perfil de tu tienda</p>
+                    </div>
+                </button>
+
+                <!-- Botón para editar perfil -->
+                <button
+                    class="action-button btn btn-light d-flex align-items-center w-100 mb-3"
+                    [disabled]="!storeExists"
+                    (click)="checkIfStoreExists()"
+                    data-bs-toggle="modal"
+                    data-bs-target="#storeProfileModal">
+                    <img src="profileIcons/editar.png" alt="Foto Perfil" class="icon me-2" />
+                    <div class="text-left">
+                        <strong>Editar perfil</strong>
+                        <p class="mb-0 small text-muted">Edita el perfil de tu tienda</p>
+                    </div>
+                </button>
+
+
+                <button
+                    class="action-button btn btn-light d-flex align-items-center w-100 mb-3"
+                    [disabled]="!storeExists"
+                    (click)="deleteStoreProfile()">
+                    <img src="profileIcons/eliminar-producto.png" alt="Foto Perfil" class="icon me-2" />
+                    <div class="text-left">
+                        <strong>Eliminar tienda</strong>
+                        <p class="mb-0 small text-muted">Eliminar la publicación de tu tienda</p>
+                    </div>
+                </button>
             </div>
 
-            <!-- Modal creacion comercio -->
+
+
+            
+            <!-- Modal creacion/edicion comercio -->
             <div class="modal fade" id="storeProfileModal" tabindex="-1" aria-labelledby="storeProfileModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                  <div class="modal-content">
+                <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="storeProfileModalLabel">Crear/Editar Perfil de la Tienda</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="storeProfileModalLabel">
+                        {{ editStoreMode ? 'Editar perfil de la Tienda' : 'Crear perfil de la Tienda' }}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      <form>
+                    <form>
+                        <!-- Nombre del comercio -->
                         <div class="mb-3">
-                          <label for="storeTitle" class="form-label">Nombre del comercio</label>
-                          <input type="text" class="form-control" id="storeTitle" [(ngModel)]="storeProfile.nombreComercio" name="nombre_comercio" required />
+                        <label for="storeTitle" class="form-label">Nombre del comercio</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="storeTitle"
+                            [(ngModel)]="storeProfile.nombreComercio"
+                            name="nombre_comercio"
+                            required
+                        />
                         </div>
+                        
+                        <!-- Foto del gerente -->
                         <div class="mb-3">
-                          <label for="managerPhoto" class="form-label">Foto del Gerente</label>
-                          <input type="file" class="form-control" id="managerPhoto" (change)="onManagerPhotoSelected($event)" />
-                        </div>
+                            <label for="managerPhoto" class="form-label">Foto del Gerente</label>
+                            <img
+                              *ngIf="storeProfile.managerPhoto.url"
+                              [src]="storeProfile.managerPhoto.url"
+                              alt="Foto del Gerente"
+                              class="img-thumbnail mt-2"
+                              style="max-height: 100px;"
+                            />
+                            <input
+                              type="file"
+                              class="form-control"
+                              id="managerPhoto"
+                              (change)="onManagerPhotoSelected($event)"
+                            />
+                            <input
+                              type="hidden"
+                              [value]="storeProfile.managerPhoto.url"
+                              name="foto_gerente_actual"
+                            />
+                          </div>
+                        <!-- Nombre del gerente -->
                         <div class="mb-3">
-                          <label for="managerName" class="form-label">Nombre del Gerente</label>
-                          <input type="text" class="form-control" id="managerName" [(ngModel)]="storeProfile.managerName" name="managerName" required />
+                        <label for="managerName" class="form-label">Nombre del Gerente</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="managerName"
+                            [(ngModel)]="storeProfile.managerName"
+                            name="managerName"
+                            required
+                        />
                         </div>
+                        <!-- Imagen de la tienda -->
                         <div class="mb-3">
-                          <label for="storeImage" class="form-label">Imagen de la Tienda</label>
-                          <input type="file" class="form-control" id="storeImage" (change)="onStoreImageSelected($event)" />
-                        </div>
+                            <label for="storeImage" class="form-label">Imagen de la Tienda</label>
+                            <img
+                              *ngIf="storeProfile.storeImage.url"
+                              [src]="storeProfile.storeImage.url"
+                              alt="Imagen de la Tienda"
+                              class="img-thumbnail mt-2"
+                              style="max-height: 100px;"
+                            />
+                            <input
+                              type="file"
+                              class="form-control"
+                              id="storeImage"
+                              (change)="onStoreImageSelected($event)"
+                            />
+                            <input
+                              type="hidden"
+                              [value]="storeProfile.storeImage.url"
+                              name="imagen_actual"
+                            />
+                          </div>
+                        <!-- Descripción -->
                         <div class="mb-3">
-                          <label for="storeDescription" class="form-label">Descripción</label>
-                          <textarea class="form-control" id="storeDescription" rows="3" [(ngModel)]="storeProfile.description" name="description" required></textarea>
+                        <label for="storeDescription" class="form-label">Descripción</label>
+                        <textarea
+                            class="form-control"
+                            id="storeDescription"
+                            rows="3"
+                            [(ngModel)]="storeProfile.description"
+                            name="description"
+                            required
+                        ></textarea>
                         </div>
-                      </form>
+                    </form>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                      <button type="button" class="btn btn-primary" (click)="saveStoreProfile()">Publicar perfil</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        (click)="saveStoreProfile()"
+                    >
+                        {{ editStoreMode ? 'Guardar cambios' : 'Publicar perfil' }}
+                    </button>
                     </div>
-                  </div>
                 </div>
-              </div>
+                </div>
+            </div>
+  
               
 
             <!-- columna PRODUCTOS -->

@@ -69,20 +69,24 @@ export class AuthManagerService {
   }): void {
     console.log('Objeto recibido en setBmFullName:', fullName);
   
+    // Mantener los valores existentes si los nuevos están vacíos o nulos
     this.bmFullName = { 
-      name: fullName.name || '',
-      lastName: fullName.lastName || '',
-      email: fullName.email || '',
-      profileImage: fullName.profileImage || '',
-      dni: fullName.dni ? fullName.dni : this.bmFullName?.dni || '', // No sobrescribir si ya existe un valor válido
-      address: fullName.address ? fullName.address : this.bmFullName?.address || '' // Igual para dirección
+      name: fullName.name || this.bmFullName?.name || '',
+      lastName: fullName.lastName || this.bmFullName?.lastName || '',
+      email: fullName.email || this.bmFullName?.email || '',
+      profileImage: fullName.profileImage && fullName.profileImage.trim() !== ''
+        ? fullName.profileImage
+        : this.bmFullName?.profileImage || '', // No sobrescribas si el valor nuevo está vacío
+      dni: fullName.dni || this.bmFullName?.dni || '', 
+      address: fullName.address || this.bmFullName?.address || '' 
     };
   
     console.log('Objeto final antes de guardar en localStorage:', this.bmFullName);
     localStorage.setItem('bmFullName', JSON.stringify(this.bmFullName));
-    this.setManagerName(fullName.name);
     console.log('Guardado en localStorage:', localStorage.getItem('bmFullName'));
   }
+  
+  
   
 
 
@@ -132,35 +136,38 @@ export class AuthManagerService {
       tap((response: any) => {
         // Log de la respuesta completa del backend
         console.log('Respuesta completa del backend en loginManager:', response);
-
+  
+        // Verificar si el backend envía correctamente profileImage
+        console.log('profileImage recibido del backend:', response.profileImage);
+  
         // Preparar el objeto fullName
         const fullName = {
           name: response?.name || '',
           lastName: response?.last_name || '',
           email: response?.email || '',
-          profileImage: response?.profileImage || '',
+          profileImage: response?.profileImage || 'profileIcons/usuario.png', // Usar directamente la URL del backend o la imagen predeterminada
           dni: response?.dni || '',
           address: response?.address || '',
         };
-        
-
+  
         // Log del objeto fullName antes de guardarlo
         console.log('Objeto fullName antes de guardarlo en localStorage:', fullName);
-
+  
         // Guardar token en localStorage
         console.log('Guardando token en localStorage:', response.token);
         localStorage.setItem('token', response.token);
-
+  
         // Llamada a setBmFullName con el objeto completo
         console.log('Llamando a setBmFullName con el objeto:', fullName);
         this.setBmFullName(fullName);
-
+  
         // Actualizar el BehaviorSubject del nombre
         console.log('Actualizando el nombre en BehaviorSubject:', response.name || '');
         this.setManagerName(response.name || '');
       })
     );
   }
+  
 
   
 

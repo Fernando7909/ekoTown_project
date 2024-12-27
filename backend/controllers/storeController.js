@@ -5,17 +5,17 @@ const Store = require('../models/storeModel');
 // Configuración de Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Carpeta donde se guardarán las imágenes
+    cb(null, 'uploads/');
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname)); // Nombre único
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
   },
 });
 
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // Limitar tamaño del archivo a 5MB
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
     if (allowedTypes.includes(file.mimetype)) {
@@ -29,16 +29,14 @@ const upload = multer({
 // Middleware de manejo de errores para Multer
 const handleMulterErrors = (err, req, res, next) => {
   if (err instanceof multer.MulterError) {
-    console.error('Error de Multer:', err.message);
     return res.status(400).json({ error: `Error de subida: ${err.message}` });
   } else if (err) {
-    console.error('Error en Multer:', err.message);
     return res.status(400).json({ error: err.message });
   }
   next();
 };
 
-// Crear Store con manejo de imágenes
+// Crear Store asegurando que el ID sea único por Business Manager
 exports.createStore = [
   upload.fields([
     { name: 'foto_gerente', maxCount: 1 },
@@ -46,41 +44,55 @@ exports.createStore = [
   ]),
   handleMulterErrors, // Manejar errores de subida
   (req, res) => {
-    console.log('Datos recibidos para crear comercio:', req.body);
+    const businessManagerId = req.body.businessManagerId; // ID del Business Manager
 
-    // Validar campos obligatorios
-    if (!req.body.nombre_comercio || !req.body.nombre_gerente || !req.body.descripcion) {
-      return res.status(400).json({ error: 'Faltan campos obligatorios' });
+    // Validar que el ID del Business Manager esté presente
+    if (!businessManagerId) {
+      return res.status(400).json({ error: 'El ID del Business Manager es obligatorio' });
     }
 
-    const storeData = {
-      nombre_comercio: req.body.nombre_comercio,
-      foto_gerente: req.files['foto_gerente'] ? req.files['foto_gerente'][0].filename : null,
-      nombre_gerente: req.body.nombre_gerente,
-      imagen: req.files['imagen'] ? req.files['imagen'][0].filename : null,
-      descripcion: req.body.descripcion,
-      rating: req.body.rating || 0, // Valor por defecto
-    };
-
-    Store.createStore(storeData, (err, result) => {
+    // Verificar si ya existe una tienda asociada al Business Manager
+    Store.getStoreByBusinessManager(businessManagerId, (err, existingStore) => {
       if (err) {
-        console.error('Error al crear el comercio:', err);
-        return res.status(500).json({ error: 'Error al crear el comercio' });
+        console.error('Error al verificar la existencia de la tienda:', err);
+        return res.status(500).json({ error: 'Error al verificar la existencia de la tienda' });
       }
-      res.status(201).json({ message: 'Comercio creado exitosamente', storeId: result.insertId });
+
+      if (existingStore) {
+        return res.status(400).json({ error: 'Ya existe una tienda asociada a este Business Manager' });
+      }
+
+      // Crear los datos de la tienda si no existe
+      const storeData = {
+        id: businessManagerId, // Usar el mismo ID que el Business Manager
+        nombre_comercio: req.body.nombre_comercio,
+        foto_gerente: req.files['foto_gerente'] ? req.files['foto_gerente'][0].filename : null,
+        nombre_gerente: req.body.nombre_gerente,
+        imagen: req.files['imagen'] ? req.files['imagen'][0].filename : null,
+        descripcion: req.body.descripcion,
+        rating: req.body.rating || 0, // Valor por defecto
+      };
+
+      // Crear la tienda en la base de datos
+      Store.createStore(storeData, (err, result) => {
+        if (err) {
+          console.error('Error al crear el comercio:', err);
+          return res.status(500).json({ error: 'Error al crear el comercio' });
+        }
+        res.status(201).json({ message: 'Comercio creado exitosamente', storeId: result.insertId });
+      });
     });
   },
 ];
+
 
 // Obtener todos los Stores
 exports.getAllStores = (req, res) => {
   Store.getAllStores((err, stores) => {
     if (err) {
-      console.error('Error al obtener los comercios:', err);
       return res.status(500).json({ error: 'Error al obtener comercios' });
     }
 
-    // Agregar la URL completa para los archivos antes de enviar al cliente
     const storesWithImagePaths = stores.map((store) => ({
       ...store,
       foto_gerente: store.foto_gerente
@@ -90,9 +102,109 @@ exports.getAllStores = (req, res) => {
         ? `http://localhost:3000/uploads/${store.imagen}`.replace(/\\/g, '/')
         : null,
     }));
-    
 
-    console.log('Comercios enviados al frontend:', storesWithImagePaths); // DEBUG
     res.status(200).json(storesWithImagePaths);
   });
 };
+
+// Obtener la tienda asociada a un Business Manager
+exports.getStoreByBusinessManager = (req, res) => {
+  const businessManagerId = req.params.businessManagerId;
+
+  Store.getStoreByBusinessManager(businessManagerId, (err, store) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error al obtener la tienda' });
+    }
+
+    if (!store) {
+      return res.status(404).json({ message: 'No se encontró una tienda para este Business Manager' });
+    }
+
+    res.status(200).json({ store });
+  });
+};
+
+
+// Eliminar tienda por Business Manager ID
+exports.deleteStore = (req, res) => {
+  const storeId = req.params.id;
+
+  Store.deleteStoreById(storeId, (err, result) => {
+      if (err) {
+          console.error('Error al eliminar la tienda:', err);
+          return res.status(500).json({ error: 'Error al eliminar la tienda', details: err.message });
+      }
+
+      if (result.affectedRows === 0) {
+          return res.status(404).json({ error: 'Tienda no encontrada' });
+      }
+
+      res.status(200).json({ message: 'Tienda eliminada con éxito' });
+  });
+};
+
+
+// Actualizar la tienda con soporte para archivos
+exports.updateStore = [
+  upload.fields([
+    { name: 'foto_gerente', maxCount: 1 },
+    { name: 'imagen', maxCount: 1 },
+  ]),
+  (req, res) => {
+    const storeId = req.params.id;
+
+    // Validar si el ID está presente
+    console.log('ID recibido para actualización:', storeId);
+    if (!storeId) {
+      console.error('Error: No se proporcionó un ID para la tienda.');
+      return res.status(400).json({ error: 'El ID de la tienda es obligatorio' });
+    }
+
+    // Preparar datos de actualización
+    console.log('Cuerpo recibido:', req.body);
+    const updatedData = {
+      nombre_comercio: req.body.nombre_comercio,
+      nombre_gerente: req.body.nombre_gerente,
+      descripcion: req.body.descripcion,
+      rating: req.body.rating || 0,
+    };
+
+    // Manejar las imágenes
+    console.log('Archivos subidos:', req.files);
+    updatedData.foto_gerente = req.files['foto_gerente']
+      ? req.files['foto_gerente'][0].filename
+      : req.body.foto_gerente_actual; // Usar imagen actual si no se subió una nueva
+    updatedData.imagen = req.files['imagen']
+      ? req.files['imagen'][0].filename
+      : req.body.imagen_actual; // Usar imagen actual si no se subió una nueva
+
+    console.log('Datos preparados para actualización:', updatedData);
+
+    // Llamar al modelo para actualizar la tienda
+    Store.updateStore({ id: storeId, ...updatedData }, (err, result) => {
+      if (err) {
+        console.error('Error al actualizar la tienda:', err);
+        return res.status(500).json({ error: 'Error al actualizar la tienda' });
+      }
+
+      console.log('Resultado de la actualización:', result);
+
+      if (result.affectedRows === 0) {
+        console.warn('Advertencia: No se encontró la tienda con el ID proporcionado para actualizar.');
+        return res.status(404).json({ message: 'No se encontró la tienda para actualizar' });
+      }
+
+      console.log('Actualización exitosa de la tienda con ID:', storeId);
+      res.status(200).json({ message: 'Tienda actualizada exitosamente' });
+    });
+  },
+];
+
+
+
+
+
+
+
+
+

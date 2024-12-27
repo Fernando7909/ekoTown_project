@@ -5,6 +5,7 @@ import { AuthManagerService } from '../../services/auth-manager.service'; // Imp
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-area-personal-bm',
@@ -15,6 +16,7 @@ import { FormsModule } from '@angular/forms';
     NavbarComponent,
     FooterComponent,
     FormsModule,
+    CommonModule
   ]
 })
 export class AreaPersonalBmPage implements OnInit {
@@ -28,11 +30,28 @@ export class AreaPersonalBmPage implements OnInit {
   bmId: number | undefined; 
   profileImageUrl: string = ''; 
 
+  storeExists: boolean = false; // Controla si ya existe una tienda
+  editStoreMode: boolean = false; // Define si el modo de edición está activado
+
+
   constructor(private authManagerService: AuthManagerService, private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.loadBmProfile();
+    this.checkIfStoreExists();
   }
+
+  resetStoreProfile(): void {
+    this.storeProfile = {
+      nombreComercio: '',
+      managerPhoto: { file: undefined, url: '' },
+      managerName: '',
+      storeImage: { file: undefined, url: '' },
+      description: '',
+    };
+    this.editStoreMode = false; // Asegurarte de que el modo de edición está desactivado
+  }
+  
 
   private loadBmProfile(): void {
     const bmFullName = this.authManagerService.getBmFullName();
@@ -43,18 +62,20 @@ export class AreaPersonalBmPage implements OnInit {
       this.bmLastName = bmFullName.lastName || 'Apellido no disponible';
       this.bmEmail = bmFullName.email || 'Email no disponible';
       this.bmId = this.authManagerService.getBmId();
-  
       this.bmDNI = bmFullName.dni || 'DNI no disponible';
       this.bmAddress = bmFullName.address || 'Dirección no disponible';
   
       this.profileImageUrl = bmFullName.profileImage
-        ? `http://localhost:3000/${bmFullName.profileImage}`
+        ? bmFullName.profileImage
         : 'profileIcons/usuario.png';
+  
+      console.log('Valor de profileImageUrl:', this.profileImageUrl); // Añadir este log
     } else {
       console.error('No se encontraron datos del Business Manager. Redirigiendo al login...');
       this.router.navigate(['/login']);
     }
   }
+  
 
   logout(): void {
     const confirmation = window.confirm('¿Estás seguro de que deseas cerrar sesión?'); // Mensaje de confirmación
@@ -122,6 +143,40 @@ export class AreaPersonalBmPage implements OnInit {
     });
   }
 
+
+  // Eliminar tienda
+  deleteStoreProfile(): void {
+    if (!this.bmId) {
+      console.error('No se puede eliminar la tienda porque el ID del Business Manager no está definido.');
+      alert('Error: No se puede eliminar la tienda.');
+      return;
+    }
+  
+    const confirmation = window.confirm('¿Estás seguro de que deseas eliminar tu tienda? Esta acción no se puede deshacer.');
+    if (confirmation) {
+      this.http.delete(`http://localhost:3000/api/stores/delete/${this.bmId}`).subscribe({
+        next: (response: any) => {
+          console.log('Tienda eliminada correctamente:', response);
+          alert('Tienda eliminada exitosamente.');
+          this.storeExists = false; // Actualiza el estado para reflejar que la tienda ha sido eliminada
+          this.storeProfile = {
+            nombreComercio: '',
+            managerPhoto: { file: undefined, url: '' },
+            managerName: '',
+            storeImage: { file: undefined, url: '' },
+            description: ''
+          };
+        },
+        error: (error: any) => {
+          console.error('Error al eliminar la tienda:', error);
+          alert('Error al intentar eliminar la tienda.');
+        }
+      });
+    }
+  }
+  
+  
+
   selectProfileImage(): void {
     // Simula un clic en el input de tipo file
     const fileInput = document.getElementById('profileImageInput') as HTMLInputElement;
@@ -171,6 +226,10 @@ export class AreaPersonalBmPage implements OnInit {
     }
   }
 
+
+
+
+  
   // ================= SECCIÓN PARA EL PERFIL DE LA TIENDA =================
 
   // Variables para el perfil de la tienda
@@ -194,8 +253,10 @@ export class AreaPersonalBmPage implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
-      this.storeProfile.managerPhoto = { url: '', file }; // Adjuntar el archivo
-      console.log('Foto del gerente seleccionada:', file.name);
+      this.storeProfile.managerPhoto = {
+        file: file, // Actualiza el archivo seleccionado
+        url: URL.createObjectURL(file), // Vista previa de la imagen
+      };
     }
   }
   
@@ -203,42 +264,127 @@ export class AreaPersonalBmPage implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
-      this.storeProfile.storeImage = { url: '', file }; // Adjuntar el archivo
-      console.log('Imagen de la tienda seleccionada:', file.name);
+      this.storeProfile.storeImage = {
+        file: file, // Actualiza el archivo seleccionado
+        url: URL.createObjectURL(file), // Vista previa de la imagen
+      };
     }
   }
   
+  
+  
 
-  // Guardar el perfil de la tienda
-  saveStoreProfile(): void {
-    if (!this.storeProfile.nombreComercio || !this.storeProfile.managerName || !this.storeProfile.description) {
-      alert('Por favor, completa todos los campos obligatorios.');
-      return;
-    }
+ // Guardar perfil de la tienda (creación o edición según el caso)
+ saveStoreProfile(): void {
+  if (!this.storeProfile.nombreComercio || !this.storeProfile.managerName || !this.storeProfile.description) {
+    alert('Por favor, completa todos los campos obligatorios.');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('businessManagerId', this.bmId?.toString() || '');
+  formData.append('nombre_comercio', this.storeProfile.nombreComercio);
+  formData.append('nombre_gerente', this.storeProfile.managerName);
+  formData.append('descripcion', this.storeProfile.description);
+
+  // Adjuntar nuevas imágenes o mantener las actuales
+  if (this.storeProfile.managerPhoto.file) {
+    formData.append('foto_gerente', this.storeProfile.managerPhoto.file);
+  } else if (this.storeProfile.managerPhoto.url) {
+    formData.append('foto_gerente_actual', this.storeProfile.managerPhoto.url);
+  }
+
+  if (this.storeProfile.storeImage.file) {
+    formData.append('imagen', this.storeProfile.storeImage.file);
+  } else if (this.storeProfile.storeImage.url) {
+    formData.append('imagen_actual', this.storeProfile.storeImage.url);
+  }
+
+  const apiUrl = this.editStoreMode
+    ? `http://localhost:3000/api/stores/update/${this.bmId}`
+    : 'http://localhost:3000/api/stores/create';
+
+  const requestMethod = this.editStoreMode ? this.http.put : this.http.post;
+
+  requestMethod.call(this.http, apiUrl, formData).subscribe({
+    next: (response: any) => {
+      console.log('Perfil de la tienda actualizado:', response);
+      alert(
+        this.editStoreMode
+          ? 'Perfil de la tienda actualizado con éxito.'
+          : 'Perfil de la tienda guardado exitosamente.'
+      );
+      this.checkIfStoreExists(); // Refrescar datos
+    },
+    error: (error: any) => {
+      console.error('Error al guardar el perfil de la tienda:', error);
+      alert('Hubo un error al guardar el perfil. Por favor, inténtalo de nuevo.');
+    },
+  });
+}
+
+
+
+getFileName(url: string): string {
+  return url.split('/').pop() || 'Archivo no disponible';
+}
   
-    const formData = new FormData();
-    formData.append('nombre_comercio', this.storeProfile.nombreComercio);
-    formData.append('nombre_gerente', this.storeProfile.managerName);
-    formData.append('descripcion', this.storeProfile.description);
   
-    // Adjuntar archivos seleccionados
-    if (this.storeProfile.managerPhoto.file) {
-      formData.append('foto_gerente', this.storeProfile.managerPhoto.file);
-    }
-    if (this.storeProfile.storeImage.file) {
-      formData.append('imagen', this.storeProfile.storeImage.file);
-    }
+
+
+  // Método para verificar si ya existe la tienda
+  checkIfStoreExists(): void {
+    const businessManagerId = this.authManagerService.getBmId(); // Obtener el ID del usuario actual
+    console.log('ID del Business Manager:', businessManagerId);
   
-    this.http.post('http://localhost:3000/api/stores/create', formData).subscribe({
+    this.http.get(`http://localhost:3000/api/stores/${businessManagerId}`).subscribe({
       next: (response: any) => {
-        console.log('Perfil de la tienda guardado en la base de datos:', response);
-        alert('Perfil de la tienda guardado exitosamente.');
+        console.log('Respuesta de la API:', response);
+  
+        if (response && response.store) { // Verifica si la respuesta contiene un objeto store
+          const store = response.store;
+  
+          // Validar los campos que llegan desde el backend
+          const fotoGerente = store.foto_gerente || '';
+          const imagenTienda = store.imagen || '';
+  
+          console.log('Ruta de foto del gerente:', fotoGerente);
+          console.log('Ruta de imagen de la tienda:', imagenTienda);
+  
+          this.storeExists = true; // Si existe la tienda, habilitar "Editar" y deshabilitar "Generar"
+          this.editStoreMode = true; // Activar el modo de edición
+  
+          // Precargar los datos de la tienda en el formulario
+          this.storeProfile = {
+            nombreComercio: store.nombre_comercio || '',
+            managerPhoto: {
+              file: undefined, // No cargamos un archivo aquí
+              url: fotoGerente ? `http://localhost:3000/uploads/${fotoGerente}` : '', // URL completa de la imagen
+            },
+            managerName: store.nombre_gerente || '',
+            storeImage: {
+              file: undefined, // No cargamos un archivo aquí
+              url: imagenTienda ? `http://localhost:3000/uploads/${imagenTienda}` : '', // URL completa de la imagen
+            },
+            description: store.descripcion || '',
+          };
+  
+          console.log('Datos cargados para edición:', this.storeProfile);
+        } else {
+          console.error('La respuesta no contiene datos de la tienda:', response);
+        }
       },
-      error: (error: any) => {
-        console.error('Error al guardar el perfil de la tienda:', error);
-        alert('Hubo un error al guardar el perfil. Por favor, inténtalo de nuevo.');
+      error: (err) => {
+        if (err.status === 404) {
+          this.storeExists = false; // No existe la tienda, habilitar "Generar" y deshabilitar "Editar"
+          this.editStoreMode = false; // Desactivar el modo de edición
+          console.log('No se encontró una tienda para este Business Manager.');
+        } else {
+          console.error('Error al verificar si existe la tienda:', err);
+        }
       },
     });
-  } 
+  }
+   
   
 }

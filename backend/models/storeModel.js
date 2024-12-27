@@ -1,5 +1,6 @@
 const db = require('../config/db');
 
+// Crear una tienda asociada a un Business Manager
 exports.createStore = (storeData, callback) => {
   console.log('Datos recibidos para crear comercio en el modelo:', storeData);
 
@@ -11,10 +12,11 @@ exports.createStore = (storeData, callback) => {
   }
 
   const query = `
-    INSERT INTO stores (nombre_comercio, foto_gerente, nombre_gerente, imagen, descripcion, rating)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO stores (id, nombre_comercio, foto_gerente, nombre_gerente, imagen, descripcion, rating)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
   const values = [
+    storeData.id, // ID del Business Manager
     storeData.nombre_comercio,
     storeData.foto_gerente || null, // Permitir valores nulos para columnas opcionales
     storeData.nombre_gerente,
@@ -33,6 +35,8 @@ exports.createStore = (storeData, callback) => {
   });
 };
 
+
+// Obtener todas las tiendas
 exports.getAllStores = (callback) => {
   console.log('Recuperando todos los comercios de la base de datos');
   const query = 'SELECT * FROM stores';
@@ -46,3 +50,62 @@ exports.getAllStores = (callback) => {
     callback(null, results);
   });
 };
+
+// Obtener una tienda por el ID del Business Manager
+exports.getStoreByBusinessManager = (businessManagerId, callback) => {
+  const query = 'SELECT * FROM stores WHERE id = ? LIMIT 1';
+  db.query(query, [businessManagerId], (err, results) => {
+    if (err) {
+      console.error('Error al obtener la tienda:', err.message);
+      return callback(err, null);
+    }
+    callback(null, results[0]); // Devuelve la primera tienda encontrada
+  });
+};
+
+
+// Actualizar tienda
+exports.updateStore = (storeData, callback) => {
+  const query = `
+    UPDATE stores 
+    SET nombre_comercio = ?, foto_gerente = ?, nombre_gerente = ?, imagen = ?, descripcion = ?, rating = ?
+    WHERE id = ?
+  `;
+  const values = [
+    storeData.nombre_comercio,
+    storeData.foto_gerente || null,
+    storeData.nombre_gerente,
+    storeData.imagen || null,
+    storeData.descripcion,
+    storeData.rating || 0,
+    storeData.id,
+  ];
+
+  db.query(query, values, (err, result) => {
+    if (err) {
+      console.error('Error al actualizar la tienda:', err.message, err.stack);
+      return callback(err);
+    }
+    callback(null, result);
+  });
+};
+
+
+
+// Eliminar una tienda por su ID
+exports.deleteStoreById = (storeId, callback) => {
+  const query = 'DELETE FROM stores WHERE id = ?';
+  db.query(query, [storeId], (err, result) => {
+    if (err) {
+      console.error('Error al eliminar la tienda:', err.message);
+      return callback(err, null);
+    }
+    callback(null, result);
+  });
+};
+
+
+
+
+
+

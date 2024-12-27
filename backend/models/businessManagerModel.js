@@ -111,7 +111,7 @@ exports.updateProfileImage = (id, imagePath, callback) => {
 // función para obtener los datos del Business Manager por ID:
 exports.findBusinessManagerById = (id, callback) => {
   console.log('Buscando Business Manager por ID:', id);
-  const query = 'SELECT name, last_name, dni, email, address FROM business_managers WHERE id = ?';
+  const query = 'SELECT name, last_name, dni, email, address, profile_image FROM business_managers WHERE id = ?';
   db.query(query, [id], (err, results) => {
     if (err) {
       console.error('Error al buscar Business Manager por ID:', err);
@@ -125,4 +125,5 @@ exports.findBusinessManagerById = (id, callback) => {
     callback(null, results[0]);
   });
 };
+
 
