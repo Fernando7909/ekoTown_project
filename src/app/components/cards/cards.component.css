@@ -1,90 +1,168 @@
-/* Estilos Cards tiendas */
+/* Contenedor principal de las tarjetas */
+.card-container {
+  display: flex;
+  flex-wrap: wrap; /* Permitir que las tarjetas se muevan a una nueva línea si es necesario */
+  justify-content: space-evenly; /* Espaciado uniforme */
+  gap: 20px; /* Espaciado entre tarjetas */
+  margin: auto 70px;
+}
 
-/* Estilos para la imagen del gerente */
+/* Estilo principal para las tarjetas */
 .example-card {
+  display: flex;
+  flex-direction: column; /* Apila los elementos en columna */
+  justify-content: space-between; /* Espaciado uniforme dentro de la tarjeta */
+  align-items: flex-start; /* Cambia a flex-start para alinear contenido a la izquierda */
+  height: 440px; /* Altura fija */
+  max-width: 300px; /* Ancho máximo */
+  width: 300px; /* Ancho fijo */
+  margin: 20px; /* Espaciado alrededor de la tarjeta */
+  overflow: hidden; /* Evita desbordamiento de contenido */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para destacar las tarjetas */
+  border: 1px solid #ddd; /* Borde gris claro */
+  border-radius: 10px; /* Bordes redondeados */
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animación suave */
 }
 
 .example-card:hover {
-  transform: scale(1.02); /* Agranda la tarjeta al 105% de su tamaño original */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Añade sombra para destacar la tarjeta */
+  transform: scale(1.02); /* Agranda ligeramente al pasar el cursor */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
 }
 
-mat-card-subtitle {
-  font-weight: normal; /* Quita la negrita */
-}
-
-
-
+/* Imagen del gerente */
 .foto_gerente img {
-    width: 50px; /* Define el ancho de la imagen del gerente */
-    height: 50px; /* Define la altura de la imagen del gerente */
-    border-radius: 50%; /* Hace que la imagen del gerente sea completamente redonda */
-    object-fit: cover; /* Asegura que la imagen se recorte si es más grande que el contenedor */
-    display: block; /* Asegura que se muestre como un bloque y sin margen */
-  }
-  
-  /* Estilos para la imagen principal de la tarjeta */
-  mat-card img {
-    width: 100%; /* Ocupa todo el ancho del card */
-    height: 200px; /* Ajusta la altura deseada */
-    object-fit: cover; /* Asegura que la imagen se recorte para llenar el área sin distorsionar */
-  }
-  
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
 
-  .mat-mdc-card-header {
-    padding-bottom: 10px;
-  }
-  
-  /* Contenedor de tarjetas */
-  .card-container {
-    display: flex;
-    align-content: flex-start; /* Para espaciar las tarjetas */
-    justify-content: space-evenly;
-    flex-wrap: wrap; /* Permitir que las tarjetas se muevan a la siguiente línea si es necesario */
-    margin: auto 70px;
-  }
-
-  .mat-mdc-card-content {
-    padding: 10px 15px;
-    font-size: 14px;
-  }
-
-  /* Nuevo contenedor para asegurar consistencia en la altura */
+/* Contenedor de la imagen principal */
 .image-container {
-  width: 100%;
+  width: 100%; /* Ocupa todo el ancho del card */
   height: 200px; /* Altura fija para todas las imágenes */
-  overflow: hidden; /* Recorta cualquier parte de la imagen que exceda el tamaño */
+  overflow: hidden; /* Recorta contenido desbordado */
 }
 
 .image-container img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Asegura que la imagen se ajuste y recorte para llenar el contenedor */
+  object-fit: cover; /* Asegura que la imagen se ajuste al contenedor */
 }
 
-  
-  /* Estilos de cada tarjeta */
-  .example-card {
-    display: flex; /* Asegura que la tarjeta use flexbox */
-    flex-direction: column; /* Apila los elementos en columna */
-    flex: 0 1 300px; /* Ocupa al menos 300px de ancho */
-    max-width: 300px; /* Limitar el ancho máximo */
-    height: 440px; /* Ajusta la altura deseada para todas las tarjetas */
-    margin: 40px 20px;
-  }
-  
-  /* Asegura que el contenido de las tarjetas se mantenga dentro del tamaño establecido */
-  .example-card mat-card-content {
-    flex-grow: 1; /* Permite que el contenido ocupe el espacio disponible */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Espacia el contenido dentro de la tarjeta */
-  }
+/* Contenido del card */
+.mat-mdc-card-content {
+  padding: 10px 15px; /* Espaciado interno */
+  font-size: 14px;
+  display: flex; /* Flexbox para centrar el contenido */
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  text-align: center; /* Centra el texto del contenido */
+  flex-direction: column; /* Asegura que los elementos estén en columna */
+  height: auto; /* Ajusta la altura automáticamente */
+}
+
+/* Centrar específicamente el texto del párrafo */
+.mat-mdc-card-content p {
+  margin: 0 auto; /* Centrar el texto horizontalmente */
+  text-align: center; /* Centrar el texto dentro del párrafo */
+  width: 100%; /* Ocupa todo el ancho del contenedor */
+  display: inline-block; /* Permite centrar el texto como bloque */
+  word-break: break-word; /* Romper palabras largas si es necesario */
+}
+
+/* Estilo para el texto "mas" */
+.read-more {
+  color: #007bff; /* Color azul para destacar */
+  text-decoration: underline;
+  cursor: pointer; /* Cursor de mano para indicar interactividad */
+  margin-left: 5px; /* Espaciado adicional para separar de la descripción */
+}
+
+/* Asegura que el mat-card-header esté alineado a la izquierda */
+mat-card-header {
+  display: flex; /* Usa flexbox para organizar los elementos */
+  flex-direction: row; /* Coloca los elementos en una fila */
+  align-items: center; /* Centra los elementos verticalmente */
+  justify-content: flex-start; /* Alinea todos los elementos a la izquierda */
+  padding: 15px 10px 0px 15px; /* Añade margen alrededor del header */
+  text-align: left; /* Alinea el contenido de texto */
+  width: 100%; /* Ocupa todo el ancho del contenedor */
+  box-sizing: border-box; /* Asegura que el padding no afecta el ancho */
+}
+
+/* Ajusta los títulos y subtítulos dentro del mat-card-header */
+mat-card-title, mat-card-subtitle {
+  text-align: left; /* Alinea el texto a la izquierda */
+  margin: 0; /* Elimina márgenes innecesarios */
+  padding: 0; /* Asegura que no haya padding adicional */
+}
+
+mat-card-subtitle {
+  font-weight: normal;
+  font-size: 13px;
+}
+
+/* Espaciado adicional para el avatar y el texto */
+mat-card-header div[mat-card-avatar] {
+  margin-right: 10px; /* Añade espacio entre el avatar y el texto */
+}
 
 
 
-  /* Estilos del modal */
+/* Reseña y estrellas */
+mat-card-actions {
+  display: flex;
+  justify-content: center; /* Centra el contenido horizontalmente */
+  align-items: center; /* Centra el contenido verticalmente */
+  width: 100%; /* Asegura que ocupe todo el ancho de la tarjeta */
+  padding: 0px 0px 10px 0px; /* Ajusta el padding según tus necesidades */
+  box-sizing: border-box; /* Incluye el padding en el cálculo del ancho */
+}
+
+/* Contenedor principal de la puntuación y reviews */
+.rating-container {
+  display: flex;
+  flex-direction: column; /* Coloca las estrellas y los reviews en columna */
+  align-items: center; /* Centra horizontalmente */
+  width: 100%; /* Ocupa todo el ancho de mat-card-actions */
+  text-align: center; /* Centra el texto */
+}
+
+/* Estrellas */
+.stars {
+  display: flex;
+  justify-content: center; /* Centra las estrellas horizontalmente */
+  width: 100%; /* Asegura que las estrellas también ocupen el ancho completo */
+}
+
+/* Estilo de las estrellas */
+.stars span {
+  font-size: 1.5em; /* Tamaño de las estrellas */
+  color: #ccc; /* Color para estrellas vacías */
+}
+
+.stars .filled {
+  color: #ffd900; /* Color para estrellas llenas */
+}
+
+/* Texto de reviews */
+.review-count {
+  font-size: 0.9em;
+  color: #666; /* Color para el texto de reviews */
+  width: 100%; /* Asegura que el texto ocupe el ancho completo */
+  text-align: center; /* Centra el texto horizontalmente */
+}
+
+
+
+
+
+
+
+
+/* Modal */
+/* Estilo general del modal */
 .modal {
   display: flex;
   position: fixed;
@@ -98,72 +176,66 @@ mat-card-subtitle {
   align-items: center;
 }
 
+/* Contenido del modal */
 .modal-content {
   background-color: #fff;
-  padding: 50px 20px 30px 20px;
+  padding: 20px;
   border-radius: 8px;
-  max-width: 500px;
-  text-align: center;
+  max-width: 600px;
+  width: 90%;
   position: relative;
+  text-align: left;
 }
 
-.close {
-  position: absolute;
-  top: 5px;
-  right: 20px;
-  font-size: 27px;
-  cursor: pointer;
+/* Encabezado del modal */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
 }
 
-/* Estilo para el enlace "Seguir leyendo" */
-.read-more {
-  color: blue;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-
-/* RATING */
-
-.rating {
+.modal-header-content {
   display: flex;
   align-items: center;
-  font-size: 1.2em;
-  color: #000000; /* Color de la estrella llena */
+  gap: 15px;
 }
 
-.rating-number {
+/* Imagen del avatar */
+.modal-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Título y subtítulo */
+.modal-title {
+  margin: 0;
+  font-size: 18px;
   font-weight: bold;
-  font-size: 35px;
-  margin-right: 5px;
 }
 
-.stars {
-  display: flex;
-  margin-right: 5px;
-  padding-top: 10px;
+.modal-subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
 }
 
-.stars span {
-  font-size: 1.2em;
-  color: #ccc; /* Color de la estrella vacía */
+/* Botón para cerrar */
+.close {
+  position: relative;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-.stars .filled {
-  color: #ffd900; /* Color de la estrella llena */
+/* Descripción */
+.modal-description {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.5;
 }
 
-.review-count {
-  font-size: 0.6em;
-  color: #666;
-  padding-top: 18px;
-}
-
-.mat-mdc-card-actions {
-  justify-content: center;
-}
-
-
-
-
-  

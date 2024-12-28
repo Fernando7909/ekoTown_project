@@ -23,7 +23,8 @@ export class AuthManagerService {
   private managerNameSubject = new BehaviorSubject<string | null>(null);
   public userName$ = this.managerNameSubject.asObservable();
 
-  private bmFullName: { 
+  private bmFullName: {
+    id: number, 
     name: string; 
     lastName: string; 
     email: string; 
@@ -60,6 +61,7 @@ export class AuthManagerService {
 
   // Guardar el perfil completo del Business Manager
   setBmFullName(fullName: { 
+    id?: number; // Agregar el campo ID
     name: string; 
     lastName: string; 
     email: string; 
@@ -71,12 +73,13 @@ export class AuthManagerService {
   
     // Mantener los valores existentes si los nuevos están vacíos o nulos
     this.bmFullName = { 
+      id: fullName.id || this.bmFullName?.id || 0, // Asegurarse de que el ID esté presente
       name: fullName.name || this.bmFullName?.name || '',
       lastName: fullName.lastName || this.bmFullName?.lastName || '',
       email: fullName.email || this.bmFullName?.email || '',
       profileImage: fullName.profileImage && fullName.profileImage.trim() !== ''
         ? fullName.profileImage
-        : this.bmFullName?.profileImage || '', // No sobrescribas si el valor nuevo está vacío
+        : this.bmFullName?.profileImage || '', 
       dni: fullName.dni || this.bmFullName?.dni || '', 
       address: fullName.address || this.bmFullName?.address || '' 
     };
@@ -85,6 +88,7 @@ export class AuthManagerService {
     localStorage.setItem('bmFullName', JSON.stringify(this.bmFullName));
     console.log('Guardado en localStorage:', localStorage.getItem('bmFullName'));
   }
+
   
   
   
@@ -114,19 +118,29 @@ export class AuthManagerService {
       try {
         const payloadBase64 = token.split('.')[1];
         if (!payloadBase64) {
-          console.error('Token malformado, no contiene payload');
+          console.error('Token malformado: no contiene payload');
           return undefined;
         }
+  
+        // Decodificar el payload del token
         const decodedPayload = JSON.parse(atob(payloadBase64));
-        return decodedPayload.managerId;
+        if (decodedPayload && decodedPayload.managerId) {
+          console.log('Manager ID obtenido del token:', decodedPayload.managerId);
+          return decodedPayload.managerId;
+        } else {
+          console.warn('El token no contiene managerId');
+          return undefined;
+        }
       } catch (error) {
         console.error('Error al decodificar el token:', error);
+        return undefined;
       }
     } else {
       console.warn('No se encontró un token en localStorage');
+      return undefined;
     }
-    return undefined;
   }
+  
   
 
 
@@ -134,18 +148,22 @@ export class AuthManagerService {
   loginManager(managerCredentials: any): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiManagerUrl}/login`, managerCredentials).pipe(
       tap((response: any) => {
-        // Log de la respuesta completa del backend
+        // Log completo de la respuesta
         console.log('Respuesta completa del backend en loginManager:', response);
   
-        // Verificar si el backend envía correctamente profileImage
-        console.log('profileImage recibido del backend:', response.profileImage);
+        // Verificar si el campo business_manager_id existe y es válido
+        if (!response.business_manager_id || typeof response.business_manager_id !== 'number') {
+          console.error('Error: El backend no envió un business_manager_id válido:', response.business_manager_id);
+          throw new Error('El backend no devolvió un business_manager_id válido.');
+        }
   
         // Preparar el objeto fullName
         const fullName = {
+          id: response.business_manager_id, // Cambiado a "id" para mayor consistencia
           name: response?.name || '',
           lastName: response?.last_name || '',
           email: response?.email || '',
-          profileImage: response?.profileImage || 'profileIcons/usuario.png', // Usar directamente la URL del backend o la imagen predeterminada
+          profileImage: response?.profileImage || 'profileIcons/usuario.png',
           dni: response?.dni || '',
           address: response?.address || '',
         };
@@ -167,6 +185,7 @@ export class AuthManagerService {
       })
     );
   }
+  
   
 
   

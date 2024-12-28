@@ -1,22 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 interface Image {
   url: string;
 }
 
 interface Card {
+  id: number; 
   nombre_comercio: string;
   foto_gerente: string;
   nombre_gerente: string;
   imagen: string;
   descripcion: string;
   rating: number;
+  reviewsCount: number;
 }
 
 @Component({
@@ -27,19 +30,20 @@ interface Card {
     CommonModule,
     RatingModule,
     FormsModule,
+    RouterModule
   ],
   templateUrl: './cards.component.html',
-  styleUrls: ['./cards.component.css'], // Corregido 'styleUrl' a 'styleUrls'
+  styleUrls: ['./cards.component.css'],
 })
 export class CardsComponent implements OnInit {
   showContent: boolean = true;
-  isModalOpen = false;
-  fullDescription = '';
+  isModalOpen: boolean = false;
+  fullDescription: string = '';
+  selectedCard: Card | null = null; // Define la tarjeta seleccionada
 
-  // Declaración de la propiedad 'cards'
   cards: Card[] = []; // Array que contendrá las tarjetas cargadas desde el backend
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadCardsFromDatabase();
@@ -52,6 +56,9 @@ export class CardsComponent implements OnInit {
           ...store,
           foto_gerente: store.foto_gerente.replace(/\\/g, '/'),
           imagen: store.imagen.replace(/\\/g, '/'),
+          descripcion: store.descripcion || 'Descripción no disponible',
+          rating: store.rating || 0,
+          reviewsCount: store.reviewsCount || 0,
         }));
         console.log('Datos cargados desde la base de datos:', this.cards);
       },
@@ -60,15 +67,13 @@ export class CardsComponent implements OnInit {
       },
     });
   }
-  
-  
-  
-  
 
   getShortDescription(description: string): string {
     const maxLength = 20;
     const words = description.split(' ');
-    return words.length > maxLength ? words.slice(0, maxLength).join(' ') + '...' : description;
+    return words.length > maxLength
+      ? words.slice(0, maxLength).join(' ') + '...'
+      : description;
   }
 
   isDescriptionLong(description: string): boolean {
@@ -76,17 +81,17 @@ export class CardsComponent implements OnInit {
     return description.split(' ').length > maxLength;
   }
 
-  openModal(description: string): void {
+  openModal(description: string, card: Card): void {
+    console.log('Abriendo modal con descripción:', description);
     this.fullDescription = description;
+    this.selectedCard = card; // Almacena la tarjeta seleccionada
     this.isModalOpen = true;
   }
 
   closeModal(): void {
     this.isModalOpen = false;
+    this.selectedCard = null; // Limpia la tarjeta seleccionada
   }
 
-  /* RATING */
-  @Input() rating: number = 1.0;
-  @Input() reviewsCount: number = 1;
   stars: number[] = [1, 2, 3, 4, 5];
 }

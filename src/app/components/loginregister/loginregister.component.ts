@@ -149,20 +149,24 @@ export class LoginregisterComponent {
 
 
  // Método para iniciar sesión de Business Manager
-onManagerLogin() {
+ onManagerLogin() {
   const managerCredentials = {
     email: this.loginManagerEmail,
     password: this.loginManagerPassword,
   };
 
-  console.log('Credenciales enviadas al backend:', managerCredentials); // Log de las credenciales enviadas
+  console.log('Credenciales enviadas al backend:', managerCredentials);
 
   this.authManagerService.loginManager(managerCredentials).subscribe(
     (response: any) => {
-      console.log('Respuesta del backend:', response); // Log de la respuesta exitosa del backend
+      console.log('Respuesta del backend:', response);
+
+      // Almacenar el token y el ID del Business Manager en el localStorage
+      localStorage.setItem('token', response.token); // Guardar el token
+      localStorage.setItem('business_manager_id', response.managerId); // Guardar el ID del Business Manager
 
       const managerName = response?.name || 'Manager';
-      console.log('Nombre del Business Manager recibido:', managerName); // Log del nombre recibido
+      console.log('Nombre del Business Manager recibido:', managerName);
 
       this.authManagerService.setBmFullName({
         name: managerName,
@@ -173,12 +177,12 @@ onManagerLogin() {
       this.displayMessage(`Inicio de sesión de Business Manager exitoso. Bienvenido, ${managerName}.`);
 
       setTimeout(() => {
-        console.log('Redirigiendo a la página principal...'); // Log antes de redirigir
+        console.log('Redirigiendo a la página principal...');
         this.router.navigate(['']);
       }, 4000);
     },
     (error: any) => {
-      console.error('Error recibido del backend:', error); // Log detallado del error recibido
+      console.error('Error recibido del backend:', error);
       if (error.status === 400) {
         console.error('Error 400: Credenciales inválidas o problema con el backend.');
       } else {
@@ -188,6 +192,7 @@ onManagerLogin() {
     }
   );
 }
+
 
   
 

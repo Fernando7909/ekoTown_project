@@ -292,18 +292,26 @@
   
               
 
-            <!-- columna PRODUCTOS -->
+            <!-- CRUD PRODUCTOS -->
             <div class="col-md-6">
                 <h3 class="text-secondary mb-4">PRODUCTOS</h3>
                 <button
-                    class="action-button btn btn-light d-flex align-items-center w-100 mb-3">
-                        <img src="profileIcons/cesta-de-la-compra.png" alt="Foto Perfil" class="icon me-2" />
-                    <div class="text-left">
-                        <strong>Subir productos</strong>
-                        <p class="mb-0 small text-muted">Publica tus productos en tu perfil personal</p>
-                    </div>
+                  class="action-button btn btn-light d-flex align-items-center w-100 mb-3"
+                  [routerLink]="'/crud-productos'"
+                >
+                  <img
+                    src="profileIcons/cesta-de-la-compra.png"
+                    alt="Foto Perfil"
+                    class="icon me-2"
+                  />
+                  <div class="text-left">
+                    <strong>Subir productos</strong>
+                    <p class="mb-0 small text-muted">
+                      Publica tus productos en tu perfil personal
+                    </p>
+                  </div>
                 </button>
-            </div>
+              </div>              
         </div>
     </div>
 

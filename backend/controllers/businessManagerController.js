@@ -78,6 +78,7 @@ exports.login = (req, res) => {
     res.json({
       message: 'Inicio de sesión exitoso',
       token,
+      business_manager_id: manager.id, 
       name: manager.name,
       last_name: manager.last_name,
       email: manager.email,
@@ -85,6 +86,7 @@ exports.login = (req, res) => {
       dni: manager.dni,
       address: manager.address,
     });
+    
   });
 };
 

@@ -3,6 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
 const path = require('path');
+const multer = require('multer'); // Importar multer para manejar subidas de archivos
+
+const productRoutes = require('./routes/productRoutes');
 
 // Importar rutas
 const userRoutes = require('./routes/userRoutes');
@@ -14,7 +17,21 @@ const app = express();
 
 // Middleware global
 app.use(cors());
-app.use(express.json()); // Manejar solicitudes JSON
+app.use(express.json({ limit: '10mb' })); // Establece un límite de 10 MB para JSON
+app.use(express.urlencoded({ limit: '10mb', extended: true })); // Establece un límite de 10 MB para datos codificados en URL
+
+// Configuración de multer para manejar subidas de archivos
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, 'uploads')); // Guardar archivos en la carpeta "uploads"
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + '-' + file.originalname); // Nombre único para cada archivo
+    },
+});
+
+const upload = multer({ storage });
 
 // Middleware para servir archivos estáticos
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -74,6 +91,9 @@ app.use('/api/business-managers', businessManagerRoutes);
 
 // Ruta para Stores
 app.use('/api/stores', storeRoutes);
+
+// Rutas para productos (con soporte para subidas de imágenes)
+app.use('/api/productos', upload.single('imagen'), productRoutes);
 
 // Configuración del puerto del servidor
 const PORT = process.env.PORT || 3000;

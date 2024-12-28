@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
-import { importProvidersFrom } from '@angular/core';
-import { InicioComponent } from './components/inicio/inicio.component'; 
-import { SearchComponent } from './components/search/search.component'; 
-import { AreaPersonalUsuariosPage } from './pages/area-personal-usuarios/area-personal-usuarios';
-import { AreaPersonalBmPage } from './pages/area-personal-bm/area-personal-bm';
+// import { importProvidersFrom } from '@angular/core';
+// import { InicioComponent } from './components/inicio/inicio.component'; 
+// import { SearchComponent } from './components/search/search.component'; 
+// import { AreaPersonalUsuariosPage } from './pages/area-personal-usuarios/area-personal-usuarios';
+// import { AreaPersonalBmPage } from './pages/area-personal-bm/area-personal-bm';
+
 
 export const routes: Routes = [
   { 
@@ -29,9 +30,20 @@ export const routes: Routes = [
   { 
     path: 'area-personal-bm', 
     loadComponent: () => import('./pages/area-personal-bm/area-personal-bm').then(m => m.AreaPersonalBmPage) 
-  }, 
+  },
 
-  { path: '**', redirectTo: '', pathMatch: 'full' 
+  { 
+    path: 'inside-store/:storeId', 
+    loadComponent: () => import('./pages/insideStore/insideStore').then(m => m.InsideStoreComponent) 
+  },
 
+  {
+    path: 'crud-productos',
+    loadComponent: () => import('./pages/crudProductos/crudProductos').then((m) => m.CrudProductosComponent),
+  },
+
+  { path: '**', 
+    redirectTo: '', 
+    pathMatch: 'full' 
   } 
 ];

@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-area-personal-bm',
@@ -16,7 +17,8 @@ import { CommonModule } from '@angular/common';
     NavbarComponent,
     FooterComponent,
     FormsModule,
-    CommonModule
+    CommonModule,
+    RouterModule
   ]
 })
 export class AreaPersonalBmPage implements OnInit {

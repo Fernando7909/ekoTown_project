@@ -1,0 +1,15 @@
+.store-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .store-container h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .store-container p {
+    font-size: 1.2rem;
+    color: #555;
+  }
+  
