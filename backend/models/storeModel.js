@@ -105,6 +105,44 @@ exports.deleteStoreById = (storeId, callback) => {
 };
 
 
+// Obtener productos publicados de una tienda
+// Obtener productos publicados de una tienda
+exports.getPublishedProductsByStore = (storeId, callback) => {
+  console.log(`Iniciando búsqueda de productos publicados para la tienda con ID: ${storeId}`);
+
+  // Validar que el storeId sea un número válido
+  if (!storeId || isNaN(storeId)) {
+    const error = new Error('ID de tienda inválido o no proporcionado');
+    console.error(error.message);
+    return callback(error, null);
+  }
+
+  const query = `
+    SELECT * FROM productos 
+    WHERE business_manager_id = ? AND publicado = true
+  `;
+  console.log('Consulta SQL ejecutada:', query, 'con ID:', storeId);
+
+  db.query(query, [storeId], (err, results) => {
+    if (err) {
+      console.error('Error al ejecutar la consulta SQL:', err.message);
+      return callback(err, null);
+    }
+
+    // Verificar si se obtuvieron resultados
+    if (results.length === 0) {
+      console.warn(`No se encontraron productos publicados para la tienda con ID: ${storeId}`);
+    } else {
+      console.log(`Productos publicados recuperados para la tienda con ID: ${storeId}:`, results);
+    }
+
+    callback(null, results);
+  });
+};
+
+
+
+
 
 
 

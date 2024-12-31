@@ -3,16 +3,11 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
-import { Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
-interface Image {
-  url: string;
-}
-
 interface Card {
-  id: number; 
+  id: number;
   nombre_comercio: string;
   foto_gerente: string;
   nombre_gerente: string;
@@ -30,7 +25,7 @@ interface Card {
     CommonModule,
     RatingModule,
     FormsModule,
-    RouterModule
+    RouterModule,
   ],
   templateUrl: './cards.component.html',
   styleUrls: ['./cards.component.css'],
@@ -40,7 +35,6 @@ export class CardsComponent implements OnInit {
   isModalOpen: boolean = false;
   fullDescription: string = '';
   selectedCard: Card | null = null; // Define la tarjeta seleccionada
-
   cards: Card[] = []; // Array que contendrá las tarjetas cargadas desde el backend
 
   constructor(private http: HttpClient, private cd: ChangeDetectorRef) {}
@@ -51,8 +45,9 @@ export class CardsComponent implements OnInit {
 
   loadCardsFromDatabase(): void {
     this.http.get<Card[]>('http://localhost:3000/api/stores/all').subscribe({
-      next: (data) => {
-        this.cards = data.map((store) => ({
+      next: (stores) => {
+        // Mapea las tiendas y ajusta las propiedades necesarias
+        this.cards = stores.map((store) => ({
           ...store,
           foto_gerente: store.foto_gerente.replace(/\\/g, '/'),
           imagen: store.imagen.replace(/\\/g, '/'),
@@ -60,10 +55,11 @@ export class CardsComponent implements OnInit {
           rating: store.rating || 0,
           reviewsCount: store.reviewsCount || 0,
         }));
-        console.log('Datos cargados desde la base de datos:', this.cards);
+
+        console.log('Datos cargados:', this.cards);
       },
       error: (error) => {
-        console.error('Error al cargar las tarjetas desde la base de datos:', error);
+        console.error('Error al cargar las tiendas desde la base de datos:', error);
       },
     });
   }

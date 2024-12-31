@@ -1,120 +1,119 @@
 <div class="container">
-    <h1>Gestión de Productos</h1>
-    <button (click)="openAddProductModal()">Añadir Producto</button>
-    
-    <table>
-      <thead>
-        <tr>
-          <th>Código</th>
-          <th>Producto</th>
-          <th>Descripción</th>
-          <th>Categoría</th>
-          <th>Cantidad</th>
-          <th>Precio</th>
-          <th>Imagen Producto</th>
-          <th>Opciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let producto of productos">
-          <td>{{ producto.codigo }}</td>
-          <td>{{ producto.nombre }}</td>
-          <td>{{ producto.descripcion }}</td>
-          <td>{{ producto.categoria }}</td>
-          <td>{{ producto.cantidad }}</td>
-          <td>{{ producto.precio | currency:'EUR':'symbol' }}</td>
-          <td>
-            <img [src]="producto.imagen_url" alt="Imagen Producto" class="product-image" *ngIf="producto.imagen_url" />
-            <span *ngIf="!producto.imagen_url">Sin Imagen</span>
-          </td>
-          <td>
-            <div class="action-buttons">
-              <img
-                src="crudIcons/editar.png"
-                alt="Editar"
-                class="icon-button"
-                (click)="editProduct(producto)"
-                title="Editar"
-              />
-              <img
-                src="crudIcons/eliminar.png"
-                alt="Eliminar"
-                class="icon-button"
-                (click)="deleteProduct(producto.id!)" 
-                title="Eliminar"
-              />
+  <h1>Gestión de Productos</h1>
+  <button (click)="openAddProductModal()">Añadir Producto</button>
 
-              <img
-                src="crudIcons/publicar.png"
-                alt="Publicar"
-                class="icon-button"
-                (click)="publishProduct(producto)"
-                title="Publicar"
-              />
-            </div>            
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <!-- Modal para añadir producto -->
-    <div class="modal" *ngIf="isModalOpen">
-      <div class="modal-content">
-        <span class="close" (click)="closeModal()">&times;</span>
-        <h2>{{ isEditMode ? 'Editar Producto' : 'Añadir Producto' }}</h2>
-  
-        <form (ngSubmit)="saveProduct()">
-          <label for="codigo">Código:</label>
-          <input
-            id="codigo"
-            [(ngModel)]="newProduct.codigo"
-            name="codigo"
-            [disabled]="isEditMode"
-            required
-          />
-  
-          <label for="nombre">Producto:</label>
-          <input id="nombre" [(ngModel)]="newProduct.nombre" name="nombre" required />
-  
-          <label for="descripcion">Descripción:</label>
-          <textarea
-            id="descripcion"
-            [(ngModel)]="newProduct.descripcion"
-            name="descripcion"
-            required
-          ></textarea>
-  
-          <label for="categoria">Categoría:</label>
-          <select id="categoria" [(ngModel)]="newProduct.categoria" name="categoria" required>
-            <option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</option>
-          </select>
+  <table>
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Producto</th>
+        <th>Descripción</th>
+        <th>Categoría</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+        <th>Imagen Producto</th>
+        <th>Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let producto of productos">
+        <td>{{ producto.codigo }}</td>
+        <td>{{ producto.nombre }}</td>
+        <td>{{ producto.descripcion }}</td>
+        <td>{{ producto.categoria }}</td>
+        <td>{{ producto.cantidad }}</td>
+        <td>{{ producto.precio | currency:'EUR':'symbol' }}</td>
+        <td>
+          <img [src]="producto.imagen_url" alt="Imagen Producto" class="product-image" *ngIf="producto.imagen_url" />
+          <span *ngIf="!producto.imagen_url">Sin Imagen</span>
+        </td>
+        <td>
+          <div class="action-buttons">
+            <img
+              src="crudIcons/editar.png"
+              alt="Editar"
+              class="icon-button"
+              (click)="editProduct(producto)"
+              title="Editar"
+            />
+            <img
+              src="crudIcons/eliminar.png"
+              alt="Eliminar"
+              class="icon-button"
+              (click)="deleteProduct(producto.id!)"
+              title="Eliminar"
+            />
+            <img
+              src="crudIcons/publicar.png"
+              alt="Publicar"
+              class="icon-button"
+              (click)="publishProduct(producto)"
+              title="Publicar"
+            />
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-          <label for="cantidad">Cantidad:</label>
-          <input
-            id="cantidad"
-            type="number"
-            [(ngModel)]="newProduct.cantidad"
-            name="cantidad"
-            required
+  <!-- Modal para añadir producto -->
+  <div class="modal" *ngIf="isModalOpen">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <h2>{{ isEditMode ? 'Editar Producto' : 'Añadir Producto' }}</h2>
+
+      <!-- Se agrega enctype="multipart/form-data" para manejar imágenes -->
+      <form (ngSubmit)="saveProduct()" enctype="multipart/form-data">
+        <label for="codigo">Código:</label>
+        <input
+          id="codigo"
+          [(ngModel)]="newProduct.codigo"
+          name="codigo"
+          [disabled]="isEditMode"
+          required
         />
-  
-          <label for="precio">Precio:</label>
-          <input
-            id="precio"
-            type="number"
-            step="0.01"
-            [(ngModel)]="newProduct.precio"
-            name="precio"
-            required
-          />
 
-          <label for="imagen">Imagen Producto:</label>
-          <input id="imagen" type="file" (change)="onImageSelected($event)" />
-  
-          <button type="submit" class="save-button">{{ isEditMode ? 'Guardar Cambios' : 'Guardar' }}</button>
-          <button type="button" class="cancel-button" (click)="closeModal()">Cancelar</button>
-        </form>
-      </div>
+        <label for="nombre">Producto:</label>
+        <input id="nombre" [(ngModel)]="newProduct.nombre" name="nombre" required />
+
+        <label for="descripcion">Descripción:</label>
+        <textarea
+          id="descripcion"
+          [(ngModel)]="newProduct.descripcion"
+          name="descripcion"
+          required
+        ></textarea>
+
+        <label for="categoria">Categoría:</label>
+        <select id="categoria" [(ngModel)]="newProduct.categoria" name="categoria" required>
+          <option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</option>
+        </select>
+
+        <label for="cantidad">Cantidad:</label>
+        <input
+          id="cantidad"
+          type="number"
+          [(ngModel)]="newProduct.cantidad"
+          name="cantidad"
+          required
+        />
+
+        <label for="precio">Precio:</label>
+        <input
+          id="precio"
+          type="number"
+          step="0.01"
+          [(ngModel)]="newProduct.precio"
+          name="precio"
+          required
+        />
+
+        <label for="imagen">Imagen Producto:</label>
+        <input id="imagen" type="file" (change)="onImageSelected($event)" />
+
+        <button type="submit" class="save-button">{{ isEditMode ? 'Guardar Cambios' : 'Guardar' }}</button>
+        <button type="button" class="cancel-button" (click)="closeModal()">Cancelar</button>
+      </form>
     </div>
   </div>
-  
+</div>

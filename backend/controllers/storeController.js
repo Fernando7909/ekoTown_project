@@ -120,9 +120,18 @@ exports.getStoreByBusinessManager = (req, res) => {
       return res.status(404).json({ message: 'No se encontró una tienda para este Business Manager' });
     }
 
+    // Ajustar las rutas completas para las imágenes
+    store.foto_gerente = store.foto_gerente
+      ? `http://localhost:3000/uploads/${store.foto_gerente}`.replace(/\\/g, '/')
+      : null;
+    store.imagen = store.imagen
+      ? `http://localhost:3000/uploads/${store.imagen}`.replace(/\\/g, '/')
+      : null;
+
     res.status(200).json({ store });
   });
 };
+
 
 
 // Eliminar tienda por Business Manager ID
@@ -201,10 +210,43 @@ exports.updateStore = [
 ];
 
 
+// Obtener productos publicados por tienda
+exports.getPublishedProductsByStore = (req, res) => {
+  const storeId = req.params.storeId;
 
+  console.log(`Obteniendo productos publicados para la tienda con ID: ${storeId}`); // Log del ID recibido
 
+  // Validar si el storeId es válido
+  if (!storeId) {
+    console.error('Error: No se proporcionó un storeId válido.');
+    return res.status(400).json({ error: 'El ID de la tienda es obligatorio.' });
+  }
 
+  Store.getPublishedProductsByStore(storeId, (err, products) => {
+    if (err) {
+      console.error('Error al obtener productos publicados:', err); // Log del error
+      return res.status(500).json({ error: 'Error al obtener productos publicados.' });
+    }
 
+    // Log de los productos obtenidos
+    console.log('Productos obtenidos desde la base de datos:', products);
+
+    // Ajustar las rutas completas para las imágenes
+    const productsWithImagePaths = products.map((product) => ({
+      ...product,
+      imagen_url: product.imagen_url
+          ? `http://localhost:3000${product.imagen_url.replace(/\\/g, '/')}` // Sin concatenar extra `/uploads/`
+          : null,
+  }));
+  
+  
+
+    // Log de los productos procesados
+    console.log('Productos con rutas completas:', productsWithImagePaths);
+
+    res.status(200).json(productsWithImagePaths);
+  });
+};
 
 
 

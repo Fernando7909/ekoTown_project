@@ -1,5 +1,5 @@
 <div class="card-container">
-  <div *ngFor="let card of cards"> <!-- Itera sobre las tarjetas -->
+  <div *ngFor="let card of cards">
     <mat-card class="example-card" appearance="outlined">
       <mat-card-header>
         <div mat-card-avatar class="foto_gerente">
@@ -14,7 +14,6 @@
           <img mat-card-image [src]="card.imagen" alt="Imagen de {{ card.nombre_comercio }}">
         </a>
       </div>
-      
 
       <mat-card-content>
         <p>
@@ -24,7 +23,7 @@
             class="read-more"
             (click)="openModal(card.descripcion, card)"
           >
-            mas
+            más
           </span>
         </p>
       </mat-card-content>
@@ -41,26 +40,26 @@
       </mat-card-actions>
     </mat-card>
   </div>
+</div>
 
-  <!-- Modal para descripción completa -->
-  <div class="modal" *ngIf="isModalOpen">
-    <div class="modal-content">
-      <!-- Encabezado del modal -->
-      <div class="modal-header">
-        <div class="modal-header-content">
-          <img [src]="selectedCard?.foto_gerente" alt="Foto de {{ selectedCard?.nombre_gerente }}" class="modal-avatar">
-          <div>
-            <h2 class="modal-title">{{ selectedCard?.nombre_comercio }}</h2>
-            <p class="modal-subtitle">{{ selectedCard?.nombre_gerente }}</p>
-          </div>
+<!-- Modal para mostrar la descripción completa -->
+<div class="modal" *ngIf="isModalOpen">
+  <div class="modal-content">
+    <!-- Encabezado del modal -->
+    <div class="modal-header">
+      <div class="modal-header-content">
+        <img [src]="selectedCard?.foto_gerente" alt="Foto de {{ selectedCard?.nombre_gerente }}" class="modal-avatar">
+        <div>
+          <h2 class="modal-title">{{ selectedCard?.nombre_comercio }}</h2>
+          <p class="modal-subtitle">{{ selectedCard?.nombre_gerente }}</p>
         </div>
-        <span class="close" (click)="closeModal()">&times;</span>
       </div>
-  
-      <!-- Descripción -->
-      <div class="modal-description">
-        <p>{{ fullDescription }}</p>
-      </div>
+      <span class="close" (click)="closeModal()">&times;</span>
     </div>
-  </div>  
+
+    <!-- Contenido de la descripción -->
+    <div class="modal-description">
+      <p>{{ fullDescription }}</p>
+    </div>
+  </div>
 </div>

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductService, Producto } from '../../services/product.service';
+import { PublishedProductsService } from '../../services/published-products.service';
 
 @Component({
   selector: 'app-crud-productos',
@@ -12,7 +13,7 @@ import { ProductService, Producto } from '../../services/product.service';
     MatCardModule,
     CommonModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   templateUrl: './crudProductos.html',
   styleUrls: ['./crudProductos.css'],
@@ -29,7 +30,10 @@ export class CrudProductosComponent implements OnInit {
     'Salud', 'Hogar', 'Mascotas', 'Libros', 'Otros'
   ];
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private publishedProductsService: PublishedProductsService
+  ) {}
 
   ngOnInit(): void {
     // Obtener los datos del Business Manager desde bmFullName en localStorage
@@ -65,34 +69,57 @@ export class CrudProductosComponent implements OnInit {
 
   loadProducts(): void {
     if (this.businessManagerId) {
-      this.productService.getProductsByBusinessManager(this.businessManagerId).subscribe({
-        next: (data) => {
-          console.log('Productos cargados:', data);
-          this.productos = data;
-        },
-        error: (error) => {
-          console.error('Error al cargar los productos:', error);
-        }
-      });
-    } else {
-      console.error('No se puede cargar productos sin un ID de Business Manager.');
+        this.productService.getProductsByBusinessManager(this.businessManagerId).subscribe({
+            next: (data) => {
+                console.log('Productos cargados:', data);
+                this.productos = data.map((producto) => ({
+                    ...producto,
+                    imagen_url: producto.imagen_url?.replace(/\\/g, '/'), // Normalizar URL
+                }));
+            },
+            error: (error) => {
+                console.error('Error al cargar los productos:', error);
+            },
+        });
     }
-  }
-  
+}
 
+  
+  
 
 
   // Selección de la imagen
   onImageSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.newProduct.imagen_url = reader.result as string;
-      };
-      reader.readAsDataURL(input.files[0]);
+      const file = input.files[0];
+      this.newProduct.imagenFile = file; // Guardar archivo en una propiedad temporal
+      console.log('Archivo seleccionado:', file); // Log para verificar el archivo seleccionado
     }
   }
+
+  private toFormData(product: Producto): FormData {
+    const formData = new FormData();
+
+    formData.append('business_manager_id', product.business_manager_id.toString());
+    formData.append('codigo', product.codigo);
+    formData.append('nombre', product.nombre);
+    formData.append('descripcion', product.descripcion);
+    formData.append('categoria', product.categoria);
+    formData.append('cantidad', product.cantidad.toString());
+    formData.append('precio', product.precio.toString());
+
+    // Adjuntar archivo si está presente
+    if (product.imagenFile) {
+        formData.append('imagen', product.imagenFile);
+    } else if (product.imagen_url) {
+        formData.append('imagen_url', product.imagen_url); // Asegurar que la URL existente se incluya
+    }
+
+    return formData;
+}
+
+  
 
   // Abre el modal para añadir un producto
   openAddProductModal(): void {
@@ -110,11 +137,10 @@ export class CrudProductosComponent implements OnInit {
 
   // Guarda el producto (agregar o editar)
   saveProduct(): void {
-    this.newProduct.cantidad = +this.newProduct.cantidad; // Conversión explícita a número
-    this.newProduct.precio = +this.newProduct.precio; // Conversión explícita a número
-
+    const formData = this.toFormData(this.newProduct); // Convertir a FormData
+    
     if (this.isEditMode) {
-      this.productService.updateProduct(this.newProduct.id!, this.newProduct).subscribe({
+      this.productService.updateProduct(this.newProduct.id!, formData).subscribe({
         next: () => {
           this.loadProducts(); // Recargar productos
           this.closeModal();
@@ -124,7 +150,7 @@ export class CrudProductosComponent implements OnInit {
         },
       });
     } else {
-      this.productService.createProduct(this.newProduct).subscribe({
+      this.productService.createProduct(formData).subscribe({
         next: () => {
           this.loadProducts(); // Recargar productos
           this.closeModal();
@@ -153,17 +179,21 @@ export class CrudProductosComponent implements OnInit {
 
   // Publicar producto
   publishProduct(producto: Producto): void {
-    producto.publicado = true;
-    this.productService.updateProduct(producto.id!, producto).subscribe({
-      next: () => {
+    console.log('Publicando producto desde CRUD:', producto);
+    // Validar que el producto tiene los campos mínimos necesarios
+    if (producto.id && producto.nombre && producto.imagen_url && producto.business_manager_id) {
+        this.publishedProductsService.publishProduct(producto); // Añadir al servicio compartido
+        console.log(`Producto publicado: ${producto.nombre} (ID: ${producto.id})`);
         alert(`Producto "${producto.nombre}" publicado con éxito.`);
-        this.loadProducts();
-      },
-      error: (error) => {
-        console.error('Error al publicar el producto:', error);
-      },
-    });
-  }
+    } else {
+        console.warn('El producto no tiene todos los datos necesarios para publicarlo:', producto);
+        alert('No se puede publicar el producto. Faltan datos.');
+    }
+}
+
+
+  
+  
 
   // Cierra el modal
   closeModal(): void {

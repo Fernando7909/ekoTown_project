@@ -1,15 +1,80 @@
+/* Contenedor principal */
 .store-container {
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .store-container h1 {
-    font-size: 2rem;
-    margin-bottom: 10px;
-  }
-  
-  .store-container p {
-    font-size: 1.2rem;
-    color: #555;
-  }
-  
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+/* Detalles de la tienda */
+.store-details {
+  margin-bottom: 40px;
+}
+
+.store-card {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.store-avatar img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.store-header-info {
+  text-align: left;
+}
+
+mat-card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+mat-card-subtitle {
+  font-size: 1rem;
+  color: #888;
+}
+
+/* Imagen de la tienda */
+.store-image-container img {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  margin: 20px auto;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Descripción */
+mat-card-content {
+  font-size: 1rem;
+  color: #555;
+  text-align: left;
+  padding: 20px;
+}
+
+/* Productos disponibles */
+.productos-container {
+  margin-top: 40px;
+}
+
+.productos-container h3 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.productos-container p {
+  font-size: 1rem;
+  color: #888;
+}

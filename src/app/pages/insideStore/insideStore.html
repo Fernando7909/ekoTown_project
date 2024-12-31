@@ -1,5 +1,50 @@
 <div class="store-container">
-    <h1>Tienda {{ storeId }}</h1>
-    <p>Aquí se mostrarán los productos disponibles para la tienda con ID: {{ storeId }}</p>
+  <!-- Información de la tienda -->
+  <div class="store-details" *ngIf="storeDetails">
+    <mat-card class="store-card">
+      <!-- Cabecera: Foto del gerente y título -->
+      <mat-card-header>
+        <div mat-card-avatar class="store-avatar">
+          <img 
+            [src]="storeDetails.foto_gerente || 'assets/default-foto-gerente.png'" 
+            alt="Foto de {{ storeDetails.nombre_gerente }}">
+        </div>
+        <div class="store-header-info">
+          <mat-card-title>{{ storeDetails.nombre_comercio }}</mat-card-title>
+          <mat-card-subtitle>{{ storeDetails.nombre_gerente }}</mat-card-subtitle>
+        </div>
+      </mat-card-header>
+
+      <!-- Imagen de la tienda -->
+      <div class="store-image-container">
+        <img 
+          mat-card-image 
+          [src]="storeDetails.imagen || 'assets/default-imagen-tienda.png'" 
+          alt="Imagen de {{ storeDetails.nombre_comercio }}">
+      </div>
+
+      <!-- Descripción -->
+      <mat-card-content>
+        <p>{{ storeDetails.descripcion }}</p>
+      </mat-card-content>
+    </mat-card>
   </div>
-  
+
+  <!-- Productos disponibles -->
+  <div class="productos-container">
+    <h3>Productos disponibles</h3>
+    <div *ngIf="productos.length > 0; else noProducts">
+      <div class="productos-grid">
+        <!-- Mostrar el contenido actual de la lista de productos en la consola -->
+        <pre>{{ productos | json }}</pre> <!-- Esto se verá directamente en el HTML -->
+        <app-card-productos
+          *ngFor="let producto of productos"
+          [producto]="producto">
+        </app-card-productos>
+      </div>
+    </div>
+    <ng-template #noProducts>
+      <p>No hay productos publicados para esta tienda.</p>
+    </ng-template>
+  </div>
+</div>

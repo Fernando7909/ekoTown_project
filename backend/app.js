@@ -5,12 +5,12 @@ const fetch = require('node-fetch');
 const path = require('path');
 const multer = require('multer'); // Importar multer para manejar subidas de archivos
 
-const productRoutes = require('./routes/productRoutes');
 
 // Importar rutas
 const userRoutes = require('./routes/userRoutes');
 const businessManagerRoutes = require('./routes/businessManagerRoutes');
 const storeRoutes = require('./routes/storeRoutes');
+const productRoutes = require('./routes/productRoutes');
 
 dotenv.config();
 const app = express();
@@ -34,7 +34,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Middleware para servir archivos estáticos
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.resolve(__dirname, 'uploads')));
 
 // Registrar solicitudes en la consola
 app.use((req, res, next) => {
@@ -93,7 +93,8 @@ app.use('/api/business-managers', businessManagerRoutes);
 app.use('/api/stores', storeRoutes);
 
 // Rutas para productos (con soporte para subidas de imágenes)
-app.use('/api/productos', upload.single('imagen'), productRoutes);
+app.use('/api/productos', productRoutes);
+
 
 // Configuración del puerto del servidor
 const PORT = process.env.PORT || 3000;

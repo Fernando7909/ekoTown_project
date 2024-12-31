@@ -11,12 +11,13 @@ export interface Producto {
   categoria: string;
   cantidad: number;
   precio: number;
-  imagen_url?: string;
+  imagen_url?: string | null; // URL de la imagen guardada en el backend
+  imagenFile?: File | null; // Archivo seleccionado en el frontend
   publicado: boolean;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
   private apiUrl = 'http://localhost:3000/api/productos'; // Cambia según tu configuración
@@ -27,7 +28,7 @@ export class ProductService {
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('token'); // Obtiene el token del localStorage
     return new HttpHeaders({
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
   }
 
@@ -44,15 +45,15 @@ export class ProductService {
   }
 
   // Crear un nuevo producto
-  createProduct(product: Producto): Observable<Producto> {
-    const headers = this.getAuthHeaders();
-    return this.http.post<Producto>(this.apiUrl, product, { headers });
+  createProduct(product: FormData): Observable<any> {
+    const headers = this.getAuthHeaders(); // Incluir token si es necesario
+    return this.http.post(this.apiUrl, product, { headers }); // No configurar manualmente Content-Type
   }
 
   // Actualizar un producto existente
-  updateProduct(id: number, product: Producto): Observable<Producto> {
-    const headers = this.getAuthHeaders();
-    return this.http.put<Producto>(`${this.apiUrl}/${id}`, product, { headers });
+  updateProduct(id: number, product: FormData): Observable<any> {
+    const headers = this.getAuthHeaders(); // Incluir token si es necesario
+    return this.http.put(`${this.apiUrl}/${id}`, product, { headers }); // No configurar manualmente Content-Type
   }
 
   // Eliminar un producto

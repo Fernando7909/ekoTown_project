@@ -1,91 +1,104 @@
-const Product = require('../models/productModel');
+const db = require('../config/db'); // Conexión a la base de datos
 
-// Obtener todos los productos
-const getAllProducts = async (req, res) => {
-    try {
-        const products = await Product.getAll();
-        res.status(200).json(products);
-    } catch (error) {
-        console.error('Error al obtener productos:', error);
-        res.status(500).json({ error: 'Error al obtener productos' });
-    }
+const Product = {
+  // Obtener todos los productos
+  getAll: () => {
+    const query = 'SELECT * FROM productos';
+    return new Promise((resolve, reject) => {
+      db.query(query, (err, results) => {
+        if (err) {
+          console.error('Error al obtener todos los productos:', err);
+          return reject(err);
+        }
+        resolve(results);
+      });
+    });
+  },
+
+  // Obtener productos por Business Manager ID
+  getByManager: (businessManagerId) => {
+    const query = 'SELECT * FROM productos WHERE business_manager_id = ?';
+    return new Promise((resolve, reject) => {
+      db.query(query, [businessManagerId], (err, results) => {
+        if (err) {
+          console.error('Error al obtener productos por manager:', err);
+          return reject(err);
+        }
+        resolve(results);
+      });
+    });
+  },
+
+  // Crear un producto
+  create: (productData) => {
+    const query = `
+      INSERT INTO productos 
+      (business_manager_id, codigo, nombre, descripcion, categoria, cantidad, precio, imagen_url, publicado)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    const values = [
+      productData.business_manager_id,
+      productData.codigo,
+      productData.nombre,
+      productData.descripcion,
+      productData.categoria,
+      productData.cantidad,
+      productData.precio,
+      productData.imagen_url,
+      false, // Publicado inicialmente en falso
+    ];
+    return new Promise((resolve, reject) => {
+      db.query(query, values, (err, result) => {
+        if (err) {
+          console.error('Error al crear el producto:', err);
+          return reject(err);
+        }
+        resolve(result.insertId);
+      });
+    });
+  },
+
+  // Actualizar un producto
+  update: (id, productData) => {
+    const query = `
+      UPDATE productos 
+      SET nombre = ?, descripcion = ?, categoria = ?, cantidad = ?, precio = ?, imagen_url = ?, publicado = ?
+      WHERE id = ?
+    `;
+    const values = [
+      productData.nombre,
+      productData.descripcion,
+      productData.categoria,
+      productData.cantidad,
+      productData.precio,
+      productData.imagen_url || null, // Mantener la imagen actual si no se proporciona una nueva
+      productData.publicado,
+      id,
+    ];
+    return new Promise((resolve, reject) => {
+      db.query(query, values, (err, result) => {
+        if (err) {
+          console.error('Error al actualizar el producto:', err);
+          return reject(err);
+        }
+        resolve(result);
+      });
+    });
+  },
+
+  // Eliminar un producto
+  delete: (id) => {
+    const query = 'DELETE FROM productos WHERE id = ?';
+    return new Promise((resolve, reject) => {
+      db.query(query, [id], (err, result) => {
+        if (err) {
+          console.error('Error al eliminar el producto:', err);
+          return reject(err);
+        }
+        resolve(result);
+      });
+    });
+  },
 };
 
-// Obtener productos por Business Manager
-const getProductsByManager = async (req, res) => {
-    const { business_manager_id } = req.params;
-    try {
-        const products = await Product.getByManager(business_manager_id);
-        res.status(200).json(products);
-    } catch (error) {
-        console.error('Error al obtener productos por manager:', error);
-        res.status(500).json({ error: 'Error al obtener productos por manager' });
-    }
-};
-
-// Crear un producto
-const createProduct = async (req, res) => {
-    const { business_manager_id, codigo, nombre, descripcion, categoria, cantidad, precio } = req.body;
-    const imagen_url = req.file ? `/uploads/${req.file.filename}` : null;
-
-    try {
-        const productId = await Product.create({
-            business_manager_id,
-            codigo,
-            nombre,
-            descripcion,
-            categoria,
-            cantidad,
-            precio,
-            imagen_url,
-        });
-        res.status(201).json({ message: 'Producto creado con éxito', id: productId });
-    } catch (error) {
-        console.error('Error al crear producto:', error);
-        res.status(500).json({ error: 'Error al crear producto' });
-    }
-};
-
-// Actualizar un producto
-const updateProduct = async (req, res) => {
-    const { id } = req.params;
-    const { nombre, descripcion, categoria, cantidad, precio, publicado } = req.body;
-    const imagen_url = req.file ? `/uploads/${req.file.filename}` : req.body.imagen_url || null;
-
-    try {
-        await Product.update(id, {
-            nombre,
-            descripcion,
-            categoria,
-            cantidad,
-            precio,
-            imagen_url,
-            publicado,
-        });
-        res.status(200).json({ message: 'Producto actualizado con éxito' });
-    } catch (error) {
-        console.error('Error al actualizar producto:', error);
-        res.status(500).json({ error: 'Error al actualizar producto' });
-    }
-};
-
-// Eliminar un producto
-const deleteProduct = async (req, res) => {
-    const { id } = req.params;
-
-    try {
-        await Product.delete(id);
-        res.status(200).json({ message: 'Producto eliminado con éxito' });
-    } catch (error) {
-        console.error('Error al eliminar producto:', error);
-        res.status(500).json({ error: 'Error al eliminar producto' });
-    }
-};
-
-module.exports = {
-    getAllProducts,
-    getProductsByManager,
-    createProduct,
-    updateProduct,
-    deleteProduct,
-};
+module.exports = Product;
