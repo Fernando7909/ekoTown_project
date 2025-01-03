@@ -51,10 +51,18 @@ export class ProductService {
   }
 
   // Actualizar un producto existente
-  updateProduct(id: number, product: FormData): Observable<any> {
-    const headers = this.getAuthHeaders(); // Incluir token si es necesario
-    return this.http.put(`${this.apiUrl}/${id}`, product, { headers }); // No configurar manualmente Content-Type
+  updateProduct(id: number, productData: Partial<Producto> | FormData): Observable<any> {
+    let options = {};
+    
+    if (!(productData instanceof FormData)) {
+      const headers = this.getAuthHeaders(); // Solo incluir headers si no es FormData
+      options = { headers };
+    }
+    
+    return this.http.put(`${this.apiUrl}/${id}`, productData, options);
   }
+  
+
 
   // Eliminar un producto
   deleteProduct(id: number): Observable<void> {

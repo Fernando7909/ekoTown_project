@@ -3,8 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
 const path = require('path');
-const multer = require('multer'); // Importar multer para manejar subidas de archivos
-
+const multer = require('multer');
 
 // Importar rutas
 const userRoutes = require('./routes/userRoutes');
@@ -95,6 +94,20 @@ app.use('/api/stores', storeRoutes);
 // Rutas para productos (con soporte para subidas de imágenes)
 app.use('/api/productos', productRoutes);
 
+// ---------------------------
+// Integración de Stripe
+// ---------------------------
+const stripeServer = require('./stripeServer'); // Importar servidor de Stripe
+app.use('/api/stripe', stripeServer); // Configurar rutas de Stripe bajo el prefijo /api/stripe
+
+// Middleware para servir el frontend
+const frontendPath = path.resolve(__dirname, '../public'); // Ruta donde está el frontend compilado
+app.use(express.static(frontendPath));
+
+// Manejar todas las rutas desconocidas redirigiendo al frontend
+app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+});
 
 // Configuración del puerto del servidor
 const PORT = process.env.PORT || 3000;

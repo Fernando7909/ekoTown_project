@@ -136,11 +136,11 @@ export class CrudProductosComponent implements OnInit {
   }
 
   // Guarda el producto (agregar o editar)
-  saveProduct(): void {
+  saveProduct(): void { 
     const formData = this.toFormData(this.newProduct); // Convertir a FormData
-    
-    if (this.isEditMode) {
-      this.productService.updateProduct(this.newProduct.id!, formData).subscribe({
+  
+    if (this.isEditMode && this.newProduct.id) {
+      this.productService.updateProduct(this.newProduct.id, formData).subscribe({
         next: () => {
           this.loadProducts(); // Recargar productos
           this.closeModal();
@@ -161,6 +161,7 @@ export class CrudProductosComponent implements OnInit {
       });
     }
   }
+  
 
   // Elimina un producto por su ID
   deleteProduct(id: number): void {
@@ -178,19 +179,37 @@ export class CrudProductosComponent implements OnInit {
   }
 
   // Publicar producto
-  publishProduct(producto: Producto): void {
+  publishProduct(producto: Producto): void { 
     console.log('Publicando producto desde CRUD:', producto);
-    // Validar que el producto tiene los campos mínimos necesarios
+
     if (producto.id && producto.nombre && producto.imagen_url && producto.business_manager_id) {
-        this.publishedProductsService.publishProduct(producto); // Añadir al servicio compartido
-        console.log(`Producto publicado: ${producto.nombre} (ID: ${producto.id})`);
-        alert(`Producto "${producto.nombre}" publicado con éxito.`);
+        const productoActualizado = {
+            publicado: true,
+            nombre: producto.nombre,
+            descripcion: producto.descripcion,
+            categoria: producto.categoria,
+            cantidad: producto.cantidad,
+            precio: producto.precio,
+        }; // Incluye todos los campos necesarios
+
+        console.log('Datos enviados al backend:', productoActualizado);
+
+        this.productService.updateProduct(producto.id, productoActualizado).subscribe({
+            next: () => {
+                console.log(`Producto publicado en la base de datos: ${producto.nombre} (ID: ${producto.id})`);
+                alert(`Producto "${producto.nombre}" publicado con éxito.`);
+                this.loadProducts();
+            },
+            error: (err) => {
+                console.error('Error al publicar el producto:', err);
+                alert('Hubo un error al publicar el producto. Por favor, inténtalo de nuevo.');
+            }
+        });
     } else {
         console.warn('El producto no tiene todos los datos necesarios para publicarlo:', producto);
         alert('No se puede publicar el producto. Faltan datos.');
     }
 }
-
 
   
   

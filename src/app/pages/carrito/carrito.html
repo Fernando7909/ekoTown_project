@@ -1,0 +1,41 @@
+<div class="carrito-container">
+  <h1>Tu Carrito</h1>
+  <div *ngIf="cartItems.length > 0; else emptyCart">
+    <!-- Lista de productos en el carrito -->
+    <div class="cart-item" *ngFor="let item of cartItems">
+      <img [src]="item.imagen_url || 'path/to/default/image.png'" alt="{{ item.nombre }}" class="item-image" />
+      <div class="item-details">
+        <h2>{{ item.nombre }}</h2>
+        <p>Categoría: {{ item.categoria }}</p>
+        <p>Precio: {{ item.precio | currency:'EUR':'symbol' }}</p>
+        <button *ngIf="item.id !== undefined" (click)="removeItem(item.id!)">Eliminar</button>
+      </div>
+    </div>
+
+    <!-- Resumen del carrito -->
+    <div class="checkout-section">
+      <h2>Total del carrito</h2>
+      <table class="summary-table">
+        <tr>
+          <td>Subtotal</td>
+          <td>{{ calculateSubtotal() | currency:'EUR':'symbol' }}</td>
+        </tr>
+        <tr>
+          <td>IVA (21%)</td>
+          <td>{{ calculateIVA() | currency:'EUR':'symbol' }}</td>
+        </tr>
+        <tr>
+          <td><strong>Total</strong></td>
+          <td>
+            <strong>{{ calculateTotal() | currency:'EUR':'symbol' }}</strong>
+          </td>
+        </tr>
+      </table>
+      <!-- Botón para finalizar la compra -->
+      <button class="checkout-button" (click)="finalizePurchase()">Finalizar compra</button>
+    </div>
+  </div>
+  <ng-template #emptyCart>
+    <p>No hay productos en el carrito.</p>
+  </ng-template>
+</div>

@@ -88,42 +88,59 @@ exports.getProductsByBusinessManager = (req, res) => {
 
 
 // Actualizar un producto
-exports.updateProduct = (req, res) => {
+exports.updateProduct = async (req, res) => {
     console.log('Datos recibidos para actualizar:', req.body);
     console.log('Archivo recibido:', req.file);
 
     const { id } = req.params;
     const { nombre, descripcion, categoria, cantidad, precio, publicado } = req.body;
 
+    // Validar entrada
+    if (!id || !nombre || !descripcion || !categoria || !cantidad || !precio) {
+        return res.status(400).send({ error: 'Faltan datos obligatorios para actualizar el producto.' });
+    }
+
+    // Convertir "publicado" a un valor booleano/número adecuado
+    const publicadoValue = publicado === 'true' || publicado === '1' || publicado === true ? 1 : 0;
+
+    // Manejar URL de la imagen
     let imagenUrl = req.body.imagen_url || null;
     if (req.file) {
         imagenUrl = `/uploads/${req.file.filename}`;
     } else if (!imagenUrl) {
-        const getImageQuery = `SELECT imagen_url FROM productos WHERE id = ?`;
-        db.query(getImageQuery, [id], (err, results) => {
-            if (!err && results.length > 0) {
-                imagenUrl = results[0].imagen_url; // Mantener la URL existente si no se envía una nueva
+        try {
+            const [results] = await db.promise().query(`SELECT imagen_url FROM productos WHERE id = ?`, [id]);
+            if (results.length > 0) {
+                imagenUrl = results[0].imagen_url || null;
             }
-        });
+        } catch (error) {
+            console.error('Error al recuperar URL de la imagen:', error);
+            return res.status(500).send('Error al actualizar producto.');
+        }
     }
 
+    // Preparar consulta de actualización
     const query = `
         UPDATE productos 
         SET nombre = ?, descripcion = ?, categoria = ?, cantidad = ?, precio = ?, imagen_url = ?, publicado = ?
         WHERE id = ?
     `;
-    const values = [nombre, descripcion, categoria, cantidad, precio, imagenUrl, publicado, id];
+    const values = [nombre, descripcion, categoria, cantidad, precio, imagenUrl, publicadoValue, id];
 
     console.log('Valores para actualizar en la base de datos:', values);
 
-    db.query(query, values, (err, result) => {
-        if (err) {
-            console.error('Error al actualizar producto:', err);
-            return res.status(500).send('Error al actualizar producto');
+    try {
+        const [result] = await db.promise().query(query, values);
+        if (result.affectedRows === 0) {
+            return res.status(404).send({ message: 'Producto no encontrado.' });
         }
         res.status(200).send({ message: 'Producto actualizado con éxito' });
-    });
+    } catch (error) {
+        console.error('Error al actualizar producto:', error);
+        res.status(500).send('Error al actualizar producto');
+    }
 };
+
 
 
 

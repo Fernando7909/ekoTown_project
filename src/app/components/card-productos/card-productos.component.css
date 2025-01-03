@@ -1,9 +1,9 @@
-.card {
+.card-producto {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 300px; /* Ancho máximo para responsividad */
+  align-items: center;
+  justify-content: center;
+  max-width: 300px; /* Ajustar el ancho máximo de la tarjeta */
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -11,68 +11,63 @@
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.card:hover {
+.card-producto:hover {
   transform: scale(1.02);
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
-.card-image {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-bottom: 1px solid #ddd;
+.producto-imagen {
+  width: 100%; /* Asegura que ocupe el ancho de su contenedor */
+  max-width: 150px; /* Tamaño máximo para la imagen */
+  height: auto; /* Mantiene la proporción */
+  object-fit: contain; /* Ajusta el contenido dentro del tamaño */
+  margin: 10px 0; /* Espaciado entre la imagen y los detalles */
+  border: 1px solid #ddd; /* Añadir borde ligero */
+  border-radius: 8px; /* Opcional: bordes redondeados */
 }
 
-.card-content {
-  padding: 16px;
+.producto-detalles {
+  text-align: center; /* Centrar el texto */
+  padding: 10px;
 }
 
-.card-title {
-  font-size: 18px;
+.producto-detalles h2 {
+  font-size: 16px;
   font-weight: bold;
-  margin: 0;
+  margin: 10px 0;
   color: #333;
 }
 
-.card-category {
-  font-size: 14px;
-  color: #777;
-  margin: 4px 0;
-}
-
-.card-description {
+.producto-detalles .categoria,
+.producto-detalles .descripcion,
+.producto-detalles .precio {
   font-size: 14px;
   color: #555;
-  margin: 8px 0;
-  line-height: 1.5;
+  margin: 5px 0;
 }
 
-.card-price {
-  font-size: 16px;
+.producto-detalles .precio {
   font-weight: bold;
   color: #1e88e5;
-  margin: 8px 0;
 }
 
-.card-button {
-  background-color: #1e88e5;
+
+.mensaje-alerta {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 0, 0, 0.8);
   color: white;
-  border: none;
-  padding: 12px;
-  width: 100%;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 4px;
-  transition: background-color 0.2s, transform 0.1s;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  font-size: 14px;
+  animation: fadeInOut 3s ease-in-out;
 }
 
-.card-button:hover {
-  background-color: #1565c0;
-  transform: scale(1.02);
+@keyframes fadeInOut {
+  0%, 80% { opacity: 1; }
+  100% { opacity: 0; }
 }
-
-.card {
-  border: 3px dashed red !important;
-}
-

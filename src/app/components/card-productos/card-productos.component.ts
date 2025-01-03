@@ -1,5 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { Producto } from '../../services/product.service';
+import { CartService } from '../../services/cart.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,24 +8,33 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   templateUrl: './card-productos.component.html',
   styleUrls: ['./card-productos.component.css'],
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
 })
 export class CardProductosComponent implements OnChanges {
-  @Input() producto!: Producto; // Recibe un producto como entrada
-  @Output() addToCart = new EventEmitter<Producto>(); // Evento para el carrito
+  @Input() producto!: Producto;
 
-  // Validar que el producto sea válido al recibir cambios
+  mensajeAlerta: string | null = null; // Variable para mostrar mensajes al usuario
+
+  constructor(private cartService: CartService) {}
+
   ngOnChanges(): void {
     if (!this.producto || !this.producto.nombre) {
       console.warn('El producto recibido no es válido:', this.producto);
     }
   }
 
-  // Método que emite el producto cuando se agrega al carrito
   onAddToCart(): void {
-    console.log(`Producto añadido al carrito: ${this.producto.nombre}`);
-    this.addToCart.emit(this.producto);
+    const isAuthenticated = localStorage.getItem('token'); // Verifica si el token de autenticación existe
+
+    if (isAuthenticated) {
+      this.cartService.addToCart(this.producto);
+      alert(`Producto "${this.producto.nombre}" añadido al carrito.`);
+    } else {
+      // Muestra un mensaje en pantalla
+      this.mensajeAlerta = 'Debes estar registrado para realizar compras.';
+      setTimeout(() => {
+        this.mensajeAlerta = null; // Oculta el mensaje después de unos segundos
+      }, 3000); // 3 segundos de duración
+    }
   }
 }

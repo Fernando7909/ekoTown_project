@@ -1,10 +1,4 @@
 import { Routes } from '@angular/router';
-// import { importProvidersFrom } from '@angular/core';
-// import { InicioComponent } from './components/inicio/inicio.component'; 
-// import { SearchComponent } from './components/search/search.component'; 
-// import { AreaPersonalUsuariosPage } from './pages/area-personal-usuarios/area-personal-usuarios';
-// import { AreaPersonalBmPage } from './pages/area-personal-bm/area-personal-bm';
-
 
 export const routes: Routes = [
   { 
@@ -42,7 +36,23 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/crudProductos/crudProductos').then((m) => m.CrudProductosComponent),
   },
 
-  { path: '**', 
+  {
+    path: 'carrito',
+    loadComponent: () => import('./pages/carrito/carrito').then(m => m.CarritoComponent), // Nueva ruta para el carrito
+  },
+
+  {
+    path: 'success',
+    loadComponent: () => import('./components/success/success.component').then(m => m.SuccessComponent),
+  },
+
+  {
+    path: 'cancel',
+    loadComponent: () => import('./components/cancel/cancel.component').then(m => m.CancelComponent),
+  },
+
+  { 
+    path: '**', 
     redirectTo: '', 
     pathMatch: 'full' 
   } 

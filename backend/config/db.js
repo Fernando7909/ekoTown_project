@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
 // Crear la conexión a MySQL utilizando variables de entorno
 const db = mysql.createConnection({

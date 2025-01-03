@@ -35,8 +35,6 @@
     <h3>Productos disponibles</h3>
     <div *ngIf="productos.length > 0; else noProducts">
       <div class="productos-grid">
-        <!-- Mostrar el contenido actual de la lista de productos en la consola -->
-        <pre>{{ productos | json }}</pre> <!-- Esto se verá directamente en el HTML -->
         <app-card-productos
           *ngFor="let producto of productos"
           [producto]="producto">
