@@ -41,15 +41,15 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/carrito/carrito').then(m => m.CarritoComponent), // Nueva ruta para el carrito
   },
 
-  {
-    path: 'success',
-    loadComponent: () => import('./components/success/success.component').then(m => m.SuccessComponent),
-  },
+  // {
+  //   path: 'success',
+  //   loadComponent: () => import('./components/success/success.component').then(m => m.SuccessComponent),
+  // },
 
-  {
-    path: 'cancel',
-    loadComponent: () => import('./components/cancel/cancel.component').then(m => m.CancelComponent),
-  },
+  // {
+  //   path: 'cancel',
+  //   loadComponent: () => import('./components/cancel/cancel.component').then(m => m.CancelComponent),
+  // },
 
   { 
     path: '**', 

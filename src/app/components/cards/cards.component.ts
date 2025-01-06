@@ -15,6 +15,7 @@ interface Card {
   descripcion: string;
   rating: number;
   reviewsCount: number;
+  averageRating: number;
 }
 
 @Component({
@@ -31,6 +32,8 @@ interface Card {
   styleUrls: ['./cards.component.css'],
 })
 export class CardsComponent implements OnInit {
+
+  public Math = Math;
   showContent: boolean = true;
   isModalOpen: boolean = false;
   fullDescription: string = '';
@@ -52,10 +55,10 @@ export class CardsComponent implements OnInit {
           foto_gerente: store.foto_gerente.replace(/\\/g, '/'),
           imagen: store.imagen.replace(/\\/g, '/'),
           descripcion: store.descripcion || 'Descripción no disponible',
-          rating: store.rating || 0,
-          reviewsCount: store.reviewsCount || 0,
-        }));
-
+          rating: parseFloat(store.rating.toFixed(1)), // Redondeo del rating a 1 decimal
+          reviewsCount: store.reviewsCount || 0, // Total de reseñas
+        }));        
+  
         console.log('Datos cargados:', this.cards);
       },
       error: (error) => {
@@ -63,6 +66,8 @@ export class CardsComponent implements OnInit {
       },
     });
   }
+  
+  
 
   getShortDescription(description: string): string {
     const maxLength = 20;

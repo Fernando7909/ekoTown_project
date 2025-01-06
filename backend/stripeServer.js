@@ -32,8 +32,8 @@ router.post('/create-checkout-session', async (req, res) => {
             payment_method_types: ['card'], // Métodos de pago aceptados
             line_items: lineItems, // Artículos de la compra
             mode: 'payment', // Modo de pago único
-            success_url: 'http://localhost:3000/success', // URL de éxito
-            cancel_url: 'http://localhost:3000/cancel', // URL de cancelación
+            success_url: 'http://localhost:4200/?purchase=success', // URL de éxito con parámetro
+            cancel_url: 'http://localhost:4200/', // URL de cancelación
         });
 
         // Responder con el ID de la sesión

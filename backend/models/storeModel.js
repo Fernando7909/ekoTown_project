@@ -36,20 +36,37 @@ exports.createStore = (storeData, callback) => {
 };
 
 
-// Obtener todas las tiendas
+// Obtener todas las tiendas con el conteo de reseñas
 exports.getAllStores = (callback) => {
-  console.log('Recuperando todos los comercios de la base de datos');
-  const query = 'SELECT * FROM stores';
+  console.log('Recuperando todos los comercios de la base de datos con el conteo de reseñas');
+  const query = `
+    SELECT 
+      stores.id, 
+      stores.nombre_comercio, 
+      stores.foto_gerente, 
+      stores.nombre_gerente, 
+      stores.imagen, 
+      stores.descripcion, 
+      stores.rating, 
+      COUNT(reviews.id) AS reviewsCount
+    FROM 
+      stores 
+    LEFT JOIN 
+      reviews ON stores.id = reviews.store_id
+    GROUP BY 
+      stores.id
+  `;
 
   db.query(query, (err, results) => {
     if (err) {
-      console.error('Error al obtener comercios:', err.message, err.stack);
+      console.error('Error al obtener comercios con el conteo de reseñas:', err.message, err.stack);
       return callback(err);
     }
-    console.log('Comercios recuperados:', results);
+    console.log('Comercios recuperados con reviewsCount:', results);
     callback(null, results);
   });
 };
+
 
 // Obtener una tienda por el ID del Business Manager
 exports.getStoreByBusinessManager = (businessManagerId, callback) => {
@@ -105,7 +122,7 @@ exports.deleteStoreById = (storeId, callback) => {
 };
 
 
-// Obtener productos publicados de una tienda
+
 // Obtener productos publicados de una tienda
 exports.getPublishedProductsByStore = (storeId, callback) => {
   console.log(`Iniciando búsqueda de productos publicados para la tienda con ID: ${storeId}`);
@@ -139,6 +156,24 @@ exports.getPublishedProductsByStore = (storeId, callback) => {
     callback(null, results);
   });
 };
+
+
+
+// Actualizar el rating promedio de una tienda
+exports.updateStoreRating = (storeId, averageRating, callback) => {
+  db.query(
+    'UPDATE stores SET rating = ? WHERE id = ?',
+    [averageRating, storeId],
+    (err, result) => {
+      if (err) {
+        console.error('Error al actualizar el rating de la tienda:', err);
+        return callback(err, null);
+      }
+      callback(null, result);
+    }
+  );
+};
+
 
 
 

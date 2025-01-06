@@ -239,3 +239,52 @@ mat-card-actions {
   line-height: 1.5;
 }
 
+
+/* RATING */
+.rating-container {
+  display: flex; /* Asegura que todo esté en una línea */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Alinea verticalmente */
+  width: 100%; /* Ocupa todo el ancho disponible */
+}
+
+.stars-rating-info {
+  display: flex; /* Coloca las estrellas y los detalles en línea */
+  align-items: center; /* Alinea verticalmente */
+  gap: 8px; /* Espacio entre las estrellas y los detalles */
+}
+
+.stars {
+  display: flex; /* Mantiene las estrellas alineadas horizontalmente */
+}
+
+.stars span {
+  font-size: 1.5em; /* Tamaño de las estrellas */
+  color: lightgray; /* Color para estrellas vacías */
+}
+
+.stars .filled {
+  color: gold; /* Color para estrellas llenas */
+}
+
+.stars .half-filled {
+  background: linear-gradient(to right, gold 50%, lightgray 50%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.rating-details {
+  display: flex; /* Pone el rating y las reseñas en línea */
+  align-items: center; /* Alinea verticalmente */
+  font-size: 1.2em; /* Tamaño uniforme */
+  color: #000; /* Color negro */
+}
+
+.rating-details .review-count {
+  margin-left: 4px; /* Espacio entre el promedio y las reseñas */
+  font-weight: normal; /* Menor énfasis para las reseñas */
+  color: #000;
+}
+
+

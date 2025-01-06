@@ -27,17 +27,34 @@
           </span>
         </p>
       </mat-card-content>
-
       <mat-card-actions>
         <div class="rating-container">
-          <div class="stars">
-            <ng-container *ngFor="let star of stars; let i = index">
-              <span [ngClass]="{ 'filled': i < card.rating }">&#9733;</span>
-            </ng-container>
+          <!-- Estrellas y Rating en el mismo contenedor -->
+          <div class="stars-rating-info">
+            <!-- Estrellas -->
+            <div class="stars">
+              <ng-container *ngFor="let star of stars; let i = index">
+                <span
+                  [ngClass]="{
+                    'filled': i < Math.floor(card.rating),
+                    'half-filled': i === Math.floor(card.rating) && card.rating % 1 !== 0
+                  }"
+                >
+                  &#9733;
+                </span>
+              </ng-container>
+            </div>
+      
+            <!-- Rating y número de reseñas -->
+            <div class="rating-details">
+              <span class="rating-info">{{ card.rating.toFixed(1) }}</span>
+              <span class="review-count">({{ card.reviewsCount }})</span>
+            </div>
           </div>
-          <span class="review-count">{{ card.reviewsCount }} reviews{{ card.reviewsCount > 1 ? 's' : '' }}</span>
         </div>
       </mat-card-actions>
+      
+      
     </mat-card>
   </div>
 </div>

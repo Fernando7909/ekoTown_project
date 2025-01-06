@@ -89,12 +89,16 @@
   font-size: 1.2em;
   margin: 0.5em 0; /* Espacio entre el título y el texto */
   color: #000000;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  
+  /* Alternativa a line-clamp */
+  display: block; /* Aseguramos que el contenedor es de bloque */
+  line-height: 1.5em; /* Altura de línea (ajustar según tu diseño) */
+  max-height: 3em; /* Altura máxima para 2 líneas: 2 líneas * line-height */
+  overflow: hidden; /* Ocultar contenido excedente */
+  text-overflow: ellipsis; /* Mostrar puntos suspensivos para contenido excedente */
+  white-space: normal; /* Permitir saltos de línea */
 }
+
 
 .button-container {
   margin-top: 1.5em;
@@ -304,4 +308,69 @@
 
 .cta-button:hover {
   background-color: #589b6c;
+}
+
+
+
+/* Estilos modal final compra */
+.modal { 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  animation: slideDown 0.4s ease;
+  text-align: center; /* Centra todo el contenido de texto */
+}
+
+.modal-header h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+  color: #333;
+  text-align: center; /* Asegura el centrado del título */
+}
+
+.modal-body {
+  margin-top: 15px;
+  font-size: 16px;
+  color: #555;
+  text-align: center; /* Centra el texto del cuerpo */
+}
+
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

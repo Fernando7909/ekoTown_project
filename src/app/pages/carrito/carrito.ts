@@ -26,7 +26,6 @@ export class CarritoComponent implements OnInit {
     this.initializeStripe();
   }
 
-  // Inicializar Stripe con la clave pública
   async initializeStripe(): Promise<void> {
     this.stripe = await loadStripe(this.stripePublicKey);
   }
@@ -41,7 +40,7 @@ export class CarritoComponent implements OnInit {
 
   calculateIVA(): number {
     const ivaRate = 0.21; // 21% IVA
-    return this.cartItems.reduce((acc, item) => acc + (item.precio * item.cantidad * ivaRate), 0);
+    return this.cartItems.reduce((acc, item) => acc + item.precio * item.cantidad * ivaRate, 0);
   }
 
   calculateTotal(): number {
@@ -54,33 +53,29 @@ export class CarritoComponent implements OnInit {
       return;
     }
 
-    // Preparar los datos del carrito para enviarlos al backend
-    const ivaRate = 0.21; // Tasa del IVA
+    const ivaRate = 0.21;
     const items = this.cartItems.map((item) => {
-      const priceWithIVA = item.precio * (1 + ivaRate); // Añadir IVA al precio de cada producto
+      const priceWithIVA = item.precio * (1 + ivaRate);
       return {
         name: item.nombre,
-        price: Math.round(priceWithIVA * 100), // Convertir a céntimos y redondear
+        price: Math.round(priceWithIVA * 100),
         quantity: item.cantidad,
       };
     });
 
     try {
-      // Llamar al backend para crear la sesión de Stripe
       const response = await fetch('http://localhost:3000/api/stripe/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          items: items,
-          success_url: 'http://localhost:4200/success', // URL de éxito
-          cancel_url: 'http://localhost:4200/cancel', // URL de cancelación
-        }),
+        body: JSON.stringify({ items }),
       });
 
       const { sessionId } = await response.json();
+      const result = await this.stripe.redirectToCheckout({ sessionId });
 
-      // Redirigir al Checkout de Stripe
-      await this.stripe.redirectToCheckout({ sessionId });
+      if (result?.error) {
+        throw new Error(result.error.message);
+      }
     } catch (error) {
       console.error('Error al procesar la compra:', error);
       alert('Hubo un problema al procesar la compra. Por favor, inténtalo de nuevo.');

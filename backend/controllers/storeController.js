@@ -87,12 +87,15 @@ exports.createStore = [
 
 
 // Obtener todos los Stores
+// Obtener todos los Stores con reviewsCount
 exports.getAllStores = (req, res) => {
   Store.getAllStores((err, stores) => {
     if (err) {
+      console.error('Error al obtener comercios:', err);
       return res.status(500).json({ error: 'Error al obtener comercios' });
     }
 
+    // Ajustar las rutas completas para las imágenes
     const storesWithImagePaths = stores.map((store) => ({
       ...store,
       foto_gerente: store.foto_gerente
@@ -103,9 +106,11 @@ exports.getAllStores = (req, res) => {
         : null,
     }));
 
+    // Responder con las tiendas y el número de reseñas
     res.status(200).json(storesWithImagePaths);
   });
 };
+
 
 // Obtener la tienda asociada a un Business Manager
 exports.getStoreByBusinessManager = (req, res) => {

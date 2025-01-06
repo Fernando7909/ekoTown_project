@@ -1,10 +1,10 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { TestimonialsComponent } from '../testimonials/testimonials.component';
 import { NavbarComponent } from '../navbar/navbar.component';
@@ -33,9 +33,34 @@ import { CarouselComponent } from "../carousel/carousel.component";
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css']
 })
-export class InicioComponent {
+export class InicioComponent implements OnInit {
+  
+  // Nuevo: Propiedades para el modal
+  showModal: boolean = false;
+  modalMessage: string = '';
 
-  constructor(private router: Router) {} 
+  constructor(private router: Router, private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    // Nuevo: Detectar el parámetro en la URL
+    this.route.queryParams.subscribe(params => {
+      if (params['purchase'] === 'success') {
+        this.showModal = true;
+        this.modalMessage = '¡Compra completada con éxito!';
+        setTimeout(() => {
+          this.closeModal();
+        }, 5000); // Ocultar modal después de 4 segundos
+      }
+    });
+  }
+
+  // Nuevo: Método para cerrar el modal
+  closeModal(): void {
+    this.showModal = false;
+
+    // Opcional: limpiar el parámetro de la URL
+    window.history.replaceState({}, document.title, '/');
+  }
 
   // Método para redirigir a la ruta loginregister
   navigateToLoginRegister() {

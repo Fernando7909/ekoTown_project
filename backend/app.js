@@ -10,6 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const businessManagerRoutes = require('./routes/businessManagerRoutes');
 const storeRoutes = require('./routes/storeRoutes');
 const productRoutes = require('./routes/productRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 
 dotenv.config();
 const app = express();
@@ -94,6 +95,11 @@ app.use('/api/stores', storeRoutes);
 // Rutas para productos (con soporte para subidas de imágenes)
 app.use('/api/productos', productRoutes);
 
+// Ruta para las reseñas
+app.use('/api', reviewRoutes);
+
+
+
 // ---------------------------
 // Integración de Stripe
 // ---------------------------
@@ -101,7 +107,7 @@ const stripeServer = require('./stripeServer'); // Importar servidor de Stripe
 app.use('/api/stripe', stripeServer); // Configurar rutas de Stripe bajo el prefijo /api/stripe
 
 // Middleware para servir el frontend
-const frontendPath = path.resolve(__dirname, '../public'); // Ruta donde está el frontend compilado
+const frontendPath = path.resolve(__dirname, '../dist/eko-town-project/browser'); // Ruta correcta del frontend compilado
 app.use(express.static(frontendPath));
 
 // Manejar todas las rutas desconocidas redirigiendo al frontend
@@ -114,3 +120,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
+
