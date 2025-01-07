@@ -60,3 +60,29 @@ exports.updateStoreRating = (storeId, averageRating, callback) => {
   );
 };
 
+
+// Obtener el desglose de calificaciones por tienda
+exports.getRatingsSummary = (storeId, callback) => {
+  const query = `
+    SELECT 
+      AVG(rating) AS averageRating,
+      COUNT(rating) AS totalReviews,
+      SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) AS fiveStars,
+      SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) AS fourStars,
+      SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) AS threeStars,
+      SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) AS twoStars,
+      SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) AS oneStar
+    FROM reviews
+    WHERE store_id = ?;
+  `;
+
+  db.query(query, [storeId], (err, results) => {
+    if (err) {
+      console.error('Error al obtener el resumen de calificaciones:', err.message);
+      return callback(err, null);
+    }
+    callback(null, results[0]); // Devuelve el primer resultado
+  });
+};
+
+

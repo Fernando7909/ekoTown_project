@@ -176,76 +176,16 @@ mat-card-actions {
   align-items: center;
 }
 
-/* Contenido del modal */
-.modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 600px;
-  width: 90%;
-  position: relative;
-  text-align: left;
-}
 
-/* Encabezado del modal */
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
-}
-
-.modal-header-content {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-/* Imagen del avatar */
-.modal-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-/* Título y subtítulo */
-.modal-title {
-  margin: 0;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.modal-subtitle {
-  margin: 0;
-  font-size: 14px;
-  color: #555;
-}
-
-/* Botón para cerrar */
-.close {
-  position: relative;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-/* Descripción */
-.modal-description {
-  font-size: 16px;
-  color: #333;
-  line-height: 1.5;
-}
 
 
 /* RATING */
 .rating-container {
-  display: flex; /* Asegura que todo esté en una línea */
-  justify-content: center; /* Centra horizontalmente */
-  align-items: center; /* Alinea verticalmente */
-  width: 100%; /* Ocupa todo el ancho disponible */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Distribuye los elementos, empujando el icono a la derecha */
+  width: 100%; /* Asegura que ocupe todo el ancho disponible */
+  position: relative; /* Posiciona los elementos relativamente dentro del contenedor */
 }
 
 .stars-rating-info {
@@ -287,4 +227,234 @@ mat-card-actions {
   color: #000;
 }
 
+.classification-icon {
+  width: 24px; /* Ajusta el tamaño del icono */
+  height: 24px;
+  cursor: pointer; /* Cursor de mano para interactividad */
+  position: absolute; /* Posición absoluta dentro del contenedor */
+  right: 0; /* Pega el icono al borde derecho */
+  margin-right: 15px; /* Añade un margen opcional para separarlo del borde */
+}
+
+.classification-icon:hover {
+  transform: scale(1.1); /* Aumenta ligeramente el tamaño al pasar el cursor */
+}
+
+
+
+
+/* MODAL RESEÑAS */
+.modal-reviews {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 9000; /* Asegura que se superpone adecuadamente */
+}
+
+.modal-reviews .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 600px;
+  width: 90%;
+  animation: fadeIn 0.3s ease-in-out;
+  overflow-y: auto; /* Habilitar scroll si es necesario */
+}
+
+.modal-reviews .close {
+  position: absolute;
+  top: 15px; /* Ajusta la distancia desde la parte superior */
+  right: 30px; /* Ajusta la distancia desde la parte derecha */
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.title-divider {
+  border: none;
+  border-top: 1px solid #949393; /* Color gris claro */
+  margin: 10px 0; /* Espaciado arriba y abajo */
+}
+
+
+/* Modal Resumen de Calificaciones */
+.ratings-summary {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.average-rating h2 {
+  font-size: 2.5em;
+  margin: 0;
+  color: #333;
+}
+
+.average-rating p {
+  font-size: 1em;
+  color: #777;
+}
+
+.ratings-breakdown {
+  margin-top: 10px;
+}
+
+.rating-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.star-label {
+  width: 50px;
+  text-align: right;
+  margin-right: 10px;
+  font-size: 0.9em;
+}
+
+.bar-container {
+  flex: 1;
+  height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bar {
+  height: 100%;
+  background-color: #ffb400;
+  border-radius: 5px;
+  transition: width 0.3s ease-in-out;
+}
+
+.count {
+  width: 30px;
+  text-align: right;
+  margin-left: 10px;
+  font-size: 0.9em;
+}
+
+
+
+
+
+
+
+/* MODAL DESCRIPCIÓN */
+/* .modal-description {
+  display: flex;
+  position: fixed;
+  z-index: 10000; 
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-description .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 90%;
+  position: relative;
+  text-align: left;
+}
+
+.modal-description .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.modal-description .modal-header-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.modal-description .modal-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.modal-description .modal-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.modal-description .modal-subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.modal-description .close {
+  position: relative;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-description .modal-description {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.5;
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* RESPONSIVE DESIGN PARA AMBOS MODALES */
+@media (max-width: 480px) {
+  .modal-content {
+    max-width: 95%;
+    padding: 15px;
+  }
+
+  .average-rating h2 {
+    font-size: 2em;
+  }
+
+  .star-label,
+  .count {
+    font-size: 0.8em;
+  }
+
+  .review-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .review-buttons button {
+    width: 100%;
+  }
+}
 

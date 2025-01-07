@@ -21,15 +21,17 @@
           <span
             *ngIf="isDescriptionLong(card.descripcion)"
             class="read-more"
-            (click)="openModal(card.descripcion, card)"
+            [routerLink]="['/inside-store', card.id]"
           >
-            más
+            >
           </span>
         </p>
       </mat-card-content>
+      
+
       <mat-card-actions>
         <div class="rating-container">
-          <!-- Estrellas y Rating en el mismo contenedor -->
+          <!-- Estrellas y Rating -->
           <div class="stars-rating-info">
             <!-- Estrellas -->
             <div class="stars">
@@ -44,25 +46,112 @@
                 </span>
               </ng-container>
             </div>
-      
+
             <!-- Rating y número de reseñas -->
             <div class="rating-details">
               <span class="rating-info">{{ card.rating.toFixed(1) }}</span>
               <span class="review-count">({{ card.reviewsCount }})</span>
             </div>
+            <img
+              src="clasificacion.png"
+              alt="Clasificación"
+              class="classification-icon"
+              (click)="openReviewsModal(card)"
+            />
+
           </div>
         </div>
       </mat-card-actions>
-      
-      
     </mat-card>
   </div>
 </div>
 
-<!-- Modal para mostrar la descripción completa -->
-<div class="modal" *ngIf="isModalOpen">
+<!-- Modal para mostrar las reseñas -->
+<div class="modal-reviews" *ngIf="isReviewsModalOpen">
   <div class="modal-content">
-    <!-- Encabezado del modal -->
+    <div class="modal-header">
+      <h2 class="modal-title">Reseñas de {{ selectedReviewCard?.nombre_comercio }}</h2>
+      <span class="close" (click)="closeReviewsModal()">&times;</span>
+    </div>
+    <!-- Línea divisoria debajo del título -->
+    <hr class="title-divider" />
+    <div class="modal-body">
+      <!-- Resumen de calificaciones -->
+      <div class="ratings-summary" *ngIf="ratingsSummary">
+        <h3>Calificaciones y Opiniones</h3>
+        <div class="average-rating">
+          <h2>{{ ratingsSummary.averageRating.toFixed(1) }}</h2>
+          <p>{{ ratingsSummary.totalReviews }} calificaciones</p>
+        </div>
+        <div class="ratings-breakdown">
+          <div class="rating-bar" *ngFor="let star of [5, 4, 3, 2, 1]">
+            <span class="star-label">{{ star }} <span>&#9733;</span></span>
+            <div class="bar-container">
+              <div
+                class="bar"
+                [style.width]="getStarPercentage(star) + '%'"
+              ></div>
+            </div>
+            <span class="count">{{ getStarCount(star) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario para añadir reseñas -->
+      <div class="add-review">
+        <p *ngIf="!isUserRegistered" class="login-prompt">
+          Solo los usuarios registrados pueden dejar una reseña.
+        </p>
+      
+        <form
+          *ngIf="isUserRegistered && !alreadyReviewed && selectedReviewCard"
+          (ngSubmit)="submitReview(selectedReviewCard.id)"
+        >
+          <div class="rating-input">
+            <label>Valora esta tienda</label>
+            <div class="stars">
+              <p-rating
+                [(ngModel)]="newReview.rating"
+                stars="5"
+                cancel="false"
+                [required]="true"
+                name="rating"
+              ></p-rating>
+            </div>
+          </div>
+          <div class="comment-input">
+            <label>Comentario (opcional):</label>
+            <textarea
+              [(ngModel)]="newReview.comment"
+              placeholder="Escribe tu comentario aquí..."
+              rows="3"
+              name="comment"
+            ></textarea>
+          </div>
+          <div class="review-buttons">
+            <button type="button" class="cancel" (click)="closeReviewsModal()">
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="submit"
+              [disabled]="!newReview.rating"
+            >
+              Publicar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+      
+
+
+
+<!-- Modal para mostrar la descripción completa -->
+<!-- <div class="modal-description" *ngIf="isModalOpen">
+  <div class="modal-content">
     <div class="modal-header">
       <div class="modal-header-content">
         <img [src]="selectedCard?.foto_gerente" alt="Foto de {{ selectedCard?.nombre_gerente }}" class="modal-avatar">
@@ -74,9 +163,8 @@
       <span class="close" (click)="closeModal()">&times;</span>
     </div>
 
-    <!-- Contenido de la descripción -->
     <div class="modal-description">
       <p>{{ fullDescription }}</p>
     </div>
   </div>
-</div>
+</div> -->

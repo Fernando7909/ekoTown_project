@@ -56,3 +56,42 @@ exports.addReview = (req, res) => {
     });
   });
 };
+
+exports.getRatingsSummary = (req, res) => {
+  const storeId = req.params.storeId;
+
+  if (!storeId) {
+    return res.status(400).json({ error: 'El ID de la tienda es obligatorio.' });
+  }
+
+  Review.getRatingsSummary(storeId, (err, summary) => {
+    if (err) {
+      console.error('Error al obtener el resumen de calificaciones:', err);
+      return res.status(500).json({ error: 'Error al obtener el resumen de calificaciones.' });
+    }
+
+    if (!summary) {
+      return res.status(404).json({ error: 'No se encontró un resumen de calificaciones para esta tienda.' });
+    }
+
+    res.status(200).json(summary);
+  });
+};
+
+// Nueva función para verificar si un usuario ya hizo una reseña
+exports.checkUserReview = (req, res) => {
+  const { storeId, userId } = req.params;
+
+  if (!storeId || !userId) {
+    return res.status(400).json({ error: 'Se requiere el ID de la tienda y el ID del usuario.' });
+  }
+
+  Review.checkUserReview(storeId, userId, (err, alreadyReviewed) => {
+    if (err) {
+      console.error('Error al verificar la reseña del usuario:', err);
+      return res.status(500).json({ error: 'Ocurrió un error al verificar la reseña.' });
+    }
+
+    res.status(200).json({ alreadyReviewed });
+  });
+};
