@@ -1,5 +1,6 @@
 const Review = require('../models/reviewModel');
 const Store = require('../models/storeModel'); // Si usas esta lógica
+const User = require('../models/userModel');
 
 exports.addReview = (req, res) => {
   const { store_id, user_id, rating, comment } = req.body;
@@ -95,3 +96,41 @@ exports.checkUserReview = (req, res) => {
     res.status(200).json({ alreadyReviewed });
   });
 };
+
+
+
+
+exports.getStoreReviews = (req, res) => {
+  const storeId = req.params.storeId;
+
+  if (!storeId) {
+      return res.status(400).json({ error: 'El ID de la tienda es obligatorio.' });
+  }
+
+  Review.getStoreReviews(storeId, (err, reviews) => {
+      if (err) {
+          console.error('Error al obtener las reseñas de la tienda:', err);
+          return res.status(500).json({ error: 'Error al obtener las reseñas de la tienda.' });
+      }
+
+      if (!reviews || reviews.length === 0) {
+          return res.status(404).json({ error: 'No hay reseñas para esta tienda.' });
+      }
+
+      // Enriquecer las reseñas con la información del usuario
+      const enrichedReviews = reviews.map(review => ({
+          id: review.id,
+          user: {
+              name: review.user_name,
+              lastName: review.user_lastName,
+          },
+          rating: review.rating,
+          comment: review.comment || '',
+          date: review.created_at, // Ahora la fecha ya está formateada
+      }));
+
+      res.status(200).json(enrichedReviews);
+  });
+};
+
+

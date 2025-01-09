@@ -11,5 +11,8 @@ router.get('/ratings-summary/:storeId', reviewController.getRatingsSummary);
 // Endpoint para verificar si un usuario ya ha hecho una reseña
 router.get('/check-review/:storeId/:userId', reviewController.checkUserReview);
 
+// Nueva ruta para obtener las reseñas de una tienda
+router.get('/store/:storeId', reviewController.getStoreReviews);
+
 
 module.exports = router;

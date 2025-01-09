@@ -86,3 +86,28 @@ exports.getRatingsSummary = (storeId, callback) => {
 };
 
 
+exports.getStoreReviews = (storeId, callback) => {
+  const query = `
+    SELECT 
+    r.id, 
+    r.rating, 
+    r.comment, 
+    DATE_FORMAT(r.created_at, '%Y-%m-%d') AS created_at, -- Convierte la fecha a "YYYY-MM-DD"
+    u.name AS user_name, 
+    u.last_name AS user_lastName
+FROM reviews r
+JOIN users u ON r.user_id = u.id
+WHERE r.store_id = ?
+ORDER BY r.created_at DESC
+  `;
+
+  db.query(query, [storeId], (err, results) => {
+    if (err) {
+      console.error('Error al obtener las reseñas de la tienda:', err);
+      return callback(err, null);
+    }
+    callback(null, results);
+  });
+};
+
+

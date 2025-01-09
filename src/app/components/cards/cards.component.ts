@@ -66,6 +66,7 @@ export class CardsComponent implements OnInit {
   
 
   cards: Card[] = []; // Array que contendrá las tarjetas cargadas desde el backend
+  storeReviews: any[] = [];
 
   constructor(
     private http: HttpClient, 
@@ -110,9 +111,9 @@ export class CardsComponent implements OnInit {
   }
 
 // Método para reiniciar el formulario
-resetReviewForm(): void {
-  this.newReview = { rating: 0, comment: '' };
-}
+// resetReviewForm(): void {
+//   this.newReview = { rating: 0, comment: '' };
+// }
 
   loadCardsFromDatabase(): void {
     this.http.get<Card[]>('http://localhost:3000/api/stores/all').subscribe({
@@ -187,55 +188,87 @@ resetReviewForm(): void {
   // Modal para reseñas
   openReviewsModal(card: Card): void {
     console.log(`Abriendo modal de reseñas para: ${card.nombre_comercio}`);
+    
     // Cerrar el modal de descripción si está abierto
     if (this.isModalOpen) {
-      this.closeModal();
+        this.closeModal();
     }
+
     this.selectedReviewCard = card;
-  
+
+    // Reiniciar el formulario de reseñas
+    this.resetReviewForm(); // <-- Nueva línea para reiniciar el formulario
+
+    // Bloquear el scroll de la página
+    document.body.classList.add('no-scroll');
+
     // Llamar al backend para obtener el resumen de calificaciones
     this.http
-      .get<any>(`http://localhost:3000/api/ratings-summary/${card.id}`)
-      .subscribe({
-        next: (response) => {
-          console.log('Resumen de calificaciones:', response);
-          response.averageRating = parseFloat(response.averageRating); // Convertir a número
-          this.ratingsSummary = response;
-        },
-        error: (error) => {
-          console.error('Error al cargar el resumen de calificaciones:', error);
-        },
-      });
-  
+        .get<any>(`http://localhost:3000/api/ratings-summary/${card.id}`)
+        .subscribe({
+            next: (response) => {
+                console.log('Resumen de calificaciones:', response);
+                response.averageRating = parseFloat(response.averageRating); // Convertir a número
+                this.ratingsSummary = response;
+            },
+            error: (error) => {
+                console.error('Error al cargar el resumen de calificaciones:', error);
+            },
+        });
+
     // Verificar si el usuario ya reseñó esta tienda
     const userId = this.authUserService.getUserId();
     if (userId) {
-      this.http
-        .get<{ alreadyReviewed: boolean }>(
-          `http://localhost:3000/api/check-review/${card.id}/${userId}`
-        )
-        .subscribe({
-          next: (response) => {
-            this.alreadyReviewed = response.alreadyReviewed;
-            this.isReviewsModalOpen = true;
-          },
-          error: (error) => {
-            console.error('Error al verificar si el usuario ya reseñó:', error);
-          },
-        });
+        this.http
+            .get<{ alreadyReviewed: boolean }>(
+                `http://localhost:3000/api/check-review/${card.id}/${userId}`
+            )
+            .subscribe({
+                next: (response) => {
+                    this.alreadyReviewed = response.alreadyReviewed;
+                    this.isReviewsModalOpen = true;
+                },
+                error: (error) => {
+                    console.error('Error al verificar si el usuario ya reseñó:', error);
+                },
+            });
     } else {
-      this.isReviewsModalOpen = true; // Abre el modal aunque no esté registrado
+        this.isReviewsModalOpen = true; // Abre el modal aunque no esté registrado
     }
-  }
 
-  closeReviewsModal(): void {
+    // Obtener las reseñas de la tienda desde el backend
+    this.http
+        .get<any[]>(`http://localhost:3000/api/store/${card.id}`)
+        .subscribe({
+            next: (reviews) => {
+                console.log('Reseñas de la tienda:', reviews);
+                this.ratingsSummary.reviews = reviews; // Añadir las reseñas al resumen
+            },
+            error: (error) => {
+                console.error('Error al cargar las reseñas de la tienda:', error);
+            },
+        });
+}
+
+// Nueva función para reiniciar el formulario
+resetReviewForm(): void {
+    this.newReview = { rating: 0, comment: '' }; // Resetea los valores del formulario
+}
+
+
+closeReviewsModal(): void {
     console.log('Cerrando modal de reseñas');
     this.isReviewsModalOpen = false;
     this.selectedReviewCard = null;
     this.ratingsSummary = null;
     this.alreadyReviewed = false;
+
+    // Desbloquear el scroll de la página
+    document.body.classList.remove('no-scroll');
+
     this.cd.detectChanges(); // Asegúrate de que el DOM se actualice
-  }
+}
+
   
 
   stars: number[] = [1, 2, 3, 4, 5];

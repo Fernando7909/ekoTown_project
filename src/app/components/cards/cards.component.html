@@ -66,6 +66,8 @@
   </div>
 </div>
 
+
+
 <!-- Modal para mostrar las reseñas -->
 <div class="modal-reviews" *ngIf="isReviewsModalOpen">
   <div class="modal-content">
@@ -120,7 +122,7 @@
             </div>
           </div>
           <div class="comment-input">
-            <label>Comentario (opcional):</label>
+    
             <textarea
               [(ngModel)]="newReview.comment"
               placeholder="Escribe tu comentario aquí..."
@@ -142,9 +144,34 @@
           </div>
         </form>
       </div>
+
+      <!-- Lista de reseñas -->
+      <div class="reviews-list" *ngIf="ratingsSummary.reviews && ratingsSummary.reviews.length > 0">
+        <h3>Reseñas de los usuarios</h3>
+        <ul>
+          <li *ngFor="let review of ratingsSummary.reviews" class="review-item">
+            <div class="review-header">
+              <strong>{{ review.user.name }} {{ review.user.lastName }}</strong>
+              <span class="review-date">{{ review.date }}</span>
+            </div>
+            <div class="review-rating">
+              <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+                <span [ngClass]="{'filled-star': star <= review.rating, 'empty-star': star > review.rating}">
+                  &#9733;
+                </span>
+              </ng-container>
+            </div>
+            
+            <p class="review-comment" *ngIf="review.comment">
+              {{ review.comment }}
+            </p>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
+
       
 
 
