@@ -49,8 +49,23 @@ exports.createProduct = (req, res) => {
 
 
 // Obtener todos los productos
+// Obtener todos los productos
 exports.getAllProducts = (req, res) => {
-    const query = `SELECT * FROM productos`;
+    const query = `
+        SELECT 
+            id, 
+            business_manager_id, 
+            codigo, 
+            nombre, 
+            descripcion, 
+            categoria, 
+            cantidad AS stock, 
+            cantidad AS cantidad_maxima,
+            precio, 
+            imagen_url, 
+            publicado 
+        FROM productos
+    `;
 
     db.query(query, (err, results) => {
         if (err) {
@@ -63,6 +78,8 @@ exports.getAllProducts = (req, res) => {
         res.status(200).send(productsWithFullPath);
     });
 };
+
+
 
 // Obtener productos por Business Manager
 exports.getProductsByBusinessManager = (req, res) => {

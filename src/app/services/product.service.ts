@@ -9,7 +9,10 @@ export interface Producto {
   nombre: string;
   descripcion: string;
   categoria: string;
-  cantidad: number;
+  cantidad: number; // Cantidad en stock
+  cantidad_maxima: number;
+  stock?: number;
+  cantidad_seleccionada?: number; // Cantidad seleccionada por el usuario
   precio: number;
   imagen_url?: string | null; // URL de la imagen guardada en el backend
   imagenFile?: File | null; // Archivo seleccionado en el frontend
@@ -61,12 +64,30 @@ export class ProductService {
     
     return this.http.put(`${this.apiUrl}/${id}`, productData, options);
   }
-  
-
 
   // Eliminar un producto
   deleteProduct(id: number): Observable<void> {
     const headers = this.getAuthHeaders();
     return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers });
+  }
+
+  // Actualizar el stock de un producto después de una compra
+  updateStock(id: number, cantidadRestada: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.put(
+      `${this.apiUrl}/update-stock/${id}`, 
+      { cantidadRestada }, 
+      { headers }
+    );
+  }
+
+  // Actualizar la cantidad seleccionada en el carrito
+  updateSelectedQuantity(id: number, cantidad_seleccionada: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.patch(
+      `${this.apiUrl}/update-selected-quantity/${id}`, 
+      { cantidad_seleccionada }, 
+      { headers }
+    );
   }
 }

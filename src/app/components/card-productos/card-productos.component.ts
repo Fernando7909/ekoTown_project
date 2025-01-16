@@ -13,6 +13,9 @@ import { CommonModule } from '@angular/common';
 export class CardProductosComponent implements OnChanges {
   @Input() producto!: Producto;
 
+  isModalOpen = false;
+  selectedImageUrl: string | null = null;
+
   mensajeAlerta: string | null = null; // Variable para mostrar mensajes al usuario
 
   constructor(private cartService: CartService) {}
@@ -36,5 +39,20 @@ export class CardProductosComponent implements OnChanges {
         this.mensajeAlerta = null; // Oculta el mensaje después de unos segundos
       }, 3000); // 3 segundos de duración
     }
+  }
+
+  // Método para abrir el modal con la imagen seleccionada
+  openImageModal(imageUrl: string | null | undefined): void {
+    if (imageUrl) {
+      this.selectedImageUrl = imageUrl;
+      this.isModalOpen = true;
+    }
+  }
+  
+
+  // Método para cerrar el modal
+  closeImageModal(): void {
+    this.isModalOpen = false;
+    this.selectedImageUrl = null;
   }
 }

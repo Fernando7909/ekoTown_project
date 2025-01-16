@@ -61,6 +61,7 @@ export class CrudProductosComponent implements OnInit {
       descripcion: '',
       categoria: '',
       cantidad: 0,
+      cantidad_maxima: 10,
       precio: 0,
       imagen_url: '',
       publicado: false

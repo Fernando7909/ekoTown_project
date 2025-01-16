@@ -106,9 +106,11 @@ export class InsideStoreComponent implements OnInit {
       .then((data: Producto[]) => {
         console.log('Datos de productos publicados recibidos del backend:', data);
 
+        // Mapear `cantidad` al atributo `stock`
         this.productos = data.map((producto) => ({
           ...producto,
-          imagen_url: producto.imagen_url?.replace(/\\/g, '/'),
+          stock: producto.cantidad, // Mapear cantidad a stock
+          imagen_url: producto.imagen_url?.replace(/\\/g, '/'), // Normalizar URL
         }));
         console.log('Productos publicados cargados y procesados:', this.productos);
       })

@@ -82,3 +82,20 @@
 .checkout-button:hover {
   background-color: #0056b3;
 }
+
+.stock {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.stock.available-stock {
+  color: green; /* Verde para stock disponible */
+}
+
+.stock.no-stock {
+  color: red; /* Rojo para stock no disponible */
+}
+
+
+
+

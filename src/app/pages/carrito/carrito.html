@@ -3,12 +3,52 @@
   <div *ngIf="cartItems.length > 0; else emptyCart">
     <!-- Lista de productos en el carrito -->
     <div class="cart-item" *ngFor="let item of cartItems">
-      <img [src]="item.imagen_url || 'path/to/default/image.png'" alt="{{ item.nombre }}" class="item-image" />
+      <img 
+        [src]="item.imagen_url || 'path/to/default/image.png'" 
+        alt="Imagen de {{ item.nombre }}" 
+        class="item-image" 
+      />
       <div class="item-details">
         <h2>{{ item.nombre }}</h2>
         <p>Categoría: {{ item.categoria }}</p>
-        <p>Precio: {{ item.precio | currency:'EUR':'symbol' }}</p>
-        <button *ngIf="item.id !== undefined" (click)="removeItem(item.id!)">Eliminar</button>
+        <p>Precio unitario: {{ item.precio | currency:'EUR':'symbol' }}</p>
+
+       
+       <!-- Controles de cantidad -->
+       <div class="quantity-controls">
+        <!-- Botón para decrementar cantidad -->
+        <button 
+          (click)="decrementQuantity(item)" 
+          [disabled]="item.cantidad <= 1">-</button>
+        
+        <!-- Mostrar la cantidad seleccionada -->
+        <span>{{ item.cantidad }}</span>
+        
+        <!-- Botón para incrementar cantidad -->
+        <button 
+          (click)="incrementQuantity(item)" 
+          [disabled]="item.cantidad >= item.cantidad_maxima || item.cantidad_maxima === 0">+</button>
+      </div>
+      
+      <!-- Indicador de estado del stock -->
+      <p 
+        class="stock" 
+        [ngClass]="{ 'low-stock': item.cantidad_maxima > 0, 'no-stock': item.cantidad_maxima === 0 }"
+      >
+        {{ item.cantidad_maxima > 0 ? 'Stock disponible' : 'Stock no disponible' }}
+      </p>
+      
+
+        
+
+        <!-- Botón para eliminar producto -->
+        <button 
+          *ngIf="item.id !== undefined" 
+          (click)="removeItem(item.id!)" 
+          aria-label="Eliminar producto del carrito"
+        >
+          Eliminar
+        </button>
       </div>
     </div>
 
@@ -32,9 +72,17 @@
         </tr>
       </table>
       <!-- Botón para finalizar la compra -->
-      <button class="checkout-button" (click)="finalizePurchase()">Finalizar compra</button>
+      <button 
+        class="checkout-button" 
+        (click)="finalizePurchase()" 
+        aria-label="Finalizar compra"
+      >
+        Finalizar compra
+      </button>
     </div>
   </div>
+
+  <!-- Mensaje si el carrito está vacío -->
   <ng-template #emptyCart>
     <p>No hay productos en el carrito.</p>
   </ng-template>
