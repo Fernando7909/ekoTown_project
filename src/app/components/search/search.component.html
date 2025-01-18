@@ -1,43 +1,66 @@
-<form (ngSubmit)="onSearch()">
-  <fieldset>
-    <legend>BUSCADOR DE TIENDAS</legend>
+<div class="container mt-4">
+  <!-- Formulario de búsqueda -->
+  <form (ngSubmit)="onSearch()" class="search-form p-4 shadow-sm rounded">
+    <h2 class="text-center mb-4">Buscar Tiendas</h2>
     <div class="mb-3">
-      <label for="locationInput" class="form-label">Introduce la ciudad o municipio</label>
+      <label for="locationInput" class="form-label">Ciudad o Municipio</label>
       <input 
         type="text" 
         id="locationInput" 
         class="form-control" 
-        placeholder="Barcelona, Madrid..." 
+        placeholder="Ejemplo: Barcelona, Madrid..." 
         [(ngModel)]="location"  
         name="location" 
         required>
     </div>
     <div class="mb-3">
-      <label for="radiusInput" class="form-label">Radio de búsqueda (metros)</label>
+      <label for="radiusInput" class="form-label">Radio de búsqueda (en metros)</label>
       <input 
         type="number" 
         id="radiusInput" 
         class="form-control" 
-        placeholder="Introduce la distancia en metros" 
+        placeholder="Introduce la distancia en metros (ejemplo: 5000)" 
         [(ngModel)]="radius" 
         name="radius"  
         required>
     </div>
-    <button type="submit" class="btn btn-primary">Buscar</button>
-  </fieldset>
-</form>
+    <button type="submit" class="btn btn-primary w-100">Buscar</button>
+  </form>
 
-<!-- Resultados de la búsqueda -->
-<div *ngIf="searchResults.length > 0">
-  <h2>Resultados de la búsqueda:</h2>
-  <ul>
-    <li *ngFor="let result of searchResults">
-      {{ result.name }} - {{ result.location.address1 }} - Distancia: {{ result.distance | number:'1.0-2' }} metros
-    </li>
-  </ul>
-</div>
+  <!-- Indicador de carga -->
+  <div *ngIf="isLoading" class="loading-indicator mt-4 text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-2">Buscando tiendas, por favor espera...</p>
+  </div>
 
-<!-- Mensaje de error cuando no hay resultados -->
-<div *ngIf="searchResults.length === 0 && location && radius">
-  <p>No se encontraron resultados para la búsqueda.</p>
+  <!-- Mensaje de error -->
+  <div *ngIf="errorMessage" class="alert alert-danger mt-4 text-center">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Resultados de la búsqueda -->
+  <div *ngIf="searchResults.length > 0" class="search-results mt-4">
+    <h3 class="text-center">Resultados encontrados:</h3>
+    <div class="row mt-3">
+      <div *ngFor="let result of searchResults" class="col-md-6 mb-3">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">{{ result.name }}</h5>
+            <p class="card-text">
+              Dirección: {{ result.location.address1 }} <br>
+              Distancia: {{ result.distance | number:'1.0-2' }} metros
+            </p>
+            <a [href]="result.url" target="_blank" class="btn btn-outline-primary btn-sm">Ver en Yelp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensaje cuando no hay resultados -->
+  <div *ngIf="!isLoading && searchResults.length === 0 && location && radius" class="mt-4 text-center">
+    <p class="text-muted">No se encontraron resultados para tu búsqueda.</p>
+  </div>
 </div>

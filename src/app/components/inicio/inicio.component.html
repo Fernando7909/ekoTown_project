@@ -4,9 +4,10 @@
 
 
 <!-- Cards de tiendas -->
-<div class="titulo-tiendas">
+<div id="tiendas-destacadas" class="titulo-tiendas">
   <p>TIENDAS DESTACADAS</p>
 </div>
+
  
 <app-cards></app-cards>
 
@@ -15,9 +16,11 @@
 <div class="image-search">
   <div class="filter">
     <h1 class="titulo_search">¿Buscas tu tienda?</h1>
-    <p class="texto_search">Aquí encontrarás todas las tiendas y comercios ecológicos de tu municipio en un solo click.</p>
+    <p class="texto_search">
+      Encuentra todas las tiendas y comercios ecológicos de tu municipio con un solo click.
+    </p>
     <div class="button-container">
-      <p-button label="Buscar tienda" (click)="goToSearch()" [text]="true" [raised]="true" severity="success"></p-button>
+      <button class="search-button" (click)="goToSearch()">Buscar tienda</button>
     </div>
   </div>
 </div>

@@ -18,7 +18,7 @@ export class NavbarComponent implements OnInit {
   gapSize = 70;
   userName: string | null = null;
   showDropdown = false;
-  isScrolled = false;
+  isScrolled = false; // Nueva propiedad para detectar el scroll
 
   isUserLoggedIn: boolean = false;
   isManagerLoggedIn: boolean = false;
@@ -43,6 +43,24 @@ export class NavbarComponent implements OnInit {
       this.updateLoggedInState();
     });
   }
+
+  scrollToFeatured(): void {
+    this.router.navigate(['/']).then(() => {
+      setTimeout(() => {
+        const element = document.getElementById('tiendas-destacadas');
+        if (element) {
+          const yOffset = -120; // Ajuste de 50 píxeles hacia arriba
+          const yPosition = element.getBoundingClientRect().top + window.scrollY + yOffset;
+  
+          window.scrollTo({
+            top: yPosition,
+            behavior: 'smooth',
+          });
+        }
+      }, 100); // Ajusta el tiempo si es necesario
+    });
+  }
+  
 
   // Actualizar el estado combinado de "logueado"
   updateLoggedInState(): void {
@@ -78,6 +96,12 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  navigateToTop(): void {
+    this.router.navigate(['/inicio']).then(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' }); // Desplazamiento suave al inicio
+    });
+  }
+
   @HostListener('window:scroll', [])
   onWindowScroll(): void {
     const scrollOffset = window.scrollY || document.documentElement.scrollTop || 0;
@@ -91,6 +115,6 @@ export class NavbarComponent implements OnInit {
     this.blurAmount = Math.min((scrollOffset / maxScroll) * maxBlur, maxBlur);
     this.gapSize = initialGap - (scrollOffset / maxScroll) * (initialGap - minGap);
     this.gapSize = Math.max(this.gapSize, minGap);
-    this.isScrolled = scrollOffset > 50;
+    this.isScrolled = scrollOffset > 50; // Cambia la propiedad según el scroll
   }
 }

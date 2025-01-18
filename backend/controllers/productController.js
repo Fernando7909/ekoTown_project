@@ -36,19 +36,15 @@ exports.createProduct = (req, res) => {
     `;
     const values = [business_manager_id, codigo, nombre, descripcion, categoria, cantidad, precio, imagenUrl, false];
 
-    console.log('Valores para insertar en la base de datos:', values); // Log para depuración
-
     db.query(query, values, (err, result) => {
         if (err) {
-            console.error('Error al crear producto:', err); // Log de error
+            console.error('Error al crear producto:', err);
             return res.status(500).send('Error al crear producto');
         }
         res.status(201).send({ message: 'Producto creado con éxito', id: result.insertId });
     });
 };
 
-
-// Obtener todos los productos
 // Obtener todos los productos
 exports.getAllProducts = (req, res) => {
     const query = `
@@ -60,7 +56,6 @@ exports.getAllProducts = (req, res) => {
             descripcion, 
             categoria, 
             cantidad AS stock, 
-            cantidad AS cantidad_maxima,
             precio, 
             imagen_url, 
             publicado 
@@ -74,12 +69,9 @@ exports.getAllProducts = (req, res) => {
         }
 
         const productsWithFullPath = results.map(addFullImagePath);
-
         res.status(200).send(productsWithFullPath);
     });
 };
-
-
 
 // Obtener productos por Business Manager
 exports.getProductsByBusinessManager = (req, res) => {
@@ -92,59 +84,27 @@ exports.getProductsByBusinessManager = (req, res) => {
             return res.status(500).send('Error al obtener productos');
         }
 
-        const productsWithFullPath = results.map(product => ({
-            ...product,
-            imagen_url: product.imagen_url
-                ? `http://localhost:3000${product.imagen_url}`.replace(/\\/g, '/')
-                : null,
-        }));
-
+        const productsWithFullPath = results.map(addFullImagePath);
         res.status(200).send(productsWithFullPath);
     });
 };
 
-
 // Actualizar un producto
 exports.updateProduct = async (req, res) => {
-    console.log('Datos recibidos para actualizar:', req.body);
-    console.log('Archivo recibido:', req.file);
-
     const { id } = req.params;
     const { nombre, descripcion, categoria, cantidad, precio, publicado } = req.body;
 
-    // Validar entrada
-    if (!id || !nombre || !descripcion || !categoria || !cantidad || !precio) {
-        return res.status(400).send({ error: 'Faltan datos obligatorios para actualizar el producto.' });
-    }
-
-    // Convertir "publicado" a un valor booleano/número adecuado
-    const publicadoValue = publicado === 'true' || publicado === '1' || publicado === true ? 1 : 0;
-
-    // Manejar URL de la imagen
     let imagenUrl = req.body.imagen_url || null;
     if (req.file) {
         imagenUrl = `/uploads/${req.file.filename}`;
-    } else if (!imagenUrl) {
-        try {
-            const [results] = await db.promise().query(`SELECT imagen_url FROM productos WHERE id = ?`, [id]);
-            if (results.length > 0) {
-                imagenUrl = results[0].imagen_url || null;
-            }
-        } catch (error) {
-            console.error('Error al recuperar URL de la imagen:', error);
-            return res.status(500).send('Error al actualizar producto.');
-        }
     }
 
-    // Preparar consulta de actualización
     const query = `
         UPDATE productos 
         SET nombre = ?, descripcion = ?, categoria = ?, cantidad = ?, precio = ?, imagen_url = ?, publicado = ?
         WHERE id = ?
     `;
-    const values = [nombre, descripcion, categoria, cantidad, precio, imagenUrl, publicadoValue, id];
-
-    console.log('Valores para actualizar en la base de datos:', values);
+    const values = [nombre, descripcion, categoria, cantidad, precio, imagenUrl, publicado, id];
 
     try {
         const [result] = await db.promise().query(query, values);
@@ -157,9 +117,6 @@ exports.updateProduct = async (req, res) => {
         res.status(500).send('Error al actualizar producto');
     }
 };
-
-
-
 
 // Eliminar un producto
 exports.deleteProduct = (req, res) => {
@@ -174,7 +131,6 @@ exports.deleteProduct = (req, res) => {
 
         if (results.length > 0 && results[0].imagen_url) {
             const imagePath = path.join(__dirname, '../', results[0].imagen_url);
-
             fs.unlink(imagePath, (unlinkErr) => {
                 if (unlinkErr) {
                     console.error('Error al eliminar imagen:', unlinkErr);
@@ -192,3 +148,72 @@ exports.deleteProduct = (req, res) => {
         });
     });
 };
+
+// Procesar compra y vaciar carrito
+exports.processPurchase = (req, res) => {
+    const { items } = req.body;
+
+    if (!items || !Array.isArray(items) || items.length === 0) {
+        return res.status(400).send({ error: 'No se recibieron productos para procesar la compra.' });
+    }
+
+    db.beginTransaction((err) => {
+        if (err) {
+            console.error('Error al iniciar la transacción:', err);
+            return res.status(500).send({ error: 'Error al procesar la compra.' });
+        }
+
+        let queriesCompleted = 0;
+
+        items.forEach((item) => {
+            // Verificar stock
+            db.query(`SELECT cantidad FROM productos WHERE id = ?`, [item.id], (err, rows) => {
+                if (err) {
+                    console.error('Error al verificar el stock:', err);
+                    return db.rollback(() => {
+                        res.status(500).send({ error: 'Error al procesar la compra.' });
+                    });
+                }
+
+                if (rows.length === 0 || rows[0].cantidad < item.cantidad) {
+                    return db.rollback(() => {
+                        res.status(400).send({
+                            error: `Stock insuficiente para el producto con ID ${item.id}. Disponible: ${rows[0]?.cantidad || 0}`,
+                        });
+                    });
+                }
+
+                // Actualizar stock
+                db.query(
+                    `UPDATE productos SET cantidad = cantidad - ? WHERE id = ?`,
+                    [item.cantidad, item.id],
+                    (err) => {
+                        if (err) {
+                            console.error('Error al actualizar el stock:', err);
+                            return db.rollback(() => {
+                                res.status(500).send({ error: 'Error al procesar la compra.' });
+                            });
+                        }
+
+                        queriesCompleted++;
+
+                        // Confirmar la transacción cuando todas las queries estén completas
+                        if (queriesCompleted === items.length) {
+                            db.commit((err) => {
+                                if (err) {
+                                    console.error('Error al confirmar la transacción:', err);
+                                    return db.rollback(() => {
+                                        res.status(500).send({ error: 'Error al procesar la compra.' });
+                                    });
+                                }
+
+                                res.status(200).send({ message: 'Compra procesada con éxito.' });
+                            });
+                        }
+                    }
+                );
+            });
+        });
+    });
+};
+

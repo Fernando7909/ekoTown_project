@@ -1,52 +1,44 @@
 <footer class="container-fluid pb-4 pt-0">
   <div class="d-flex justify-content-between align-items-center w-100">
-    
     <!-- Columna del logotipo, alineado a la izquierda -->
     <div class="logo-container d-flex justify-content-start">
-      <img src="plant.png" alt="Logotipo" class="img-fluid logo">
+      <img src="ekotownLogo2.png" alt="Logotipo" class="img-fluid logo">
     </div>
 
     <!-- Columna de enlaces e iconos, centrada -->
     <div class="col-12 col-md-10 col-lg-8 d-flex flex-column align-items-center mx-auto">
       <!-- Enlaces del footer -->
-      <div class="footer-links my-4">
+      <div class="footer-links my-3">
         <a routerLink="/" class="mx-3">Inicio</a>
         <a routerLink="/destacados" class="mx-3">Destacados</a>
         <a routerLink="/buscador" class="mx-3">Buscador</a>
-        <a routerLink="/servicios" class="mx-3">Servicios</a>
         <a routerLink="/blog" class="mx-3">Blog</a>
-      
-        <!-- Botón dropdown "Más" -->
-        <div class="dropdown">
-          <button class="dropdown-toggle btn btn-link mx-3 boton-mas" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-            Más
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" routerLink="/nosotros">Nosotros</a></li>
-            <li><a class="dropdown-item" routerLink="/contacto">Contacto</a></li>
-          </ul>
-        </div>
       </div>
 
       <!-- Línea divisoria -->
       <div class="footer-divider mb-3 w-75"></div>
 
-
       <!-- Iconos de redes sociales -->
-      <div class="footer-icons d-flex justify-content-center gap-3">
-        <img src="instagram.png" alt="Instagram" class="footer-icon">
-        <img src="facebook.png" alt="Facebook" class="footer-icon">
-        <img src="tik-tok.png" alt="TikTok" class="footer-icon">
-        <img src="twitch.png" alt="Twitch" class="footer-icon">
-        <img src="twitter.png" alt="Twitter" class="footer-icon">
-        <img src="youtube.png" alt="YouTube" class="footer-icon">
-        <img src="mail.png" alt="Mail" class="footer-icon">
+      <div class="footer-icons d-flex justify-content-center gap-3 mt-2">
+        <img src="socialMedia/instagram.png" alt="Instagram" class="footer-icon">
+        <img src="socialMedia/facebook.png" alt="Facebook" class="footer-icon">
+        <img src="socialMedia/tik-tok.png" alt="TikTok" class="footer-icon">
+        <img src="socialMedia/twitter.png" alt="Twitter" class="footer-icon">
+        <img src="socialMedia/youtube.png" alt="YouTube" class="footer-icon">
+        <img src="socialMedia/mail.png" alt="Mail" class="footer-icon">
       </div>
 
       <!-- Copyright -->
       <div class="mt-3">
-        <p class="text-center mt-4 mb-0 ">&copy; 2025 ekotown. Todos los derechos reservados.</p>
+        <p class="text-center mt-4 mb-0">&copy; 2025 ekotown. Todos los derechos reservados.</p>
       </div>
+    </div>
+
+    <!-- Botón para subir -->
+    <div class="back-to-top-container">
+      <button class="back-to-top" (click)="scrollToTop()">
+        <img src="up.png" alt="Subir" class="back-to-top-img">
+      </button>      
     </div>
   </div>
 </footer>

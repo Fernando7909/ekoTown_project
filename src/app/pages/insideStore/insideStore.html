@@ -1,34 +1,45 @@
+<app-navbar></app-navbar>
+
 <div class="store-container">
   <!-- Información de la tienda -->
   <div class="store-details" *ngIf="storeDetails">
-    <mat-card class="store-card">
-      <!-- Cabecera: Foto del gerente y título -->
-      <mat-card-header>
-        <div mat-card-avatar class="store-avatar">
+    <div class="store-card">
+      <div class="store-content">
+        <!-- Imagen de la tienda -->
+        <div class="store-image-container">
           <img 
-            [src]="storeDetails.foto_gerente || 'assets/default-foto-gerente.png'" 
-            alt="Foto de {{ storeDetails.nombre_gerente }}">
+            [src]="storeDetails.imagen || 'assets/default-imagen-tienda.png'" 
+            alt="Imagen de {{ storeDetails.nombre_comercio }}">
         </div>
-        <div class="store-header-info">
-          <mat-card-title>{{ storeDetails.nombre_comercio }}</mat-card-title>
-          <mat-card-subtitle>{{ storeDetails.nombre_gerente }}</mat-card-subtitle>
+  
+        <!-- Texto de la tienda -->
+        <div class="store-text">
+          <!-- Cabecera: Foto del gerente y título -->
+          <div class="store-header">
+            <div class="store-avatar">
+              <img 
+                [src]="storeDetails.foto_gerente || 'assets/default-foto-gerente.png'" 
+                alt="Foto de {{ storeDetails.nombre_gerente }}">
+            </div>
+            <div class="store-header-info">
+              <h1 class="store-name">{{ storeDetails.nombre_comercio }}</h1>
+              <h3 class="store-manager">Gerente: {{ storeDetails.nombre_gerente }}</h3>
+            </div>
+          </div>
+  
+          <!-- Descripción -->
+          <div class="store-description">
+            <p>{{ storeDetails.descripcion }}</p>
+          </div>
         </div>
-      </mat-card-header>
-
-      <!-- Imagen de la tienda -->
-      <div class="store-image-container">
-        <img 
-          mat-card-image 
-          [src]="storeDetails.imagen || 'assets/default-imagen-tienda.png'" 
-          alt="Imagen de {{ storeDetails.nombre_comercio }}">
       </div>
-
-      <!-- Descripción -->
-      <mat-card-content>
-        <p>{{ storeDetails.descripcion }}</p>
-      </mat-card-content>
-    </mat-card>
+    </div>
   </div>
+  
+
+  
+
+
 
   <!-- Productos disponibles -->
   <div class="productos-container">

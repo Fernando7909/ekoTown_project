@@ -5,6 +5,7 @@ import { PublishedProductsService } from '../../services/published-products.serv
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { CardProductosComponent } from '../../components/card-productos/card-productos.component';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 // Interfaz para los detalles de la tienda
 interface StoreDetails {
@@ -26,6 +27,7 @@ interface StoreDetails {
     CommonModule,
     MatCardModule,
     CardProductosComponent,
+    NavbarComponent,
   ],
 })
 export class InsideStoreComponent implements OnInit {

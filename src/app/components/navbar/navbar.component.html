@@ -20,24 +20,30 @@
           <a class="nav-link" aria-current="page" href="#">INICIO</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">DESTACADOS</a>
+          <a class="nav-link" (click)="scrollToFeatured()">DESTACADOS</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">BUSCADOR</a>
-        </li>
-        
+            
+
         <!-- Imagen de separación entre BUSCADOR y SERVICIOS -->
-        <li class="nav-item plant-icon">
-          <img src="plant.png" alt="Plant Icon" width="30" height="24">
+        <li class="nav-item ekotown-logo">
+          <a (click)="navigateToTop()">
+            <img
+              [src]="isScrolled ? 'ekotownLogoWhite.png' : 'ekotownLogo.png'"
+              alt="Logo"
+            />
+          </a>
+        </li>        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/search">BUSCADOR</a>
         </li>
         
-        <li class="nav-item">
-          <a class="nav-link" href="#">SERVICIOS</a>
-        </li>
         <li class="nav-item">
           <a class="nav-link" href="#">BLOG</a>
         </li>
-        <li class="nav-item dropdown">
+        <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             MAS
           </a>
@@ -45,50 +51,49 @@
             <li><a class="dropdown-item" href="#">NOSOTROS</a></li>
             <li><a class="dropdown-item" href="#">CONTACTO</a></li>
           </ul>
-        </li>
+        </li> -->
       </ul>
       
       <!-- Imagen con submenú activado por clic -->
-      <div class="dropdown">
-        <a class="nav-link" (click)="toggleDropdown()" aria-expanded="false">
-          <img src="acceso.png" alt="Acceso" width="30" height="30" class="d-inline-block align-text-top">
+      <div class="navbar-icons">
+        <div class="dropdown">
+          <a class="nav-link" (click)="toggleDropdown()" aria-expanded="false">
+            <img src="accesoNegro.png" alt="Acceso Negro" class="acceso-default" width="30" height="30">
+            <img src="accesoBlanco.png" alt="Acceso Blanco" class="acceso-white" width="30" height="30">
+          </a>
+        
+          <!-- Submenú que se muestra según el estado de showDropdown -->
+          <ul class="dropdown-menu" [ngClass]="{'show': showDropdown}">
+            <li>
+              <a class="dropdown-item" routerLink="/loginregister">Iniciar sesión</a>
+            </li>
+            <li>
+              <a 
+                class="dropdown-item" 
+                [ngClass]="{'disabled': !isLoggedIn}" 
+                aria-disabled="true" 
+                (click)="isLoggedIn && logout()">
+                Cerrar sesión
+              </a>
+            </li>
+            <li>
+              <a 
+                class="dropdown-item" 
+                [ngClass]="{'disabled': !isLoggedIn}" 
+                aria-disabled="true" 
+                (click)="isLoggedIn && goToAreaPersonal()">
+                Área personal
+              </a>
+            </li>
+          </ul>
+        </div>
+        
+      
+        <a [routerLink]="'/carrito'" class="navbar-brand carrito-logo">
+          <img src="carrito_negro.png" alt="Carrito Negro" class="carrito-default" width="30" height="30">
+          <img src="carrito_blanco.png" alt="Carrito Blanco" class="carrito-white" width="30" height="30">
         </a>
-      
-        <!-- Submenú que se muestra según el estado de showDropdown -->
-        <ul class="dropdown-menu" [ngClass]="{'show': showDropdown}">
-          <!-- Opción de Iniciar sesión siempre habilitada -->
-          <li>
-            <a class="dropdown-item" routerLink="/loginregister">Iniciar sesión</a>
-          </li>
-        
-          <!-- Opción de Cerrar sesión deshabilitada si no hay sesión -->
-          <li>
-            <a 
-              class="dropdown-item" 
-              [ngClass]="{'disabled': !isLoggedIn}" 
-              aria-disabled="true" 
-              (click)="isLoggedIn && logout()">
-              Cerrar sesión
-            </a>
-          </li>
-        
-          <!-- Opción de Área personal deshabilitada si no hay sesión -->
-          <li>
-            <a 
-              class="dropdown-item" 
-              [ngClass]="{'disabled': !isLoggedIn}" 
-              aria-disabled="true" 
-              (click)="isLoggedIn && goToAreaPersonal()">
-              Área personal
-            </a>
-          </li>
-        </ul>
-        
       </div>
-      
-      <a [routerLink]="'/carrito'" class="navbar-brand ms-3">
-        <img src="carrito_blanco.png" alt="Carrito" width="30" height="30" class="d-inline-block align-text-top">
-      </a>            
-    </div>
+    </div>  
   </div>
 </nav>

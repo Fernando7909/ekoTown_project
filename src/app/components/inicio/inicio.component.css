@@ -46,17 +46,16 @@
 
 
 
+
 /* Search */
 .image-search {
   position: relative;
   overflow: hidden;
-  height: 350px;
+  height: 400px; /* Un poco más alto para mayor impacto visual */
   margin: 100px 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #fff;
   text-align: center;
   background-image: url('/search.jpg'); /* Usa la imagen como fondo */
   background-size: cover;
@@ -65,49 +64,62 @@
 }
 
 .filter {
-  backdrop-filter: blur(5px); /* Efecto de desenfoque */
-  background: rgba(255, 255, 255, 0.2); /* Fondo blanco semi-transparente */
-  padding: 20px 40px;
-  border-radius: 20px; /* Bordes redondeados */
+  backdrop-filter: blur(8px); /* Aumenta el desenfoque para resaltar más el texto */
+  background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
+  padding: 30px 50px;
+  border-radius: 16px; /* Bordes redondeados */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
   color: #fff;
-  width: 100%;
+  width: 90%;
   max-width: 600px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Sombra para mayor profundidad */
 }
 
 .titulo_search {
-  font-size: 3em;
-  margin: 0;
-  color: rgb(3, 121, 70);
+  font-size: 2.5rem; /* Ajusta el tamaño para mejor jerarquía */
+  margin: 0 0 10px;
+  color: #ffffff; /* Verde moderno y llamativo */
+  font-weight: bold;
 }
 
 .texto_search {
-  font-size: 1.2em;
-  margin: 0.5em 0; /* Espacio entre el título y el texto */
-  color: #000000;
-  
-  /* Alternativa a line-clamp */
-  display: block; /* Aseguramos que el contenedor es de bloque */
-  line-height: 1.5em; /* Altura de línea (ajustar según tu diseño) */
-  max-height: 3em; /* Altura máxima para 2 líneas: 2 líneas * line-height */
-  overflow: hidden; /* Ocultar contenido excedente */
-  text-overflow: ellipsis; /* Mostrar puntos suspensivos para contenido excedente */
-  white-space: normal; /* Permitir saltos de línea */
+  font-size: 1.2rem;
+  color: #eeeeee; /* Texto blanco suave */
+  margin: 0 0 20px;
+  line-height: 1.6; /* Mejora la legibilidad */
 }
-
 
 .button-container {
-  margin-top: 1.5em;
+  margin-top: 20px;
 }
 
-.button-container p-button {
-  font-size: 1em;
-  padding: 0.75em 1.5em;
+.search-button {
+  background-color: #00c853; /* Botón verde moderno */
+  color: #fff;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 50px; /* Botón redondeado */
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
 }
+
+.search-button:hover {
+  background-color: #009624; /* Color más oscuro al pasar el cursor */
+  transform: scale(1.05); /* Efecto de crecimiento */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra al hover */
+}
+
+
+
+
+
 
 
 /* Info01 */

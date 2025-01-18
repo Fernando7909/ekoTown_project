@@ -51,5 +51,6 @@ router.get('/', productController.getAllProducts);
 router.get('/:business_manager_id', productController.getProductsByBusinessManager);
 router.put('/:id', upload.single('imagen'), handleMulterErrors, productController.updateProduct);
 router.delete('/:id', productController.deleteProduct);
+router.post('/process-purchase', productController.processPurchase);
 
 module.exports = router;

@@ -18,7 +18,7 @@ footer.container-fluid {
 }
 
 .logo {
-  height: 70px; /* Ajusta la altura del logotipo */
+  height: 130px; /* Ajusta la altura del logotipo */
   max-width: 100%; /* Mantén la proporción del logotipo */
 }
 
@@ -29,6 +29,7 @@ footer.container-fluid {
   align-items: center; /* Centra los enlaces verticalmente */
   flex-wrap: nowrap; /* Evita que los enlaces se vayan a otra línea */
   gap: 16px; /* Espacio entre enlaces */
+  cursor: pointer;
 }
 
 .footer-links a {
@@ -57,4 +58,36 @@ footer.container-fluid {
   width: 24px;  /* Tamaño del icono */
   height: auto; /* Mantiene la proporción del icono */
 }
+
+
+/* Contenedor del botón "Subir" */
+.back-to-top-container {
+  position: absolute;
+  right: 50px; /* Ajusta la distancia del borde derecho */
+  top: 50%;
+  transform: translateY(-50%); /* Centra verticalmente el botón en el footer */
+}
+
+
+/* Botón "Subir" */
+.back-to-top {
+  background-color: transparent; /* Fondo transparente para destacar solo la imagen */
+  border: 1px solid black;
+  border-radius: 15px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.back-to-top:hover {
+  transform: scale(1.1); /* Aumenta ligeramente el tamaño al hacer hover */
+}
+
+/* Imagen dentro del botón */
+.back-to-top-img {
+  width: 40px; /* Tamaño de la imagen */
+  height: auto;
+}
+
+
 

@@ -86,6 +86,20 @@ const Product = {
     });
   },
 
+  // Reducir stock del producto
+  reduceStock: (id, cantidad) => {
+    const query = 'UPDATE productos SET cantidad = cantidad - ? WHERE id = ?';
+    return new Promise((resolve, reject) => {
+      db.query(query, [cantidad, id], (err, result) => {
+        if (err) {
+          console.error('Error al reducir el stock:', err);
+          return reject(err);
+        }
+        resolve(result);
+      });
+    });
+  },
+
   // Eliminar un producto
   delete: (id) => {
     const query = 'DELETE FROM productos WHERE id = ?';

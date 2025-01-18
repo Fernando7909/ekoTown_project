@@ -1,77 +1,125 @@
 /* Contenedor principal */
 .store-container {
+  display: flex;
+  flex-direction: column; /* Organización en columna */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  gap: 40px; /* Espaciado entre tarjeta y productos */
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  text-align: center;
+  margin-top: 100px;
   font-family: Arial, sans-serif;
+  text-align: center;
+  box-sizing: border-box; /* Incluye padding y borde en el ancho/alto */
 }
 
-/* Detalles de la tienda */
-.store-details {
-  margin-bottom: 40px;
-}
-
+/* Tarjeta de la tienda */
 .store-card {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  width: 100%; /* Ocupa el 100% del ancho del contenedor */
+  max-width: none; /* Elimina cualquier límite de ancho */
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  transition: transform 0.2s ease-in-out;
+  padding: 20px;
 }
 
-.store-avatar img {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  object-fit: cover;
+/* Contenedor principal en dos columnas */
+.store-content {
+  display: flex;
+  flex-direction: column; /* Por defecto en móvil */
+  gap: 20px;
 }
 
-.store-header-info {
-  text-align: left;
-}
-
-mat-card-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-mat-card-subtitle {
-  font-size: 1rem;
-  color: #888;
+@media (min-width: 768px) {
+  .store-content {
+    flex-direction: row; /* Dos columnas en pantallas grandes */
+    align-items: flex-start;
+  }
 }
 
 /* Imagen de la tienda */
-.store-image-container img {
-  width: 100%;
-  max-width: 600px;
-  height: auto;
-  margin: 20px auto;
-  display: block;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.store-image-container {
+  flex: 1; /* Toma la mitad del espacio */
+  text-align: center;
 }
 
-/* Descripción */
-mat-card-content {
-  font-size: 1rem;
-  color: #555;
+.store-image-container img {
+  width: 100%; /* Imagen ajusta su contenedor */
+  max-width: 250px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Texto de la tienda */
+.store-text {
+  flex: 2; /* Toma el doble de espacio que la imagen */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.store-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background-color: #f5f5f5; /* Fondo claro */
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.store-header-info{
   text-align: left;
-  padding: 20px;
+}
+
+.store-avatar img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #007bff;
+}
+
+.store-name {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0;
+  color: #333333;
+}
+
+.store-manager {
+  font-size: 1rem;
+  color: #777777;
+}
+
+.store-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555555;
+  text-align: justify;
 }
 
 /* Productos disponibles */
 .productos-container {
   margin-top: 40px;
+  width: 100%; /* Asegura que ocupe todo el ancho */
+  max-width: 1200px; /* Ancho máximo */
+  text-align: center;
 }
 
 .productos-container h3 {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   margin-bottom: 20px;
 }
 
 .productos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsivo */
+  gap: 20px; /* Espaciado entre los productos */
+  margin-top: 20px;
 }
 
 .productos-container p {

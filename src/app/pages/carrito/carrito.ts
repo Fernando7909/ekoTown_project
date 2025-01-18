@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { Producto } from '../../services/product.service';
+import { StripeService } from '../../services/stripe.service';
 import { CommonModule } from '@angular/common';
-import { loadStripe, Stripe } from '@stripe/stripe-js';
 
 @Component({
   selector: 'app-carrito',
@@ -13,130 +13,93 @@ import { loadStripe, Stripe } from '@stripe/stripe-js';
 })
 export class CarritoComponent implements OnInit {
   cartItems: Producto[] = [];
-  stripe: Stripe | null = null;
-  private stripePublicKey = 'pk_test_51QSgOrLqhhGqu8RPHJgAgfjsajmkC6xfaU3AWwqk3FKzt1u0WbiwG8tA1ha1u6Z4anCQJrTmKVKZyJXRfYvmJd1H00OqihvOIV';
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private stripeService: StripeService // Inyectar el servicio de Stripe
+  ) {}
 
   ngOnInit(): void {
+    // Suscribirse a los cambios en los productos del carrito
     this.cartService.cartItems$.subscribe((items) => {
       this.cartItems = items.filter((item) => item.id !== undefined);
 
-      // Verificar que los productos tengan valores correctos
+      // Asegurarse de que los valores de cantidad y cantidad máxima sean correctos
       this.cartItems.forEach((item) => {
         if (!item.cantidad) {
-          item.cantidad = 1; // Predeterminar a 1 unidad si no está definido
+          item.cantidad = 1; // Por defecto, 1 unidad
         }
-
         if (item.cantidad_maxima === undefined) {
-          item.cantidad_maxima = item.stock || 0; // Ajustar el máximo permitido al stock disponible
+          item.cantidad_maxima = item.stock || 0; // Ajustar según el stock disponible
         }
       });
 
       console.log('Productos en el carrito:', this.cartItems);
     });
-
-    this.initializeStripe();
   }
 
-  async initializeStripe(): Promise<void> {
-    this.stripe = await loadStripe(this.stripePublicKey);
-  }
-
+  // Eliminar un producto del carrito
   removeItem(productoId: number): void {
     this.cartService.removeFromCart(productoId);
   }
 
+  // Incrementar la cantidad de un producto
   incrementQuantity(item: Producto): void {
     if (item.cantidad < item.cantidad_maxima) {
-      item.cantidad += 1; // Incrementa la cantidad en 1
-     
-      this.cartService.updateCartItem(item); // Actualiza el carrito
+      item.cantidad += 1;
+      this.cartService.updateCartItem(item);
     } else {
-      alert("No puedes agregar más de ${item.cantidad_maxima} unidades de este producto.");
+      alert(`No puedes agregar más de ${item.cantidad_maxima} unidades de este producto.`);
     }
   }
-  
 
+  // Decrementar la cantidad de un producto
   decrementQuantity(item: Producto): void {
     if (item.cantidad > 1) {
-      item.cantidad -= 1; // Disminuye la cantidad seleccionada
+      item.cantidad -= 1;
+      this.cartService.updateCartItem(item);
     }
   }
 
+  // Calcular el subtotal del carrito
   calculateSubtotal(): number {
     return this.cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
   }
 
+  // Calcular el IVA
   calculateIVA(): number {
-    const ivaRate = 0.21; // 21% IVA
+    const ivaRate = 0.21; // IVA al 21%
     return this.cartItems.reduce((acc, item) => acc + item.precio * item.cantidad * ivaRate, 0);
   }
 
+  // Calcular el total (subtotal + IVA)
   calculateTotal(): number {
     return this.calculateSubtotal() + this.calculateIVA();
   }
 
+  // Finalizar la compra y procesar los productos en el backend
   async finalizePurchase(): Promise<void> {
-    if (!this.stripe) {
-        console.error('Stripe no está inicializado.');
-        return;
+    if (this.cartItems.length === 0) {
+      alert('El carrito está vacío. Agrega productos antes de finalizar la compra.');
+      return;
     }
 
-    const ivaRate = 0.21;
-    const items = this.cartItems.map((item) => {
-        const priceWithIVA = item.precio * (1 + ivaRate);
-        return {
-            name: item.nombre,
-            price: Math.round(priceWithIVA * 100),
-            quantity: item.cantidad,
-        };
-    });
+    // Preparar los items para Stripe
+    const items = this.cartItems.map((item) => ({
+      name: item.nombre,
+      price: Math.round(item.precio * 100), // Convertir el precio a centavos
+      quantity: item.cantidad,
+    }));
 
     try {
-        const response = await fetch('http://localhost:3000/api/stripe/create-checkout-session', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ items }),
-        });
+      // Crear una sesión de Stripe
+      const { sessionId } = await this.stripeService.createCheckoutSession(items);
 
-        const { sessionId } = await response.json();
-        const result = await this.stripe.redirectToCheckout({ sessionId });
-
-        if (result?.error) {
-            throw new Error(result.error.message);
-        }
-
-        // Si la compra fue exitosa, vaciar el carrito
-        this.cartService.clearCart(); // Vacía el carrito
-        console.log('Compra completada, carrito vaciado.');
+      // Redirigir al usuario a la página de Stripe
+      await this.stripeService.redirectToCheckout(sessionId);
     } catch (error) {
-        console.error('Error al procesar la compra:', error);
-        alert('Hubo un problema al procesar la compra. Por favor, inténtalo de nuevo.');
+      console.error('Error al procesar la compra:', error);
+      alert('Hubo un problema al procesar la compra. Por favor, inténtalo de nuevo.');
     }
-}
-
-  
-  private async updateStockAfterPurchase(): Promise<void> {
-    try {
-      const response = await fetch('http://localhost:3000/api/productos/update-stock', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          items: this.cartItems.map((item) => ({
-            id: item.id,
-            cantidad_comprada: item.cantidad,
-          })),
-        }),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Error al actualizar el stock en la base de datos.');
-      }
-  
-      console.log('El stock se ha actualizado correctamente en la base de datos.');
-    } catch (error) {
-      console.error('Error al actualizar el stock:', error);
-    }
-  }  
+  }
 }

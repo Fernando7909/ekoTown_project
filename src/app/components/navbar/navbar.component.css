@@ -45,6 +45,29 @@
   margin: 0;
 }
 
+/* Logo */
+.ekotown-logo img {
+  margin-top: -7px;
+  width: 180px;
+  height: auto;
+  transition: opacity 0.8s ease-in-out; /* Suaviza la transición */
+  cursor: pointer;
+}
+
+.ekotown-logo .logo-white {
+  opacity: 0; /* Oculta el logo blanco por defecto */
+  transition: opacity 0.8s ease-in-out; /* Suaviza la transición */
+}
+
+.navbar.scrolled .ekotown-logo .logo-default {
+  opacity: 0; /* Oculta el logo normal al hacer scroll */
+  transition: opacity 0.8s ease-in-out; /* Suaviza la transición */
+}
+
+.navbar.scrolled .ekotown-logo .logo-white {
+  opacity: 1; /* Muestra el logo blanco al hacer scroll */
+}
+
 /* Ajusta la posición del menú desplegable */
 .dropdown-menu {
   display: none;
@@ -79,12 +102,6 @@
   color: #000;
 }
 
-/* Opcional: Estilo para íconos dentro del navbar */
-.navbar img {
-  width: 30px;
-  height: 30px;
-}
-
 /* Animaciones y transiciones suaves */
 .navbar .nav-link:hover {
   color: #000000;
@@ -104,4 +121,94 @@
   .mensaje-bienvenida {
     font-size: 16px; /* Reduce el tamaño del texto */
   }
+}
+
+/* Logo carrito */
+/* Posición y estilos iniciales */
+.carrito-logo img {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  transition: opacity 0.8s ease-in-out; /* Transición suave */
+}
+
+.carrito-default {
+  opacity: 1; /* Imagen negra visible por defecto */
+}
+
+.carrito-white {
+  opacity: 0; /* Imagen blanca oculta por defecto */
+}
+
+/* Cambia las imágenes al hacer scroll */
+.navbar.scrolled .carrito-default {
+  opacity: 0; /* Oculta el carrito negro */
+}
+
+.navbar.scrolled .carrito-white {
+  opacity: 1; /* Muestra el carrito blanco */
+}
+
+/* Contenedor para los logotipos */
+.navbar-icons {
+  display: flex;
+  align-items: center; /* Alinea verticalmente los íconos */
+  gap: 15px; /* Espaciado horizontal entre los logotipos */
+  margin-right: 50px;
+}
+
+/* Asegura que los íconos tengan el mismo tamaño y estén centrados */
+.navbar-icons img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain; /* Asegura que la imagen no se deforme */
+}
+
+/* Ajusta la posición en caso de diferencias verticales */
+.navbar-icons .dropdown,
+.navbar-icons .carrito-logo {
+  display: flex;
+  align-items: center;
+}
+
+/* Logo acceso */
+/* Contenedor del logotipo de acceso */
+.dropdown .nav-link {
+  position: relative; /* Asegura que las imágenes de acceso usen el mismo punto de referencia */
+  display: flex;
+  align-items: center; /* Centra verticalmente las imágenes */
+  justify-content: center; /* Centra horizontalmente si es necesario */
+  width: 30px;
+  height: 30px;
+}
+
+/* Posición inicial para ambas imágenes */
+.acceso-default,
+.acceso-white {
+  position: absolute; /* Ambas imágenes comparten el mismo espacio */
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  transition: opacity 0.8s ease-in-out; /* Transición suave */
+  cursor: pointer;
+}
+
+/* Imagen negra visible por defecto */
+.acceso-default {
+  opacity: 1;
+}
+
+/* Imagen blanca oculta por defecto */
+.acceso-white {
+  opacity: 0;
+}
+
+/* Al hacer scroll */
+.navbar.scrolled .acceso-default {
+  opacity: 0; /* Oculta el acceso negro */
+}
+
+.navbar.scrolled .acceso-white {
+  opacity: 1; /* Muestra el acceso blanco */
 }

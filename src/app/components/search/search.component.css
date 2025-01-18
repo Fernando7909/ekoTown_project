@@ -1,0 +1,29 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .search-form {
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .search-results h3 {
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .card-title {
+    color: #007bff;
+  }
+  
+  .loading-indicator .spinner-border {
+    width: 3rem;
+    height: 3rem;
+  }
+  

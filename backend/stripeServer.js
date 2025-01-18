@@ -4,7 +4,7 @@ const router = express.Router();
 const db = require('./config/db'); // Conexión a la base de datos
 
 // Configuración de Stripe
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY); // Utiliza la clave secreta desde las variables de entorno
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY); // Clave secreta desde variables de entorno
 
 // Middleware para registrar solicitudes
 router.use((req, res, next) => {
@@ -17,13 +17,17 @@ router.use((req, res, next) => {
 router.post('/create-checkout-session', async (req, res) => {
     const { items } = req.body; // Espera que se envíen los productos en el cuerpo de la solicitud
 
+    if (!items || !Array.isArray(items) || items.length === 0) {
+        return res.status(400).json({ error: 'No se recibieron productos para la sesión de Stripe.' });
+    }
+
     try {
         // Configurar los artículos de la sesión
         const lineItems = items.map((item) => ({
             price_data: {
                 currency: 'eur', // Configuración de la moneda
                 product_data: { name: item.name }, // Nombre del producto
-                unit_amount: item.price,
+                unit_amount: item.price, // Precio en céntimos
             },
             quantity: item.quantity, // Cantidad del producto
         }));
@@ -36,8 +40,8 @@ router.post('/create-checkout-session', async (req, res) => {
             metadata: {
                 items: JSON.stringify(items), // Enviar los productos y cantidades como metadatos
             },
-            success_url: 'http://localhost:4200/?purchase=success', // URL de éxito con parámetro
-            cancel_url: 'http://localhost:4200/', // URL de cancelación
+            success_url: 'http://localhost:4200/?purchase=success', // URL de éxito
+            cancel_url: 'http://localhost:4200/?purchase=cancel', // URL de cancelación
         });
 
         // Responder con el ID de la sesión
@@ -58,7 +62,7 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
         event = stripe.webhooks.constructEvent(
             req.body,
             sig,
-            process.env.STRIPE_WEBHOOK_SECRET // Asegúrate de configurar esta variable de entorno
+            process.env.STRIPE_WEBHOOK_SECRET // Configura esta variable de entorno
         );
     } catch (err) {
         console.error('Error validando el webhook:', err.message);
@@ -69,15 +73,20 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
     if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
 
-        // Aquí almacenaremos los items enviados al crear la sesión
+        // Extraer los productos de los metadatos
         const items = session.metadata.items
             ? JSON.parse(session.metadata.items)
             : [];
 
+        if (!Array.isArray(items) || items.length === 0) {
+            console.warn('No se encontraron productos en los metadatos del webhook.');
+            return res.status(400).send('Productos no encontrados.');
+        }
+
         try {
             // Actualizar el stock de cada producto
             for (const item of items) {
-                const { productId, quantity } = item;
+                const { id: productId, quantity } = item;
 
                 // Reducir el stock en la base de datos
                 await new Promise((resolve, reject) => {
