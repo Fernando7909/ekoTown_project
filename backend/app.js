@@ -11,6 +11,9 @@ const businessManagerRoutes = require('./routes/businessManagerRoutes');
 const storeRoutes = require('./routes/storeRoutes');
 const productRoutes = require('./routes/productRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
+const blogRoutes = require('./routes/blogRoutes');
+
+
 
 dotenv.config();
 const app = express();
@@ -97,6 +100,9 @@ app.use('/api/productos', productRoutes);
 
 // Ruta para las reseñas
 app.use('/api', reviewRoutes);
+
+// Rutas para blogs
+app.use('/api/blogs', blogRoutes);
 
 
 

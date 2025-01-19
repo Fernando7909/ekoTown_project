@@ -5,13 +5,19 @@ import { AuthUserService } from '../../services/auth-user.service';
 import { AuthManagerService } from '../../services/auth-manager.service';
 import { Router } from '@angular/router';
 import { NavbarComponent } from "../navbar/navbar.component";
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-login-register',
   standalone: true,
   templateUrl: './loginregister.component.html',
   styleUrls: ['./loginregister.component.css'],
-  imports: [CommonModule, FormsModule, NavbarComponent]
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    NavbarComponent,
+    FooterComponent,
+  ]
 })
 export class LoginregisterComponent {
   // Control del panel de login/registro de usuarios y Business Managers
@@ -66,9 +72,10 @@ export class LoginregisterComponent {
   }
 
   // Cambiar entre los paneles de registro/login de usuario
-  togglePanel() {
+  togglePanel(): void {
     this.isRegisterActive = !this.isRegisterActive;
   }
+  
 
   // Cambiar entre los paneles de registro/login de Business Manager
   toggleManagerPanel() {

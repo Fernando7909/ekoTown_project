@@ -18,6 +18,10 @@
   gap: var(--gap-size, 70px); /* Aplica el gap dinámico */
 }
 
+.nav-item {
+  cursor: pointer;
+}
+
 /* Estilo de los enlaces predeterminados */
 .navbar .nav-link {
   color: black; /* Color negro inicial */

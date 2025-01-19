@@ -2,18 +2,22 @@
   <div class="d-flex justify-content-between align-items-center w-100">
     <!-- Columna del logotipo, alineado a la izquierda -->
     <div class="logo-container d-flex justify-content-start">
-      <img src="ekotownLogo2.png" alt="Logotipo" class="img-fluid logo">
+      <a routerLink="/">
+        <img src="ekotownLogo2.png" alt="Logotipo" class="img-fluid logo" />
+      </a>
     </div>
-
+    
+  
     <!-- Columna de enlaces e iconos, centrada -->
     <div class="col-12 col-md-10 col-lg-8 d-flex flex-column align-items-center mx-auto">
       <!-- Enlaces del footer -->
       <div class="footer-links my-3">
-        <a routerLink="/" class="mx-3">Inicio</a>
-        <a routerLink="/destacados" class="mx-3">Destacados</a>
-        <a routerLink="/buscador" class="mx-3">Buscador</a>
+        <a (click)="scrollToTop()" class="mx-3" href="#">Inicio</a>
+        <a (click)="scrollToFeatured()" class="mx-3">Destacados</a>
+        <a routerLink="/search" class="mx-3">Buscador</a>
         <a routerLink="/blog" class="mx-3">Blog</a>
       </div>
+      
 
       <!-- Línea divisoria -->
       <div class="footer-divider mb-3 w-75"></div>

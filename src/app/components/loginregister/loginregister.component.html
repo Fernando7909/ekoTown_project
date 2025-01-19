@@ -5,123 +5,140 @@
   {{ successMessage }}
 </div>
 
-
-<h2 class="titulo-usuarios">ACCESO PARA USUARIOS</h2>
-
-<div class="container login-usuarios my-5">
-  <!-- Contenedor principal para Usuarios -->
-  <div class="form-wrapper" [ngClass]="{'register-active': isRegisterActive}">
-
-    <!-- Botones de Toggle para cambiar entre Login y Registro de Usuario -->
-    <div class="toggle-buttons">
-      <button (click)="togglePanel()" class="btn-toggle" [ngClass]="{'active': !isRegisterActive}">Iniciar sesión</button>
-      <button (click)="togglePanel()" class="btn-toggle" [ngClass]="{'active': isRegisterActive}">Registro</button>
+<!-- Sección de Login y Registro para Usuarios -->
+<div class="login-register-page users-page">
+  <!-- Sección Izquierda -->
+  <div class="left-section users-left-section">
+    <div class="logo-container">
+      <img src="ekotownLogo2.png" alt="EcoTown Logo" class="logo-image" />
     </div>
+    <h2 class="titulo-usuarios">USUARIOS</h2>
+    <p>¡Bienvenido a ecoTown!</p>
+    <p>Inicia sesión o crea una cuenta para comenzar a disfrutar de nuestros servicios.</p>
+  </div>
 
-    <!-- Contenedor para el formulario de Login de Usuario -->
-    <div class="form login-form" *ngIf="!isRegisterActive">
-      <h2>Iniciar sesión</h2>
-      <form (ngSubmit)="onLogin()">
-        <div class="input-group">
-          <label for="loginEmail">Email</label>
-          <input type="email" id="loginEmail" [(ngModel)]="loginEmail" name="loginEmail" required>
-        </div>
-        <div class="input-group">
-          <label for="loginPassword">Contraseña</label>
-          <input type="password" id="loginPassword" [(ngModel)]="loginPassword" name="loginPassword" required>
-        </div>
-        <button type="submit" class="btn-submit">Iniciar sesión</button>
-      </form>
-    </div>
+  <!-- Sección Derecha -->
+  <div class="right-section users-right-section">
+    <div class="form-wrapper" [ngClass]="{'register-active': isRegisterActive}">
+      <!-- Toggle de Login y Registro -->
+      <div class="toggle-buttons">
+        <button (click)="togglePanel()" class="btn-toggle" [ngClass]="{'active': !isRegisterActive}">Iniciar sesión</button>
+        <button (click)="togglePanel()" class="btn-toggle" [ngClass]="{'active': isRegisterActive}">Registro</button>
+      </div>
 
-    <!-- Contenedor para el formulario de Registro de Usuario -->
-    <div class="form register-form" *ngIf="isRegisterActive">
-      <h2>Registro</h2>
-      <form (ngSubmit)="onRegister()">
-        <div class="input-group">
-          <label for="registerName">Nombre</label>
-          <input type="text" id="registerName" [(ngModel)]="registerName" name="registerName" required>
-        </div>
-        <div class="input-group">
-          <label for="registerLastName">Apellido</label>
-          <input type="text" id="registerLastName" [(ngModel)]="registerLastName" name="registerLastName" required>
-        </div>
-        <div class="input-group">
-          <label for="registerEmail">Email</label>
-          <input type="email" id="registerEmail" [(ngModel)]="registerEmail" name="registerEmail" required>
-        </div>
-        <div class="input-group">
-          <label for="registerPassword">Contraseña</label>
-          <input type="password" id="registerPassword" [(ngModel)]="registerPassword" name="registerPassword" required>
-        </div>
-        <button type="button" class="btn-submit" (click)="onRegister()">Registrarse</button>
-      </form>
+      <!-- Formulario de Login -->
+      <div class="form login-form" *ngIf="!isRegisterActive">
+        <h2>Iniciar Sesión</h2>
+        <form (ngSubmit)="onLogin()">
+          <div class="input-group">
+            <label for="loginEmail">Correo Electrónico</label>
+            <input type="email" id="loginEmail" [(ngModel)]="loginEmail" name="loginEmail" required />
+          </div>
+          <div class="input-group">
+            <label for="loginPassword">Contraseña</label>
+            <input type="password" id="loginPassword" [(ngModel)]="loginPassword" name="loginPassword" required />
+          </div>
+          <button type="submit" class="btn-submit">Iniciar Sesión</button>
+        </form>
+      </div>
+
+      <!-- Formulario de Registro -->
+      <div class="form register-form" *ngIf="isRegisterActive">
+        <h2>Registro</h2>
+        <form (ngSubmit)="onRegister()">
+          <div class="input-group">
+            <label for="registerName">Nombre</label>
+            <input type="text" id="registerName" [(ngModel)]="registerName" name="registerName" required />
+          </div>
+          <div class="input-group">
+            <label for="registerLastName">Apellido</label>
+            <input type="text" id="registerLastName" [(ngModel)]="registerLastName" name="registerLastName" required />
+          </div>
+          <div class="input-group">
+            <label for="registerEmail">Correo Electrónico</label>
+            <input type="email" id="registerEmail" [(ngModel)]="registerEmail" name="registerEmail" required />
+          </div>
+          <div class="input-group">
+            <label for="registerPassword">Contraseña</label>
+            <input type="password" id="registerPassword" [(ngModel)]="registerPassword" name="registerPassword" required />
+          </div>
+          <button type="submit" class="btn-submit">Registrarse</button>
+        </form>
+      </div>
     </div>
   </div>
 </div>
 
-<h2 class="titulo-business">ACCESO PARA BUSINESS MANAGERS</h2>
-
-<div class="container login-business my-5">
-  <!-- Contenedor principal para Business Managers -->
-  <div class="form-wrapper" [ngClass]="{'register-active': isBusinessManagerActive}">
-
-    <!-- Botones de Toggle para cambiar entre Login y Registro de Business Manager -->
-    <div class="toggle-buttons">
-      <button (click)="toggleManagerPanel()" class="btn-toggle" [ngClass]="{'active': !isBusinessManagerActive}">Iniciar sesión</button>
-      <button (click)="toggleManagerPanel()" class="btn-toggle" [ngClass]="{'active': isBusinessManagerActive}">Registro</button>
+<!-- Sección de Login y Registro para Business Managers -->
+<div class="login-register-page managers-page">
+  <!-- Sección Izquierda -->
+  <div class="left-section managers-left-section">
+    <div class="logo-container">
+      <img src="ekotownLogo2.png" alt="EcoTown Logo" class="logo-image" />
     </div>
+    <h2 class="titulo-business">BUSINESS MANAGERS</h2>
+    <p>Gestiona tu establecimiento con ecoTown.</p>
+    <p>Inicia sesión o crea una cuenta para administrar tus servicios.</p>
+  </div>
 
-    <!-- Contenedor para el formulario de Login de Business Manager -->
-    <div class="form login-form" *ngIf="!isBusinessManagerActive">
-      <h2>Iniciar sesión</h2>
-      <form (ngSubmit)="onManagerLogin()">
-        <div class="input-group">
-          <label for="loginManagerEmail">Email</label>
-          <input type="email" id="loginManagerEmail" [(ngModel)]="loginManagerEmail" name="loginManagerEmail" required>
-        </div>
-        <!-- <div class="input-group">
-          <label for="loginCommerceId">ID Comercio</label>
-          <input type="text" id="loginCommerceId" [(ngModel)]="loginCommerceId" name="loginCommerceId" required>
-        </div> -->
-        <div class="input-group">
-          <label for="loginManagerPassword">Contraseña</label>
-          <input type="password" id="loginManagerPassword" [(ngModel)]="loginManagerPassword" name="loginManagerPassword" required>
-        </div>
-        <button type="submit" class="btn-submit">Iniciar sesión</button>
-      </form>
-    </div>
+  <!-- Sección Derecha -->
+  <div class="right-section managers-right-section">
+    <div class="form-wrapper" [ngClass]="{'register-active': isBusinessManagerActive}">
+      <!-- Toggle de Login y Registro -->
+      <div class="toggle-buttons">
+        <button (click)="toggleManagerPanel()" class="btn-toggle" [ngClass]="{'active': !isBusinessManagerActive}">Iniciar sesión</button>
+        <button (click)="toggleManagerPanel()" class="btn-toggle" [ngClass]="{'active': isBusinessManagerActive}">Registro</button>
+      </div>
 
-    <!-- Contenedor para el formulario de Registro de Business Manager -->
-    <div class="form register-form" *ngIf="isBusinessManagerActive">
-      <h2>Registro</h2>
-      <form (ngSubmit)="onManagerRegister()">
-        <div class="input-group">
-          <label for="managerName">Nombre</label>
-          <input type="text" id="managerName" [(ngModel)]="managerName" name="managerName" required>
-        </div>
-        <div class="input-group">
-          <label for="managerLastName">Apellido</label>
-          <input type="text" id="managerLastName" [(ngModel)]="managerLastName" name="managerLastName" required>
-        </div>
-        <div class="input-group">
-          <label for="managerDNI">DNI</label>
-          <input type="text" id="managerDNI" [(ngModel)]="managerDNI" name="managerDNI" required>
-        </div>
-        <div class="input-group">
-          <label for="managerEmail">Email</label>
-          <input type="email" id="managerEmail" [(ngModel)]="managerEmail" name="managerEmail" required>
-        </div>
-        <div class="input-group">
-          <label for="managerAddress">Dirección del Establecimiento</label>
-          <input type="text" id="managerAddress" [(ngModel)]="managerAddress" name="managerAddress" required>
-        </div>
-        <div class="input-group">
-          <label for="managerPassword">Contraseña</label>
-          <input type="password" id="managerPassword" [(ngModel)]="managerPassword" name="managerPassword" required>
-        </div>
-        <button type="submit" class="btn-submit">Registrarse</button>
-      </form>
+      <!-- Formulario de Login -->
+      <div class="form login-form" *ngIf="!isBusinessManagerActive">
+        <h2>Iniciar Sesión</h2>
+        <form (ngSubmit)="onManagerLogin()">
+          <div class="input-group">
+            <label for="loginManagerEmail">Correo Electrónico</label>
+            <input type="email" id="loginManagerEmail" [(ngModel)]="loginManagerEmail" name="loginManagerEmail" required />
+          </div>
+          <div class="input-group">
+            <label for="loginManagerPassword">Contraseña</label>
+            <input type="password" id="loginManagerPassword" [(ngModel)]="loginManagerPassword" name="loginManagerPassword" required />
+          </div>
+          <button type="submit" class="btn-submit">Iniciar Sesión</button>
+        </form>
+      </div>
+
+      <!-- Formulario de Registro -->
+      <div class="form register-form" *ngIf="isBusinessManagerActive">
+        <h2>Registro</h2>
+        <form (ngSubmit)="onManagerRegister()">
+          <div class="input-group">
+            <label for="managerName">Nombre</label>
+            <input type="text" id="managerName" [(ngModel)]="managerName" name="managerName" required />
+          </div>
+          <div class="input-group">
+            <label for="managerLastName">Apellido</label>
+            <input type="text" id="managerLastName" [(ngModel)]="managerLastName" name="managerLastName" required />
+          </div>
+          <div class="input-group">
+            <label for="managerDNI">DNI</label>
+            <input type="text" id="managerDNI" [(ngModel)]="managerDNI" name="managerDNI" required />
+          </div>
+          <div class="input-group">
+            <label for="managerEmail">Correo Electrónico</label>
+            <input type="email" id="managerEmail" [(ngModel)]="managerEmail" name="managerEmail" required />
+          </div>
+          <div class="input-group">
+            <label for="managerAddress">Dirección del Establecimiento</label>
+            <input type="text" id="managerAddress" [(ngModel)]="managerAddress" name="managerAddress" required />
+          </div>
+          <div class="input-group">
+            <label for="managerPassword">Contraseña</label>
+            <input type="password" id="managerPassword" [(ngModel)]="managerPassword" name="managerPassword" required />
+          </div>
+          <button type="submit" class="btn-submit">Registrarse</button>
+        </form>
+      </div>
     </div>
   </div>
 </div>
+
+<app-footer></app-footer>
