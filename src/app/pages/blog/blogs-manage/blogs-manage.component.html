@@ -1,0 +1,118 @@
+<app-navbar></app-navbar>
+
+<div class="blogs-manage-container">
+    <h2>Gestión de Blogs</h2>
+  
+    <!-- Formulario para Crear/Editar -->
+    <div class="form-container">
+      <h3>{{ isEditing ? 'Editar Blog' : 'Crear Nuevo Blog' }}</h3>
+      <form (submit)="handleSubmit()">
+        <fieldset>
+          <legend>{{ isEditing ? 'Editar Blog' : 'Crear Blog' }}</legend>
+  
+          <!-- Título -->
+          <label for="title">Título:</label>
+          <input
+            id="title"
+            type="text"
+            [(ngModel)]="blogForm.title"
+            name="title"
+            placeholder="Escribe el título del blog"
+            required
+          />
+  
+          <!-- Contenido -->
+          <label for="content">Contenido:</label>
+          <textarea
+            id="content"
+            [(ngModel)]="blogForm.content"
+            name="content"
+            placeholder="Escribe el contenido del blog"
+            required
+          ></textarea>
+  
+          <!-- Categoría -->
+          <label for="category">Categoría:</label>
+          <select id="category" [(ngModel)]="blogForm.category" name="category">
+            <option value="General">General</option>
+            <option value="Tecnología">Tecnología</option>
+            <option value="Sostenibilidad">Sostenibilidad</option>
+            <option value="Educación">Educación</option>
+          </select>
+  
+          <!-- Autor (campo adicional) -->
+          <label for="author">Autor:</label>
+          <input
+            id="author"
+            type="text"
+            [(ngModel)]="blogForm.author"
+            name="author"
+            placeholder="Escribe el autor del blog"
+            required
+          />
+  
+          <!-- Business Manager ID (campo adicional) -->
+          <label for="businessManagerId">ID del Business Manager:</label>
+          <input
+            id="businessManagerId"
+            type="number"
+            [(ngModel)]="blogForm.businessManagerId"
+            name="businessManagerId"
+            placeholder="ID del Business Manager"
+            required
+          />
+  
+          <!-- Botones de acción -->
+          <div class="form-buttons">
+            <button type="submit" class="btn btn-primary">
+              {{ isEditing ? 'Actualizar Blog' : 'Crear Blog' }}
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="cancelEdit()"
+              *ngIf="isEditing"
+            >
+              Cancelar
+            </button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  
+    <!-- Tabla/Listado de Blogs -->
+    <div class="blogs-list-container">
+      <h3>Mis Blogs</h3>
+      <div *ngIf="blogs.length === 0" class="no-blogs">
+        <p>No hay blogs disponibles. ¡Crea uno para empezar!</p>
+      </div>
+      <table *ngIf="blogs.length > 0">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Categoría</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let blog of blogs">
+            <td>{{ blog.title }}</td>
+            <td>{{ blog.category }}</td>
+            <td>
+              <button class="btn btn-edit" (click)="editBlog(blog)">
+                <span class="icon">✏️</span> Editar
+              </button>
+              <button
+                class="btn btn-delete"
+                (click)="deleteBlog(blog.id)"
+                *ngIf="blog.id !== undefined && blog.id !== null"
+              >
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

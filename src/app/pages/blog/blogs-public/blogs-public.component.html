@@ -1,0 +1,26 @@
+<app-navbar></app-navbar>
+
+<div class="blogs-public-container">
+    <h2>ekoTown Blogs</h2>
+  
+    <!-- Mostrar mensaje de error si no se pueden cargar los blogs -->
+    <div *ngIf="errorMessage" class="error-message">
+      <p>{{ errorMessage }}</p>
+    </div>
+  
+    <!-- Verificar si hay blogs -->
+    <div *ngIf="blogs.length === 0 && !errorMessage">
+      <p>No hay blogs disponibles.</p>
+    </div>
+  
+    <!-- Mostrar los blogs -->
+    <div *ngIf="blogs.length > 0">
+      <div *ngFor="let blog of blogs" class="blog-post">
+        <h3>{{ blog.title }}</h3>
+        <p><strong>Categoría:</strong> {{ blog.category }}</p>
+        <p>{{ blog.content | slice:0:150 }}...</p> <!-- Muestra solo una parte del contenido -->
+        <a [routerLink]="['/blogs/public', blog.id]">Leer más</a>
+      </div>
+    </div>
+  </div>
+  

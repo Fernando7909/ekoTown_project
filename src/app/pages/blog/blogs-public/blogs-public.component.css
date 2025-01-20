@@ -1,0 +1,121 @@
+/* Contenedor principal de la página de blogs públicos */
+.blogs-public-container {
+    width: 80%;
+    margin: 140px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Títulos */
+  h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Estilo del mensaje de error */
+  .error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-align: center;
+  }
+  
+  /* Estilos para el listado de blogs */
+  .blog-post {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  /* Efecto hover en cada blog post */
+  .blog-post:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Títulos de los blogs */
+  .blog-post h3 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+  
+  /* Categoría del blog */
+  .blog-post p {
+    font-size: 1rem;
+    color: #7f8c8d;
+    margin-bottom: 15px;
+  }
+  
+  /* Estilo del enlace para leer más */
+  .blog-post a {
+    text-decoration: none;
+    color: #3498db;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+  }
+  
+  /* Efecto hover del enlace de leer más */
+  .blog-post a:hover {
+    color: #2980b9;
+  }
+  
+  /* Si no hay blogs disponibles, el mensaje se alinea al centro */
+  .no-blogs {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    margin-top: 30px;
+  }
+  
+  /* Si hay blogs, mostramos una lista en columna */
+  .blog-posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* Estilos del formulario de búsqueda (si decides agregar uno más tarde) */
+  .search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  
+  .search-input {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  
+  .search-button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #3498db;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .search-button:hover {
+    background-color: #2980b9;
+  }
+  

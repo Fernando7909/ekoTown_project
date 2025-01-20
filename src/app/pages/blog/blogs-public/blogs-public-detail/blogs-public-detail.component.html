@@ -1,0 +1,28 @@
+<app-navbar></app-navbar>
+
+<!-- Contenedor de mensaje de error -->
+<div *ngIf="errorMessage" class="error-message-container">
+  <div class="error-message">
+    <p>{{ errorMessage }}</p>
+  </div>
+</div>
+
+<!-- Contenedor de los detalles del blog -->
+<div *ngIf="blog && !errorMessage" class="blog-details-container">
+  <h2 class="blog-title">{{ blog.title }}</h2>
+  
+  <div class="blog-meta">
+    <p><strong>Autor:</strong> {{ blog.author }}</p>
+    <p><strong>Categoría:</strong> {{ blog.category }}</p>
+  </div>
+
+  <div class="blog-content">
+    <p><strong>Contenido:</strong></p>
+    <p>{{ blog.content }}</p>
+  </div>
+</div>
+
+<!-- Botón para volver a la lista de blogs -->
+<div class="back-button-container">
+  <a routerLink="/blogs/public" class="back-button">Volver a los blogs</a>
+</div>
