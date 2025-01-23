@@ -127,3 +127,47 @@ app-footer {
   width: 100%;
   display: block;
 }
+
+
+/* Modo oscuro mejorado */
+body.dark-mode {
+  background-color: #1a1a1a; /* Fondo oscuro */
+  color: #e0e0e0; /* Texto claro */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave */
+}
+
+.dark-mode .card {
+  background-color: #2d2d2d; /* Fondo oscuro para tarjetas */
+  color: #e0e0e0; /* Texto claro para tarjetas */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+}
+
+.dark-mode .navbar {
+  background-color: #2d2d2d; /* Fondo oscuro para la barra de navegación */
+  color: #e0e0e0; /* Texto claro para la barra de navegación */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+.dark-mode .footer {
+  background-color: #2d2d2d; /* Fondo oscuro para el pie de página */
+  color: #e0e0e0; /* Texto claro para el pie de página */
+}
+
+.dark-mode .action-button {
+  background-color: #4d7a62; /* Fondo azul moderno para botones */
+  color: #ffffff; /* Texto claro para botones */
+  border: none; /* Sin borde */
+  border-radius: 8px; /* Bordes redondeados */
+  transition: background-color 0.3s ease; /* Transición suave */
+}
+
+.dark-mode .action-button:hover {
+  background-color: #439764; /* Cambio de color al pasar el mouse */
+}
+
+/* Modo oscuro para todos los h3 */
+body.dark-mode h3 {
+  color: #ffffff; /* Texto blanco */
+}

@@ -85,7 +85,7 @@ exports.getStoreByBusinessManager = (businessManagerId, callback) => {
 exports.updateStore = (storeData, callback) => {
   const query = `
     UPDATE stores 
-    SET nombre_comercio = ?, foto_gerente = ?, nombre_gerente = ?, imagen = ?, descripcion = ?, rating = ?
+    SET nombre_comercio = ?, foto_gerente = ?, nombre_gerente = ?, imagen = ?, descripcion = ?
     WHERE id = ?
   `;
   const values = [
@@ -94,7 +94,7 @@ exports.updateStore = (storeData, callback) => {
     storeData.nombre_gerente,
     storeData.imagen || null,
     storeData.descripcion,
-    storeData.rating || 0,
+    // storeData.rating || 0,
     storeData.id,
   ];
 

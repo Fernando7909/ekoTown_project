@@ -2,11 +2,12 @@
 .carousel-item {
   position: relative;
   width: 100%;
-  height: 700px;
+  height: 700px; /* Altura del carrusel */
   background-size: cover;
   background-position: center;
 }
 
+/* Fondo oscuro para mejorar la legibilidad del texto */
 .carousel-item::before {
   content: "";
   position: absolute;
@@ -14,91 +15,75 @@
   left: 0;
   width: 100%;
   height: 100%;
+  background-color: rgba(0, 0, 0, 0.1); /* Fondo semitransparente */
 }
 
-
-
-/* Estilo para los textos dentro de .carousel-caption usando flexbox */
+/* Contenedor del texto */
 .carousel-caption {
   position: absolute;
-  width: 80%;
+  top: 50%; /* Centra verticalmente */
+  left: 50%; /* Centra horizontalmente */
+  transform: translate(-50%, -50%); /* Ajusta el centro exacto */
+  width: 80%; /* Ancho del contenedor de texto */
+  max-width: 800px; /* Ancho máximo para evitar que el texto sea demasiado ancho */
+  max-height: 220px; /* Altura máxima del contenedor */
   text-align: center;
-  padding: 20px; 
-  background-color: rgba(255, 255, 255, 0.5); 
-  box-sizing: border-box; 
+  padding: 10px; /* Padding reducido */
+  background-color: rgba(255, 255, 255, 0.4); /* Fondo semitransparente */
+  border-radius: 7px; /* Bordes redondeados */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
   display: flex;
-  justify-content: center;
-  height: auto;
-
+  flex-direction: column;
+  justify-content: center; /* Centra verticalmente */
+  align-items: center; /* Centra horizontalmente */
+  overflow: hidden; /* Oculta el contenido que exceda la altura máxima */
 }
 
-.carousel-caption::after {
-  display: block;
-  content: "";
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  border-top: 5px solid rgb(0, 0, 0);
-  border-right: 5px solid rgb(0, 0, 0);
-}
-
-.carousel-caption::before {
-  display: block;
-  content: "";
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  bottom: -5px;
-  left: -5px;
-  border-bottom: 5px solid rgb(0, 0, 0);
-  border-left: 5px solid rgb(0, 0, 0);
-}
-
-
-
-/* Estilo para las etiquetas <strong> dentro de h2 */
+/* Estilo para las etiquetas <h2> */
 .carousel-caption h2 {
-  font-size: 2.5rem; /* Aumenta el tamaño del texto dentro de <strong> */
-  font-weight: bold; /* Asegura que el texto se mantenga en negrita */
-  padding-bottom: 15px;
-  margin: 0;
-  color: black;
+  font-size: 2.5rem; /* Tamaño del texto */
+  font-weight: bold; /* Texto en negrita */
+  margin-bottom: 15px; /* Espacio inferior */
+  color: #333; /* Color del texto */
 }
 
+/* Estilo para las etiquetas <p> */
 .carousel-caption p {
-  color: black;
-  font-size: 21px;
+  font-size: 1.3rem; /* Tamaño del texto */
+  color: #555; /* Color del texto */
+  margin: 0; /* Elimina el margen predeterminado */
 }
 
-/* Aseguramos que la imagen se vea correctamente */
-.carousel-item img {
-  width: 100%;
-  height: auto;
+.carousel-caption p.text3 {
+  font-size: 1.3rem; /* Tamaño del texto */
+  color: #2f2f2f; /* Color del texto */
+  margin: 0; /* Elimina el margen predeterminado */
 }
 
-/* Ocultar números generados automáticamente */
-.carousel-indicators li::before,
-.carousel-indicators li::after {
-  content: ''; /* Eliminar cualquier contenido generado */
-  display: none !important; /* Asegurarse de que no se muestren */
-}
-
-/* Opcional: Ajustar los indicadores para que solo se vean los puntos */
-.carousel-indicators li {
-  background-color: #fff; /* Cambia el color según tu diseño */
-  width: 10px; /* Tamaño de los puntos */
-  height: 10px;
-  border-radius: 50%; /* Forma circular */
-  margin: 5px;
-  display: inline-block;
-  position: relative;
-}
-
-/* Mantener la alineación central */
+/* Estilo para los indicadores del carrusel */
+/* Estilo para los indicadores del carrusel */
 .carousel-indicators {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-left: 0; /* Elimina el padding predeterminado */
+  margin-bottom: 0; /* Elimina el margen inferior predeterminado */
+  list-style: none; /* Elimina los estilos de lista */
+}
+
+/* Estilo para los puntos de los indicadores */
+.carousel-indicators li {
+  width: 10px; /* Tamaño de los puntos */
+  height: 10px;
+  border-radius: 50%; /* Forma circular */
+  background-color: #fff; /* Color de los puntos */
+  margin: 0 5px; /* Espacio entre los puntos */
+  cursor: pointer; /* Cambia el cursor al pasar sobre los puntos */
+}
+
+/* Elimina los números generados automáticamente */
+.carousel-indicators li::before,
+.carousel-indicators li::after {
+  content: '' !important;
+  display: none !important;
 }

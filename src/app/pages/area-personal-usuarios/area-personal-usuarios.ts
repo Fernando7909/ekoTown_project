@@ -5,6 +5,8 @@ import { AuthUserService } from '../../services/auth-user.service'; // Importar 
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { DarkModeService } from '../../services/dark-mode.service';
+import { OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-area-personal-usuarios',
@@ -17,7 +19,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
   ]
 })
-export class AreaPersonalUsuariosPage implements OnInit {
+export class AreaPersonalUsuariosPage implements OnInit, OnDestroy {
   // Variables para manejar el estado de la vista
   userName: string = '';
   userLastName: string = '';
@@ -26,10 +28,16 @@ export class AreaPersonalUsuariosPage implements OnInit {
   userId: number | undefined; // ID del usuario autenticado
   profileImageUrl: string = ''; // URL de la imagen de perfil
 
-  constructor(private authUserService: AuthUserService, private router: Router, private http: HttpClient) {}
+  constructor(
+    private authUserService: AuthUserService, 
+    private router: Router, 
+    private http: HttpClient,
+    private darkModeService: DarkModeService
+  ) {}
 
   ngOnInit(): void {
     this.loadUserProfile(); // Cargar el perfil del usuario al inicializar el componente
+    this.darkModeService.toggleDarkMode()
   }
 
   private loadUserProfile(): void {
@@ -157,6 +165,14 @@ export class AreaPersonalUsuariosPage implements OnInit {
       alert('No se seleccionó ningún archivo.');
     }
   }
-  
+  ngOnDestroy(): void {
+    // Desactivar el modo oscuro al salir de la página
+    this.darkModeService.toggleDarkMode();
+  }
+
+  toggleDarkMode() {
+    // Llama al servicio para cambiar el estado del modo oscuro
+    this.darkModeService.toggleDarkMode();
+  }
   
 }

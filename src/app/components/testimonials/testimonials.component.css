@@ -1,111 +1,140 @@
+/* Contenedor general */
 .testimonials-section {
-  padding: 4rem 0;
-  background-color: #ffffff;
-  overflow: hidden; /* Evita el margen blanco */
+  padding: 4rem 0 2rem;
+  background-color: var(--background-color);
+  overflow: hidden; /* Oculta contenido cuando sea necesario */
+  transition: height 0.5s ease-in-out; /* Transición suave para el contenedor */
+  min-height: 800px;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+.testimonials-header {
+  text-align: center; /* Centra el contenido dentro del contenedor */
+  margin-bottom: 70px; /* Espaciado inferior opcional */
+}
+
+.section-title {
+  font-size: 56px; /* Ajusta el tamaño del título */
+  color: #2d2d2d; /* Color del texto */
+  margin: 0; /* Elimina márgenes adicionales */
+}
+
+/* Contenedor con tarjetas */
+.testimonials-container-wrapper {
+  position: relative;
+  max-height: 600px; /* Altura inicial limitada */
+  overflow: hidden; /* Oculta el contenido que excede la altura */
+  transition: max-height 0.5s ease-in-out; /* Transición suave al expandir o contraer */
+}
+
+.testimonials-container-wrapper.show-all {
+  max-height: 2000px; /* Asegura espacio suficiente para expandirse suavemente */
+}
+
+
+.testimonials-container-wrapper .fade-effect {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px; /* Altura del gradiente */
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, var(--background-color) 100%);
+  pointer-events: none; /* Evita interferencia con clics */
+}
+
+.testimonials-container {
+  column-count: 3; /* Número de columnas */
+  column-gap: 35px; /* Espaciado entre columnas */
+  padding: 20px 120px;
 }
 
 .testimonial-card {
-  background: rgb(246, 246, 246);
-  padding: 2rem;
-  border-radius: 10px;
+  background-color: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 35px 25px;
+  display: inline-block; /* Necesario para columnar */
+  width: 100%; /* Para ajustarse a las columnas */
+  margin-bottom: 35px; /* Espaciado entre filas */
   text-align: center;
-  border: 2px solid #e4e4e4;
-  transition: transform 0.3s ease;
-  height: 100%; /* Permite que las tarjetas crezcan según el contenido */
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
 }
 
-.testimonial-card:hover {
-  transform: translateY(-5px);
+/* Estilo para el testimonial-header */
+.testimonial-header {
+  display: flex; /* Organiza la imagen y el contenido en una fila */
+  align-items: center; /* Centra verticalmente la imagen y el contenido */
+  gap: 15px; /* Espaciado entre la imagen y el texto */
+  text-align: left; /* Asegura que el contenido textual esté alineado a la izquierda */
+  margin-bottom: 15px; /* Espaciado inferior entre el header y el texto */
 }
 
-.testimonial-image {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  margin: 0 auto 1rem;
-  object-fit: cover;
+.testimonial-avatar {
+  width: 50px; /* Ajusta el tamaño de la imagen */
+  height: 50px;
+  border-radius: 50%; /* Hace la imagen redonda */
+  object-fit: cover; /* Evita distorsiones */
 }
 
-.rating {
-  margin: 0rem 0 1rem;
+.testimonial-content {
+  display: flex;
+  flex-direction: column; /* Coloca el nombre y el rol en columna */
 }
 
-.star {
-  color: #ddd;
-  font-size: 20px;
+.testimonial-name {
+  font-size: 1.3rem; /* Ajusta el tamaño del nombre */
+  font-weight: bold; /* Resalta el nombre */
+  margin: 0;
+  color: #2d2d2d;
 }
 
-.star.filled {
-  color: #ffd700;
+.testimonial-role {
+  font-size: 0.9rem; /* Tamaño menor para el rol */
+  margin: 0;
+  color: #777; /* Color tenue para el rol */
 }
 
 .testimonial-text {
-  color: #666;
-  line-height: 1.6;
-  margin: 1rem 0;
-  font-size: 0.95rem;
-}
-
-.testimonial-author {
-  margin-top: 1.5rem;
-}
-
-.testimonial-author h3 {
+  font-size: 1.2rem;
+  line-height: 1.4;
   color: #333;
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 600;
+  text-align: left;
+  margin-top: 10px; /* Espaciado entre el texto y el header */
 }
 
-.testimonial-author p {
-  color: #666;
-  margin: 0.25rem 0 0;
-  font-size: 0.9rem;
-}
-
-
-/* Flechas */
-.arrow {
-  background: none;
+.load-more-button {
+  background-color: #4fb589;
+  color: #fff;
   border: none;
-  font-size: 30px; /* Tamaño del icono */
+  border-radius: 1.5rem;
+  padding: 10px 20px;
+  font-size: 1rem;
   cursor: pointer;
-  color: #333; /* Color del icono */
-  transition: transform 0.3s ease, color 0.3s ease;
-  margin: 0 10px; /* Espaciado horizontal entre las flechas */
-  position: relative;
+  margin: 90px auto 20px;
+  display: block;
 }
 
-.arrow:hover {
-  transform: scale(1.2); /* Efecto de zoom */
-}
-
-/* Estado deshabilitado */
-.arrow:disabled {
-  cursor: not-allowed;
-  color: #ddd; /* Color gris para flechas deshabilitadas */
-  transform: none; /* Elimina el efecto de hover */
-}
-
-.left-arrow {
-  left: 0;
-  top: 0;
-}
-
-.right-arrow {
-  right: 0;
-  top: 0;
+.testimonial-review-image {
+  margin-top: 15px; /* Espaciado superior */
+  max-width: 100%; /* Asegura que la imagen no exceda el ancho del contenedor */
+  border-radius: 10px; /* Esquinas redondeadas */
+  object-fit: cover; /* Evita distorsión en la imagen */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
 }
 
 
-/* Centrar flechas debajo */
-.row.justify-content-center.mt-4 {
-  text-align: center; /* Centra las flechas */
-  margin-top: 20px; /* Espaciado entre testimonios y flechas */
+/* Responsividad */
+@media (max-width: 1024px) {
+  .testimonials-container {
+    column-count: 2; /* 2 columnas en pantallas medianas */
+  }
+}
+
+@media (max-width: 768px) {
+  .testimonials-container {
+    column-count: 1; /* 1 columna en pantallas pequeñas */
+  }
 }

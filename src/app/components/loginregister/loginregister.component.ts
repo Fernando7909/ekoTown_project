@@ -27,6 +27,7 @@ export class LoginregisterComponent {
   // Variables para el formulario de login de usuarios
   loginEmail: string = '';
   loginPassword: string = '';
+  isPasswordVisible: boolean = false;
 
   // Variables para el formulario de registro de usuarios
   registerName: string = '';
@@ -80,6 +81,11 @@ export class LoginregisterComponent {
   // Cambiar entre los paneles de registro/login de Business Manager
   toggleManagerPanel() {
     this.isBusinessManagerActive = !this.isBusinessManagerActive;
+  }
+
+  // Función para alternar entre mostrar y ocultar la contraseña
+  togglePasswordVisibility(): void {
+    this.isPasswordVisible = !this.isPasswordVisible;
   }
 
   // Método para iniciar sesión de usuario

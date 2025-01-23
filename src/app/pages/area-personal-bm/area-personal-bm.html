@@ -126,13 +126,14 @@
                     style="display: none"
                     (change)="uploadProfileImage($event)"/>
               
-                <button class="action-button btn btn-light d-flex align-items-center w-100">
-                    <img src="profileIcons/eclipse-alt.png" alt="Tema" class="icon me-2">
-                    <div class="text-left">
-                        <strong>Tema</strong>
-                        <p class="mb-0 small text-muted">Elige el color de tu preferencia</p>
-                    </div>
-                </button>
+                    <button class="action-button btn btn-light d-flex align-items-center w-100" (click)="toggleDarkMode()">
+                        <img src="profileIcons/eclipse-alt.png" alt="Tema" class="icon me-2">
+                        <div class="text-left">
+                          <strong>Tema</strong>
+                          <p class="mb-0 small text-muted">Cambia a modo oscuro</p>
+                        </div>
+                      </button>
+                          
             </div>
 
             <!-- columna COMERCIO -->
@@ -325,8 +326,6 @@
                         <p class="mb-0 small text-muted">Crea, edita o elimina tus posts</p>
                     </div>
                 </button>
-
-
             </div>
         </div>
     </div>

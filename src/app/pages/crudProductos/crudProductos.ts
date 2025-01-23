@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductService, Producto } from '../../services/product.service';
 import { PublishedProductsService } from '../../services/published-products.service';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 @Component({
   selector: 'app-crud-productos',
@@ -14,6 +15,7 @@ import { PublishedProductsService } from '../../services/published-products.serv
     CommonModule,
     FormsModule,
     HttpClientModule,
+    NavbarComponent,
   ],
   templateUrl: './crudProductos.html',
   styleUrls: ['./crudProductos.css'],

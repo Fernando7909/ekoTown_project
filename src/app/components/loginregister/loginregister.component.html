@@ -36,7 +36,19 @@
           </div>
           <div class="input-group">
             <label for="loginPassword">Contraseña</label>
-            <input type="password" id="loginPassword" [(ngModel)]="loginPassword" name="loginPassword" required />
+            <input 
+              type="{{ isPasswordVisible ? 'text' : 'password' }}" 
+              id="loginPassword" 
+              [(ngModel)]="loginPassword" 
+              name="loginPassword" 
+              required 
+            />
+            <img 
+              src="ojo.png" 
+              alt="Mostrar/Ocultar contraseña" 
+              class="password-visibility-icon" 
+              (click)="togglePasswordVisibility()" 
+            />
           </div>
           <button type="submit" class="btn-submit">Iniciar Sesión</button>
         </form>
@@ -60,7 +72,19 @@
           </div>
           <div class="input-group">
             <label for="registerPassword">Contraseña</label>
-            <input type="password" id="registerPassword" [(ngModel)]="registerPassword" name="registerPassword" required />
+            <input 
+              type="{{ isPasswordVisible ? 'text' : 'password' }}" 
+              id="registerPassword" 
+              [(ngModel)]="registerPassword" 
+              name="registerPassword" 
+              required 
+            />
+            <img 
+              src="ojo.png" 
+              alt="Mostrar/Ocultar contraseña" 
+              class="password-visibility-icon" 
+              (click)="togglePasswordVisibility()" 
+            />
           </div>
           <button type="submit" class="btn-submit">Registrarse</button>
         </form>
@@ -100,7 +124,19 @@
           </div>
           <div class="input-group">
             <label for="loginManagerPassword">Contraseña</label>
-            <input type="password" id="loginManagerPassword" [(ngModel)]="loginManagerPassword" name="loginManagerPassword" required />
+            <input 
+              type="{{ isPasswordVisible ? 'text' : 'password' }}" 
+              id="loginManagerPassword" 
+              [(ngModel)]="loginManagerPassword" 
+              name="loginManagerPassword" 
+              required 
+            />
+            <img 
+              src="ojo.png" 
+              alt="Mostrar/Ocultar contraseña" 
+              class="password-visibility-icon" 
+              (click)="togglePasswordVisibility()" 
+            />
           </div>
           <button type="submit" class="btn-submit">Iniciar Sesión</button>
         </form>
@@ -132,7 +168,19 @@
           </div>
           <div class="input-group">
             <label for="managerPassword">Contraseña</label>
-            <input type="password" id="managerPassword" [(ngModel)]="managerPassword" name="managerPassword" required />
+            <input 
+              type="{{ isPasswordVisible ? 'text' : 'password' }}" 
+              id="managerPassword" 
+              [(ngModel)]="managerPassword" 
+              name="managerPassword" 
+              required 
+            />
+            <img 
+              src="ojo.png" 
+              alt="Mostrar/Ocultar contraseña" 
+              class="password-visibility-icon" 
+              (click)="togglePasswordVisibility()" 
+            />
           </div>
           <button type="submit" class="btn-submit">Registrarse</button>
         </form>

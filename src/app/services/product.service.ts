@@ -53,6 +53,8 @@ export class ProductService {
     return this.http.post(this.apiUrl, product, { headers }); // No configurar manualmente Content-Type
   }
 
+
+  
   // Actualizar un producto existente
   updateProduct(id: number, productData: Partial<Producto> | FormData): Observable<any> {
     let options = {};
@@ -64,6 +66,8 @@ export class ProductService {
     
     return this.http.put(`${this.apiUrl}/${id}`, productData, options);
   }
+
+
 
   // Eliminar un producto
   deleteProduct(id: number): Observable<void> {

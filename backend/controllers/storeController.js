@@ -180,7 +180,7 @@ exports.updateStore = [
       nombre_comercio: req.body.nombre_comercio,
       nombre_gerente: req.body.nombre_gerente,
       descripcion: req.body.descripcion,
-      rating: req.body.rating || 0,
+      // rating: req.body.rating || 0,
     };
 
     // Manejar las imágenes

@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ViewChild, ElementRef } from '@angular/core';
 
 interface Testimonial {
   id: number;
@@ -18,108 +19,91 @@ interface Testimonial {
   styleUrls: ['./testimonials.component.css'],
 })
 export class TestimonialsComponent {
-  testimonials: Testimonial[] = [
+  testimonials = [
     {
-      id: 1,
-      name: 'Luna John',
-      date: '25/02/2024',
-      image: 'https://randomuser.me/api/portraits/women/1.jpg',
-      comment: '¡Increíble experiencia de compra! ekoTown tiene una gran variedad de productos ecológicos que se adaptan perfectamente a mi estilo de vida sostenible. Todo lo que he comprado, desde alimentos hasta productos de limpieza, es de excelente calidad. 🌍💚',
-      rating: 5
+      photo: 'https://randomuser.me/api/portraits/women/1.jpg',
+      name: 'Emily Ewing',
+      role: 'Cliente frecuente',
+      text: 'Ekotown ha cambiado mi forma de comprar. Sus productos ecológicos son de alta calidad y el proceso de compra es muy sencillo. ¡Recomiendo Ekotown a todos los que buscan un estilo de vida más sostenible!'
     },
     {
-      id: 2,
-      name: 'Mark Smith',
-      date: '01/03/2024',
-      image: 'https://randomuser.me/api/portraits/men/1.jpg',
-      comment: '¡Un descubrimiento increíble! ekoTown es mi sitio favorito para productos ecológicos. La sección de cosmética natural es mi preferida, tienen marcas que no había visto en otros lugares. Además, me encanta que todo sea cruelty-free y con ingredientes naturales. ¡No hay mejor manera de cuidar de mí y del medio ambiente!',
-      rating: 4
+      photo: 'https://randomuser.me/api/portraits/men/2.jpg',
+      name: 'John Schnobrich',
+      role: 'Amante de la naturaleza',
+      text: 'Me encanta comprar en Ekotown. Sus productos son respetuosos con el medio ambiente y el servicio al cliente es excelente. ¡Una experiencia de compra increíble!'
     },
     {
-      id: 3,
-      name: 'Luke Reeves',
-      date: '20/08/2024',
-      image: 'https://randomuser.me/api/portraits/men/2.jpg',
-      comment: 'Soy fan de ekoTown por su compromiso con la sostenibilidad. No solo ofrecen productos de calidad, sino que también educan sobre cómo reducir el impacto ambiental. Mis compras de alimentos ecológicos han sido perfectas, especialmente las frutas y snacks. ¡Sigan así, ekoTown, hacen un gran trabajo! 🌱✨',
-      rating: 5
+      photo: 'https://randomuser.me/api/portraits/women/3.jpg',
+      name: 'Brooke Cagle',
+      role: 'Defensora del medio ambiente',
+      text: 'Ekotown es mi tienda favorita para productos ecológicos. La variedad de productos es impresionante y siempre llegan en perfectas condiciones. ¡Gracias por hacer del mundo un lugar mejor!'
     },
     {
-      id: 4,
-      name: 'Emily Carter',
-      date: '16/07/2023',
-      image: 'https://randomuser.me/api/portraits/women/2.jpg',
-      comment: 'Nunca pensé que cambiar a productos ecológicos fuera tan fácil hasta que encontré ekoTown. Su catálogo es súper variado, y encuentro todo lo que necesito en un solo lugar. Lo que más valoro es su transparencia: cada producto tiene una descripción clara sobre sus beneficios y origen. ¡Encantada con mi compra!',
-      rating: 4
+      photo: 'https://randomuser.me/api/portraits/men/4.jpg',
+      name: 'Charles Forerunner',
+      role: 'Padre de familia',
+      text: 'Comprar en Ekotown ha sido una gran decisión para mi familia. Sus productos son seguros, ecológicos y de gran calidad. ¡No puedo estar más contento con mis compras!'
     },
     {
-      id: 5,
-      name: 'David Lee',
-      date: '30/09/2024',
-      image: 'https://randomuser.me/api/portraits/men/3.jpg',
-      comment: '¡Me encanta ekoTown! Siempre me ha costado encontrar productos de limpieza realmente ecológicos que funcionen bien, pero aquí encontré justo lo que buscaba. Los precios son justos y el proceso de compra es muy intuitivo. Además, su atención al cliente es excelente, responden rápido y son súper amables.',
-      rating: 5
+      photo: 'https://randomuser.me/api/portraits/women/5.jpg',
+      name: 'Annie Spratt',
+      role: 'Bloguera de vida sostenible',
+      text: 'Ekotown es una maravilla. Sus productos no solo son ecológicos, sino que también son asequibles. ¡Es un placer apoyar a una empresa que cuida del planeta!'
     },
     {
-      id: 6,
-      name: 'Sophia Kim',
-      date: '05/09/2024',
-      image: 'https://randomuser.me/api/portraits/women/3.jpg',
-      comment: 'ekoTown es el mejor ecommerce para quienes buscamos alternativas sostenibles. Compré un kit de cosmética natural y estoy encantada con los resultados. Además, se nota que cuidan cada detalle, desde el empaque hasta la experiencia de usuario en su web. ¡Sin duda seguiré comprando aquí y recomendándolo! 🌿💄',
-      rating: 3
+      photo: 'https://randomuser.me/api/portraits/men/6.jpg',
+      name: 'Tyler Franta',
+      role: 'Entusiasta del zero waste',
+      text: 'Ekotown ha superado mis expectativas. Sus productos son de alta calidad y el envío es rápido. ¡Definitivamente mi tienda favorita para compras sostenibles!'
+    },
+    {
+      photo: 'https://randomuser.me/api/portraits/men/7.jpg',
+      name: 'Sean Pollock',
+      role: 'Empresario consciente',
+      text: 'Ekotown es una excelente opción para quienes buscan productos ecológicos. La plataforma es fácil de usar y los productos son increíbles. ¡Muy recomendado!'
+    },
+    {
+      photo: 'https://randomuser.me/api/portraits/women/8.jpg',
+      name: 'Kelly Sikkema',
+      role: 'Diseñadora sostenible',
+      text: 'Ekotown ha transformado mi forma de comprar. Sus productos son innovadores y respetuosos con el medio ambiente. ¡Una experiencia de compra única!'
+    },
+    {
+      photo: 'https://randomuser.me/api/portraits/women/9.jpg',
+      name: 'Maranda Vandergriff',
+      role: 'Activista ambiental',
+      text: 'Ekotown es increíble. Sus productos son sostenibles y de alta calidad. ¡Es un placer apoyar a una empresa que realmente hace la diferencia!'
+    },
+    {
+      photo: 'https://randomuser.me/api/portraits/men/10.jpg',
+      name: 'Chris Evans',
+      role: 'Cliente satisfecho',
+      text: 'Ekotown es mi tienda favorita. Sus productos ecológicos son de primera calidad y el servicio al cliente es excepcional. ¡No puedo dejar de recomendar Ekotown!'
+    },
+    {
+      photo: 'https://randomuser.me/api/portraits/women/11.jpg',
+      name: 'Sophia King',
+      role: 'Madre comprometida',
+      text: 'Ekotown ha sido una gran elección para mi familia. Sus productos son seguros, ecológicos y de gran calidad. ¡Gracias por hacer que nuestras compras sean más sostenibles!'
     }
   ];
 
-  currentIndex = 0;
-  testimonialsPerPage = 3;
+  showAll = false; // Controla el estado de "mostrar todas"
 
-  constructor() {
-    if (typeof window !== 'undefined') {
-      this.updateTestimonialsPerPage(window.innerWidth);
-    }
-  }
+  @ViewChild('containerWrapper') containerWrapper!: ElementRef;
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    if (typeof window !== 'undefined') {
-      this.updateTestimonialsPerPage(event.target.innerWidth);
-    }
-  }
+  toggleShowAll() {
+    const element = this.containerWrapper.nativeElement;
 
-  updateTestimonialsPerPage(width: number) {
-    if (width < 768) {
-      this.testimonialsPerPage = 1; // 1 card en pantallas pequeñas
-    } else if (width < 1024) {
-      this.testimonialsPerPage = 2; // 2 cards en pantallas medianas
+    if (!this.showAll) {
+      // Expandir: calcular la altura completa del contenido
+      const fullHeight = element.scrollHeight;
+      element.style.maxHeight = `${fullHeight}px`;
     } else {
-      this.testimonialsPerPage = 3; // 3 cards en pantallas grandes
+      // Contraer: volver a la altura inicial
+      element.style.maxHeight = '600px';
     }
-  }
 
-  nextTestimonial() {
-    this.currentIndex =
-      (this.currentIndex + 1) % this.testimonials.length; // Avanza al siguiente índice de forma circular
-  }
-
-  previousTestimonial() {
-    this.currentIndex =
-      (this.currentIndex - 1 + this.testimonials.length) % this.testimonials.length; // Retrocede al índice anterior de forma circular
-  }
-
-  get visibleTestimonials() {
-    // Ajusta los elementos visibles para soportar el desplazamiento infinito
-    const visible: Testimonial[] = [];
-    for (let i = 0; i < this.testimonialsPerPage; i++) {
-      const index = (this.currentIndex + i) % this.testimonials.length; // Índice circular
-      visible.push(this.testimonials[index]);
-    }
-    return visible;
-  }
-
-  getStars(rating: number): number[] {
-    return Array(5).fill(0).map((_, index) => index < rating ? 1 : 0);
-  }
-
-  trackByStar(index: number, star: number): number {
-    return star;
+    this.showAll = !this.showAll;
   }
 }

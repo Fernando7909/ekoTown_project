@@ -1,43 +1,25 @@
 <section class="testimonials-section">
-  <div class="container">
-    <!-- Testimonios -->
-    <div class="row justify-content-center">
-      <div 
-        *ngFor="let testimonial of visibleTestimonials" 
-        class="col-12 col-md-6 col-lg-4 mb-4">
-        <div class="testimonial-card p-4">
-          <img [src]="testimonial.image" [alt]="testimonial.name" class="testimonial-image mb-3">
-          <div class="rating mb-2">
-            <span 
-              class="star" 
-              *ngFor="let star of [1,2,3,4,5]; trackBy: trackByStar"
-              [class.filled]="star <= testimonial.rating">★</span>
+  <div class="testimonials-header">
+    <h2 class="section-title">Lo que dicen de ekoTown</h2>
+  </div>
+  <div class="testimonials-container-wrapper" #containerWrapper>
+    <div class="testimonials-container">
+      <div class="testimonial-card" *ngFor="let testimonial of testimonials">
+        <div class="testimonial-header">
+          <img [src]="testimonial.photo" alt="{{ testimonial.name }}" class="testimonial-avatar" />
+          <div class="testimonial-content">
+            <h3 class="testimonial-name">{{ testimonial.name }}</h3>
+            <p class="testimonial-role">{{ testimonial.role }}</p>
           </div>
-          <p class="testimonial-text mb-3">{{testimonial.comment}}</p>
-          <div class="testimonial-author">
-            <h3 class="h5">{{testimonial.name}}</h3>
-            <p class="text-muted small">{{testimonial.date}}</p>
-          </div>
+        </div>
+        <div class="testimonial-text-container">
+          <p class="testimonial-text">{{ testimonial.text }}</p>
         </div>
       </div>
     </div>
-
-    <!-- Flechas debajo -->
-    <div class="row justify-content-center mt-4">
-      <div class="col-auto">
-        <button 
-          (click)="previousTestimonial()" 
-          class="arrow left-arrow">
-          <i class="bi bi-arrow-bar-left"></i>
-        </button>
-      </div>
-      <div class="col-auto">
-        <button 
-          (click)="nextTestimonial()" 
-          class="arrow right-arrow">
-          <i class="bi bi-arrow-bar-right"></i>
-        </button>
-      </div>
-    </div>
+    <div class="fade-effect" *ngIf="!showAll"></div>
   </div>
+  <button class="load-more-button" (click)="toggleShowAll()">
+    {{ showAll ? 'Mostrar menos historias' : 'Leer más historias' }}
+  </button>
 </section>

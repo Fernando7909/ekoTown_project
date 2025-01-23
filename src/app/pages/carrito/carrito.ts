@@ -3,13 +3,17 @@ import { CartService } from '../../services/cart.service';
 import { Producto } from '../../services/product.service';
 import { StripeService } from '../../services/stripe.service';
 import { CommonModule } from '@angular/common';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 @Component({
   selector: 'app-carrito',
   standalone: true,
   templateUrl: './carrito.html',
   styleUrls: ['./carrito.css'],
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    NavbarComponent,
+  ],
 })
 export class CarritoComponent implements OnInit {
   cartItems: Producto[] = [];
@@ -83,18 +87,21 @@ export class CarritoComponent implements OnInit {
       alert('El carrito está vacío. Agrega productos antes de finalizar la compra.');
       return;
     }
-
-    // Preparar los items para Stripe
-    const items = this.cartItems.map((item) => ({
-      name: item.nombre,
-      price: Math.round(item.precio * 100), // Convertir el precio a centavos
-      quantity: item.cantidad,
-    }));
-
+  
+    // Preparar los items para Stripe con IVA incluido
+    const items = this.cartItems.map((item) => {
+      const priceWithIVA = item.precio * 1.21; // Añadir 21% de IVA
+      return {
+        name: item.nombre,
+        price: Math.round(priceWithIVA * 100), // Convertir el precio a centavos
+        quantity: item.cantidad,
+      };
+    });
+  
     try {
       // Crear una sesión de Stripe
       const { sessionId } = await this.stripeService.createCheckoutSession(items);
-
+  
       // Redirigir al usuario a la página de Stripe
       await this.stripeService.redirectToCheckout(sessionId);
     } catch (error) {

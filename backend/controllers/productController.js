@@ -89,34 +89,52 @@ exports.getProductsByBusinessManager = (req, res) => {
     });
 };
 
+
+
+
 // Actualizar un producto
 exports.updateProduct = async (req, res) => {
     const { id } = req.params;
     const { nombre, descripcion, categoria, cantidad, precio, publicado } = req.body;
-
-    let imagenUrl = req.body.imagen_url || null;
-    if (req.file) {
-        imagenUrl = `/uploads/${req.file.filename}`;
-    }
-
-    const query = `
+  
+    try {
+      // Obtener el producto actual
+      const [product] = await db.promise().query('SELECT imagen_url FROM productos WHERE id = ?', [id]);
+      if (!product || product.length === 0) {
+        return res.status(404).send({ message: 'Producto no encontrado.' });
+      }
+  
+      // Conservar el valor actual de imagen_url si no se proporciona un nuevo valor
+      let imagenUrl = product[0].imagen_url;
+      if (req.file) {
+        imagenUrl = `/uploads/${req.file.filename}`; // Usar la nueva imagen si se proporciona
+      } else if (req.body.imagen_url) {
+        imagenUrl = req.body.imagen_url; // Usar el valor proporcionado en el cuerpo
+      }
+  
+      // Actualizar el producto
+      const query = `
         UPDATE productos 
         SET nombre = ?, descripcion = ?, categoria = ?, cantidad = ?, precio = ?, imagen_url = ?, publicado = ?
         WHERE id = ?
-    `;
-    const values = [nombre, descripcion, categoria, cantidad, precio, imagenUrl, publicado, id];
-
-    try {
-        const [result] = await db.promise().query(query, values);
-        if (result.affectedRows === 0) {
-            return res.status(404).send({ message: 'Producto no encontrado.' });
-        }
-        res.status(200).send({ message: 'Producto actualizado con éxito' });
+      `;
+      const values = [nombre, descripcion, categoria, cantidad, precio, imagenUrl, publicado, id];
+  
+      const [result] = await db.promise().query(query, values);
+      if (result.affectedRows === 0) {
+        return res.status(404).send({ message: 'Producto no encontrado.' });
+      }
+  
+      res.status(200).send({ message: 'Producto actualizado con éxito' });
     } catch (error) {
-        console.error('Error al actualizar producto:', error);
-        res.status(500).send('Error al actualizar producto');
+      console.error('Error al actualizar producto:', error);
+      res.status(500).send('Error al actualizar producto');
     }
-};
+  };
+
+
+
+
 
 // Eliminar un producto
 exports.deleteProduct = (req, res) => {

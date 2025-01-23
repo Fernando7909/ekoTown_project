@@ -7,6 +7,8 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { DarkModeService } from '../../services/dark-mode.service';
+import { OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-area-personal-bm',
@@ -21,7 +23,7 @@ import { RouterModule } from '@angular/router';
     RouterModule
   ]
 })
-export class AreaPersonalBmPage implements OnInit {
+export class AreaPersonalBmPage implements OnInit, OnDestroy {
   // Variables para manejar el estado de la vista
   bmName: string = '';
   bmLastName: string = '';
@@ -36,11 +38,18 @@ export class AreaPersonalBmPage implements OnInit {
   editStoreMode: boolean = false; // Define si el modo de edición está activado
 
 
-  constructor(private authManagerService: AuthManagerService, private router: Router, private http: HttpClient) {}
+
+  constructor(
+    private authManagerService: AuthManagerService, 
+    private router: Router, 
+    private http: HttpClient,
+    private darkModeService: DarkModeService
+  ) {}
 
   ngOnInit(): void {
     this.loadBmProfile();
     this.checkIfStoreExists();
+    this.darkModeService.toggleDarkMode();
   }
 
   resetStoreProfile(): void {
@@ -387,6 +396,14 @@ getFileName(url: string): string {
       },
     });
   }
-   
-  
+ 
+  ngOnDestroy(): void {
+    // Desactivar el modo oscuro al salir de la página
+    this.darkModeService.toggleDarkMode();
+  }
+
+  toggleDarkMode() {
+    // Llama al servicio para cambiar el estado del modo oscuro
+    this.darkModeService.toggleDarkMode();
+  }
 }
