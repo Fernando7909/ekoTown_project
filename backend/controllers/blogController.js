@@ -130,3 +130,22 @@ exports.getBlogById = (req, res) => {
     res.status(200).json(results[0]); 
   });
 };
+
+
+// Obtener blogs por businessManagerId
+exports.getBlogsByBusinessManagerId = (req, res) => {
+  const { businessManagerId } = req.params;
+
+  if (!businessManagerId || !Number.isInteger(Number(businessManagerId))) {
+    return res.status(400).json({ message: 'El ID del Business Manager es obligatorio y válido' });
+  }
+
+  Blog.getBlogsByBusinessManagerId(businessManagerId, (err, results) => {
+    if (err) {
+      console.error('Error al obtener los blogs por businessManagerId:', err);
+      return res.status(500).json({ message: 'Error al obtener los blogs por businessManagerId', error: err });
+    }
+
+    res.status(200).json(results);
+  });
+};

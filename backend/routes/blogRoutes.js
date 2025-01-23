@@ -12,4 +12,6 @@ router.post('/', blogController.createBlog); // Crear un blog
 router.put('/:id', blogController.updateBlog); // Actualizar un blog
 router.delete('/:id', blogController.deleteBlog); // Eliminar un blog
 
+router.get('/businessManager/:businessManagerId', blogController.getBlogsByBusinessManagerId);
+
 module.exports = router;

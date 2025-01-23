@@ -1,27 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { BlogService } from '../../../services/blog.service';
+import { AuthManagerService } from '../../../services/auth-manager.service'; // Importa el servicio de autenticación
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../../components/navbar/navbar.component';
 
 // Interfaz para los datos de los blogs
 interface Blog {
-  id?: number; // Opcional para creación
+  id?: number;
   title: string;
   content: string;
   category: string;
-  author: string; // Agregado
-  businessManagerId: number; // Agregado
+  author: string;
+  businessManagerId: number;
 }
 
 @Component({
   selector: 'app-blogs-manage',
   standalone: true,
-  imports: [
-    FormsModule,
-    CommonModule,
-    NavbarComponent,
-  ],
+  imports: [FormsModule, CommonModule, NavbarComponent],
   templateUrl: './blogs-manage.component.html',
   styleUrls: ['./blogs-manage.component.css'],
 })
@@ -31,28 +28,43 @@ export class BlogsManageComponent implements OnInit {
     title: '',
     content: '',
     category: 'General',
-    author: '', // Asegúrate de que esta propiedad se maneje también
-    businessManagerId: 0, // Asegúrate de que esta propiedad se maneje también
+    author: '',
+    businessManagerId: 0,
   };
   isEditing = false;
   editingBlogId: number | null = null;
 
-  constructor(private blogService: BlogService) {}
+  // Obtén el businessManagerId del usuario actual desde el servicio de autenticación
+  currentBusinessManagerId: number = 0;
+
+  constructor(
+    private blogService: BlogService,
+    private authManagerService: AuthManagerService // Inyecta el servicio de autenticación
+  ) {}
 
   ngOnInit(): void {
-    this.loadBlogs();
+    // Obtén el businessManagerId del usuario logueado
+    const bmId = this.authManagerService.getBmId();
+    if (bmId !== undefined) {
+      this.currentBusinessManagerId = bmId;
+      this.loadBlogs();
+    } else {
+      console.error('No se pudo obtener el businessManagerId del usuario logueado.');
+    }
   }
 
-  // Cargar blogs
+  // Cargar blogs filtrados por businessManagerId
   loadBlogs(): void {
-    this.blogService.getAllBlogs().subscribe(
-      (data: Blog[]) => {
-        this.blogs = data;
-      },
-      (error) => {
-        console.error('Error al cargar los blogs:', error);
-      }
-    );
+    this.blogService
+      .getBlogsByBusinessManagerId(this.currentBusinessManagerId)
+      .subscribe(
+        (data: Blog[]) => {
+          this.blogs = data;
+        },
+        (error) => {
+          console.error('Error al cargar los blogs:', error);
+        }
+      );
   }
 
   // Crear o actualizar un blog
@@ -77,6 +89,7 @@ export class BlogsManageComponent implements OnInit {
       );
     } else {
       // Crear nuevo blog
+      this.blogForm.businessManagerId = this.currentBusinessManagerId; // Asignar el ID del business manager
       this.blogService.createBlog(this.blogForm).subscribe(
         (response) => {
           this.loadBlogs();
@@ -98,30 +111,27 @@ export class BlogsManageComponent implements OnInit {
       title: blog.title,
       content: blog.content,
       category: blog.category,
-      author: blog.author, // Asegúrate de que esta propiedad también se copie
-      businessManagerId: blog.businessManagerId, // Asegúrate de que esta propiedad también se copie
+      author: blog.author,
+      businessManagerId: blog.businessManagerId,
     };
   }
 
-
-  // Método en el componente para eliminar un blog
-deleteBlog(id: number): void {
-  // Asegúrate de que el ID es válido antes de hacer la solicitud
-  if (id !== null && id !== undefined) {
-    this.blogService.deleteBlog(id).subscribe(
-      () => {
-        this.loadBlogs();
-        console.log('Blog eliminado exitosamente.');
-      },
-      (error) => {
-        console.error('Error al eliminar el blog:', error);
-      }
-    );
-  } else {
-    console.error('Error: ID del blog no válido');
+  // Eliminar un blog
+  deleteBlog(id: number): void {
+    if (id !== null && id !== undefined) {
+      this.blogService.deleteBlog(id).subscribe(
+        () => {
+          this.loadBlogs();
+          console.log('Blog eliminado exitosamente.');
+        },
+        (error) => {
+          console.error('Error al eliminar el blog:', error);
+        }
+      );
+    } else {
+      console.error('Error: ID del blog no válido');
+    }
   }
-}
-
 
   // Resetear formulario
   resetForm(): void {
@@ -129,8 +139,8 @@ deleteBlog(id: number): void {
       title: '',
       content: '',
       category: 'General',
-      author: '', // Resetear la propiedad 'author'
-      businessManagerId: 0, // Resetear la propiedad 'businessManagerId'
+      author: '',
+      businessManagerId: this.currentBusinessManagerId, // Restablecer el ID del business manager
     };
     this.isEditing = false;
     this.editingBlogId = null;

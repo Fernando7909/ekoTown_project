@@ -2,37 +2,36 @@ const db = require('../config/db');
 
 // Crear un nuevo post de blog
 exports.createBlog = (blogData, callback) => {
-    if (!blogData.title || !blogData.content || !blogData.author || !blogData.businessManagerId) {
-      return callback(new Error('Todos los campos obligatorios deben estar presentes.'));
+  if (!blogData.title || !blogData.content || !blogData.author || !blogData.businessManagerId) {
+    return callback(new Error('Todos los campos obligatorios deben estar presentes.'));
+  }
+
+  const query = `
+    INSERT INTO blogs (title, content, category, author, businessManagerId, createdAt, updatedAt)
+    VALUES (?, ?, ?, ?, ?, NOW(), NOW())
+  `;
+  const values = [
+    blogData.title,
+    blogData.content,
+    blogData.category || 'General', // Usar "General" si no se proporciona categoría
+    blogData.author,
+    blogData.businessManagerId,
+  ];
+
+  db.query(query, values, (err, result) => {
+    if (err) {
+      console.error('Error al crear el blog:', err);
+      return callback(err);
     }
-  
-    const query = `
-      INSERT INTO blogs (title, content, category, author, businessManagerId, createdAt, updatedAt)
-      VALUES (?, ?, ?, ?, ?, NOW(), NOW())
-    `;
-    const values = [
-      blogData.title,
-      blogData.content,
-      blogData.category || 'General', // Usar "General" si no se proporciona categoría
-      blogData.author,
-      blogData.businessManagerId,
-    ];
-  
-    db.query(query, values, (err, result) => {
-      if (err) {
-        console.error('Error al crear el blog:', err);
-        return callback(err);
-      }
-      callback(null, result);
-    });
-  };
+    callback(null, result);
+  });
+};
 
 // Obtener todos los blogs
 exports.getAllBlogs = (callback) => {
-    const query = `SELECT * FROM blogs`;
-    db.query(query, callback);
-  };
-  
+  const query = `SELECT * FROM blogs`;
+  db.query(query, callback);
+};
 
 // Obtener un blog por ID
 exports.getBlogById = (id, callback) => {
@@ -67,4 +66,15 @@ exports.updateBlog = (id, blogData, callback) => {
 exports.deleteBlog = (id, callback) => {
   const query = `DELETE FROM blogs WHERE id = ?`;
   db.query(query, [id], callback);
+};
+
+// Obtener blogs por businessManagerId
+exports.getBlogsByBusinessManagerId = (businessManagerId, callback) => {
+  const query = 'SELECT * FROM blogs WHERE businessManagerId = ?';
+  db.query(query, [businessManagerId], (err, results) => {
+    if (err) {
+      return callback(err, null);
+    }
+    callback(null, results);
+  });
 };

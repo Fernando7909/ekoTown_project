@@ -58,4 +58,15 @@ export class BlogService {
     }
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
+
+  // Obtener blogs por businessManagerId
+  getBlogsByBusinessManagerId(businessManagerId: number): Observable<any[]> {
+    const url = `${this.apiUrl}/businessManager/${businessManagerId}`;
+    return this.http.get<any[]>(url).pipe(
+      catchError((error) => {
+        console.error('Error al obtener blogs por businessManagerId:', error);
+        return throwError(error);
+      })
+    );
+  }
 }
